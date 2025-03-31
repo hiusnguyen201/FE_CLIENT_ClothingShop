@@ -1,0 +1,48 @@
+import App from "@/App";
+import LoginPage from "@/pages/auth/loginPage";
+import RegisterPage from "@/pages/auth/registerPage";
+import CategoryPage from "@/pages/category/CategoryPage";
+import HomePage from "@/pages/home/HomePage";
+import SearchPage from "@/pages/search/SearchPage";
+import SingleProduct from "@/pages/shop/ProductDetails/SingerProduct";
+import ShopPage from "@/pages/shop/ShopPage";
+import { createBrowserRouter } from "react-router-dom";
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <App />,
+    children: [
+      {
+        path: "/",
+        element: <HomePage />,
+      },
+      {
+        path: "/categories/:categoryName",
+        element: <CategoryPage />,
+      },
+      {
+        path: "/search",
+        element: <SearchPage />,
+      },
+      {
+        path: "/shop",
+        element: <ShopPage />,
+      },
+      {
+        path: "/shop/:id",
+        element: <SingleProduct />,
+      },
+    ],
+  },
+  {
+    path: "/login",
+    element: <LoginPage />,
+  },
+  {
+    path: "/register",
+    element: <RegisterPage />,
+  },
+]);
+
+export default router;
