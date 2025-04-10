@@ -1,21 +1,35 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import bannerImg from "../../assets/header.png";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Autoplay } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+
+const images = [
+  "https://media3.coolmate.me/cdn-cgi/image/width=1920,quality=90,format=auto/uploads/April2025/Hero_Banner_-_Desktop-_mate.jpg",
+  "https://media3.coolmate.me/cdn-cgi/image/width=1920,quality=90,format=auto/uploads/April2025/Hero_Banner_-_Desktop_-_yoga.jpg",
+];
 
 const Banner: React.FC = () => {
   return (
-    <div className="section__container header__container">
-      <div className="header__content z-30">
-        <h4 className="uppercase">Sale Up to 50%</h4>
-        <h1 className="text-[clamp(14px, 2vw, 24px)]">Clothing Shop</h1>
-        <p>Clothing Shop is brand in VietNam</p>
-        <button className="btn">
-          <Link to="/shop">GET OFFER</Link>
-        </button>
-      </div>
-      <div className="header__image">
-        <img src={bannerImg} alt="banner image" />
-      </div>
+    <div className="w-full p-3">
+      <Swiper
+        modules={[Navigation, Autoplay]}
+        spaceBetween={0}
+        slidesPerView={1}
+        navigation
+        autoplay={{ delay: 3000, disableOnInteraction: false }}
+        loop
+        className="w-full aspect-[16/5] rounded-lg overflow-hidden relative [--swiper-navigation-size:20px]"
+      >
+        {images.map((img, idx) => (
+          <SwiperSlide key={idx}>
+            <Link to="">
+              <img src={img} alt={`Banner ${idx}`} className="w-full h-full object-cover" />
+            </Link>
+          </SwiperSlide>
+        ))}
+      </Swiper>
     </div>
   );
 };

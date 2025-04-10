@@ -35,10 +35,7 @@ type AuthAction = {
   payload?: State;
 };
 
-const handlers: Record<
-  ActionType,
-  (state: State, action: AuthAction) => State
-> = {
+const handlers: Record<ActionType, (state: State, action: AuthAction) => State> = {
   INITIALIZE: (state: State, action: AuthAction) => {
     if (!action?.payload) return { ...state, isInitialized: true };
     const { isAuthenticated, user } = action.payload;

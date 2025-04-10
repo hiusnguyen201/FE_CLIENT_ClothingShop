@@ -15,7 +15,8 @@ const SearchPage: React.FC = () => {
     const filtered = productsData.filter(
       (product) =>
         product.name.toLowerCase().includes(query) ||
-        product.short_description.toLowerCase().includes(query)
+        product.short_description.toLowerCase().includes(query) ||
+        false
     );
     //setFillerProducts
     setFilteredProducts(filtered);

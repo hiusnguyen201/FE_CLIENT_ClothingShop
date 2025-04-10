@@ -1,6 +1,7 @@
 import App from "@/App";
-import LoginPage from "@/pages/auth/loginPage";
-import RegisterPage from "@/pages/auth/registerPage";
+import AuthLayout from "@/layouts/auth/AuthLayout";
+import LoginPage from "@/pages/auth/LoginPage";
+import RegisterPage from "@/pages/auth/RegisterPage";
 import CategoryPage from "@/pages/category/CategoryPage";
 import HomePage from "@/pages/home/HomePage";
 import SearchPage from "@/pages/search/SearchPage";
@@ -36,12 +37,18 @@ const router = createBrowserRouter([
     ],
   },
   {
-    path: "/login",
-    element: <LoginPage />,
-  },
-  {
-    path: "/register",
-    element: <RegisterPage />,
+    path: "/auth",
+    element: <AuthLayout />,
+    children: [
+      {
+        path: "login",
+        element: <LoginPage />,
+      },
+      {
+        path: "register",
+        element: <RegisterPage />,
+      },
+    ],
   },
 ]);
 

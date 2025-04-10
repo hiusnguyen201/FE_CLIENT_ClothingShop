@@ -5,9 +5,12 @@ export interface Product {
   short_description?: string;
   content?: string;
   price: number;
-  oldPrice?: number;
+  originalPrice?: number;
   image: string;
-  color: string;
+  colors?: string[];
+  sizes?: string[];
+  discount?: string;
   rating: number;
   author?: string;
+  isNew?: boolean;
 }

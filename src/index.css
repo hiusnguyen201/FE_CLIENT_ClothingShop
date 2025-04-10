@@ -15,6 +15,11 @@
   --header-font: "Playfair Display", serif;
 }
 
+.swiper-button-next,
+.swiper-button-prev {
+  color: white !important;
+}
+
 .section__container {
   max-width: var(--max-width-1400);
   margin: auto;
@@ -93,7 +98,6 @@ nav {
 }
 
 .nav__logo:hover {
-  animation: glitch 0.3s linear infinite;
   cursor: pointer;
 }
 
@@ -240,27 +244,26 @@ nav {
 
 .hero__content {
   position: absolute;
-  top: 50%;
-  left: 50%;
+  bottom: 0;
+  left: 20%;
   transform: translate(-15%, -50%);
 }
 
 .hero__content p {
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 500;
-  color: var(--primary-color);
+  margin-bottom: 1rem;
+  color: white;
 }
 
 .hero__content h4 {
-  margin-bottom: 1rem;
-  font-size: 1.25rem;
+  font-size: 1.6rem;
   font-weight: 800;
   font-family: var(--header-font);
-  color: var(--text-dark);
+  color: white;
 }
 
-.hero__content a {
-  color: var(--text-dark);
+.text__underline {
   text-decoration: underline;
 }
 
@@ -294,6 +297,13 @@ nav {
   font-family: var(--header-font);
 }
 
+.categories__navbar {
+  margin-bottom: 5px;
+  font-size: 1.4rem;
+  font-weight: 800;
+  font-family: var(--header-font);
+}
+
 .product__card__content p {
   font-weight: 500;
   color: var(--text-dark);
@@ -310,12 +320,8 @@ nav {
 }
 
 .deals__container {
-  background-color: var(--primary-color-light);
+  position: relative;
   border-radius: 1rem;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 2rem;
-  align-items: center;
 }
 
 .deals__image {
@@ -332,28 +338,32 @@ nav {
 }
 
 .deals__content {
+  position: absolute;
+  bottom: 20%;
   max-width: 600px;
   margin-right: auto;
+  left: 20%;
+  transform: translate(-20%, -20%);
 }
 
 .deals__content h5 {
   margin-bottom: 1rem;
-  font-size: 1rem;
+  font-size: 1.2rem;
   font-weight: 500;
-  color: var(--primary-color);
+  color: white;
 }
 
 .deals__content h4 {
   margin-bottom: 1rem;
-  font-size: 2rem;
+  font-size: 2.3rem;
   font-weight: 800;
   font-family: var(--header-font);
-  color: var(--text-dark);
+  color: white;
 }
 
 .deals__content p {
   margin-bottom: 2rem;
-  color: var(--text-light);
+  color: rgb(197, 193, 193);
 }
 
 .deals__countdown {
@@ -518,7 +528,7 @@ nav {
   border-top: 2px solid var(--extra-light);
 }
 
-@media (width < 900px) {
+@media (width < 1022px) {
   .nav__links {
     display: none;
   }

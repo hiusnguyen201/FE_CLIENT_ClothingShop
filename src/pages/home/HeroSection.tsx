@@ -1,13 +1,10 @@
 import React from "react";
-
-import card1 from "../../assets/card-1.png";
-import card2 from "../../assets/card-2.png";
-import card3 from "../../assets/card-3.png";
+import { Link } from "react-router-dom";
 
 interface Cards {
   id: number;
   image: string;
-  trend: string;
+  description: string;
   title: string;
 }
 
@@ -15,21 +12,24 @@ const HeroSection: React.FC = () => {
   const cards: Cards[] = [
     {
       id: 1,
-      image: card1,
-      trend: "2025 Trend",
+      image:
+        "https://media3.coolmate.me/cdn-cgi/image/width=1800,height=1200,quality=80,format=auto/uploads/March2025/Section_Banner_888x600.jpg",
+      description: "Sale 40% or Freeship",
       title: "Women Shirt",
     },
     {
       id: 2,
-      image: card2,
-      trend: "2025 Trend",
+      image:
+        "https://media3.coolmate.me/cdn-cgi/image/width=1800,height=1200,quality=80,format=auto/uploads/March2025/Section_Banner_888x600.jpg",
+      description: "Sale 40% or Freeship",
       title: "Women Dresses",
     },
     {
       id: 3,
-      image: card3,
-      trend: "2025 Trend",
-      title: "Đường Cát Lu",
+      image:
+        "https://media3.coolmate.me/cdn-cgi/image/width=1800,height=1200,quality=80,format=auto/uploads/March2025/Section_Banner_888x600.jpg",
+      description: "Sale 40% or Freeship",
+      title: "Women Dresses",
     },
   ];
   return (
@@ -38,9 +38,11 @@ const HeroSection: React.FC = () => {
         <div key={card.id} className="hero__card">
           <img src={card.image} alt={card.title} />
           <div className="hero__content">
-            <p>{card.trend}</p>
-            <h4>{card.title}</h4>
-            <a href="#">Discover More</a>
+            <h4 className="text-white">{card.title}</h4>
+            <p className="text-2xl">{card.description}</p>
+            <Link to={""} className="bg-white px-7 rounded-xl py-4">
+              Mua ngay
+            </Link>
           </div>
         </div>
       ))}

@@ -6,8 +6,8 @@ interface RatingStarsProps {
 }
 
 const RatingStars: React.FC<RatingStarsProps> = ({ rating, maxStars = 5 }) => {
-  const fullStars = Math.floor(rating); // Số lượng sao đầy
-  const halfStar = rating % 1 >= 0.5; // Nếu số dư >= 0.5, hiển thị nửa sao
+  const fullStars = Math.floor(rating);
+  const halfStar = rating % 1 >= 0.5;
   const emptyStars = maxStars - fullStars - (halfStar ? 1 : 0);
   const stars = [];
   // Thêm sao đầy

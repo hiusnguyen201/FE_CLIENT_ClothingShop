@@ -11,30 +11,22 @@ const CategoryPage: React.FC = () => {
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    if (!categoryName) return;
-    const filtered = productsData.filter(
-      (product) => product.category_id === categoryName.toLowerCase()
-    );
+    if (!categoryName) {
+      return;
+    }
+    const filtered = productsData.filter((product) => product.category_id === categoryName.toLowerCase());
     setFilteredProducts(filtered);
   }, [categoryName]);
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
   return (
     <div>
       <section className="section__container bg__banner">
         <h2 className="section__header capitalize">{categoryName}</h2>
         <p className="section__subheader">
-          Browse a diverse range of categories, fromm chic dresses to versatitle
-          accessories
+          Browse a diverse range of categories, fromm chic dresses to versatitle accessories
         </p>
       </section>
       <div className="section__container">
-        {filteredProducts?.length ? (
-          <ProductCards productsData={filteredProducts} />
-        ) : (
-          <EmptyProducts />
-        )}
+        {filteredProducts?.length ? <ProductCards productsData={filteredProducts} /> : <EmptyProducts />}
       </div>
     </div>
   );

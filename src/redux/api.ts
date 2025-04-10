@@ -24,10 +24,10 @@ apiInstance.interceptors.response.use(
       retry = true;
 
       try {
-        await apiInstance.post("/auth/refresh-token");
+        // await apiInstance.post("/auth/refresh-token");
         return apiInstance(originalRequest);
-      } catch (e: any) {
-        window.location.href = "/login";
+      } catch (e) {
+        window.location.href = "/auth/login";
         return Promise.reject(e);
       }
     }

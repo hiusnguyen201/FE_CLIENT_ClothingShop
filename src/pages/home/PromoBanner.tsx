@@ -16,7 +16,7 @@ const PromoBanner: React.FC = () => {
         <span>
           <i className="ri-money-dollar-circle-line"></i>
         </span>
-        <h4>100% Money Back Guaranty</h4>
+        <h4>100% Money Back Guarantee</h4>
         <p>
           E-commerce have a review system where customers can share feedback.
         </p>

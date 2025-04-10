@@ -3,6 +3,8 @@ import {
   LoginPayload,
   LoginResponse,
   LogoutResponse,
+  RegisterPayload,
+  RegisterResponse,
   SendOtpViaEmailPayload,
   SendOtpViaEmailResponse,
 } from "@/redux/auth/auth.type";
@@ -17,4 +19,8 @@ export const loginService = async (payload: LoginPayload): Promise<LoginResponse
 
 export const sendOtpViaEmailService = async (payload: SendOtpViaEmailPayload): Promise<SendOtpViaEmailResponse> => {
   return await apiInstance.post("/auth/send-otp-via-email", payload);
+};
+
+export const registerService = async (payload: RegisterPayload): Promise<RegisterResponse> => {
+  return await apiInstance.post("/auth/register", payload);
 };

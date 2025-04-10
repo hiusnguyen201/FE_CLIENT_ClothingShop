@@ -1,34 +1,41 @@
 import React from "react";
-
-import category1 from "../../assets/category-1.jpg";
-import category2 from "../../assets/category-2.jpg";
-import category3 from "../../assets/category-3.jpg";
-import category4 from "../../assets/category-4.jpg";
 import { Link } from "react-router-dom";
 
 interface Category {
-  icon: string;
+  image: string;
   name: string;
   slug: string;
 }
 
 const Categories: React.FC = () => {
   const categories: Category[] = [
-    { name: "Accessories", slug: "accessories", icon: category1 },
-    { name: "Dress Collection", slug: "dress", icon: category2 },
-    { name: "Jewellery", slug: "jewwllery", icon: category3 },
-    { name: "Shoes", slug: "shoes", icon: category4 },
+    {
+      name: "Accessories",
+      slug: "accessories",
+      image: "https://media3.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/March2025/image-ao-thun-1_18.jpg",
+    },
+    {
+      name: "Dress Collection",
+      slug: "dress",
+      image: "https://media3.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/March2025/image-ao-thun-1_18.jpg",
+    },
+    {
+      name: "Jewellery",
+      slug: "jewellery",
+      image: "https://media3.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/March2025/image-ao-thun-1_18.jpg",
+    },
+    {
+      name: "Shoes",
+      slug: "shoes",
+      image: "https://media3.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/March2025/image-ao-thun-1_18.jpg",
+    },
   ];
   return (
     <div>
       <div className="product__grid">
         {categories.map((categories) => (
-          <Link
-            key={categories.slug}
-            to={`/categories/${categories.slug}`}
-            className="categories__card"
-          >
-            <img src={categories.icon} alt={categories.name} />
+          <Link key={categories.slug} to={`/categories/${categories.slug}`} className="categories__card">
+            <img src={categories.image} alt={categories.name} />
             <h4>{categories.name}</h4>
           </Link>
         ))}
