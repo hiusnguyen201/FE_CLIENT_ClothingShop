@@ -3,10 +3,14 @@ import { Link } from "react-router-dom";
 import RatingStarts from "@/components/RatingStars";
 import { ColorBadge } from "@/components/productSlice/ColorBadge";
 import { Button } from "@/components/ui/button";
+
 const SingleProduct: React.FC = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  const sizeBadge = ["S", "M", "L", "XL", "2XL"];
+  const colorBadge = ["#000", "#ffffff", "#9FC5E8"];
 
   return (
     <div>
@@ -31,7 +35,7 @@ const SingleProduct: React.FC = () => {
           {/* product image */}
           <div className="md:w-1/2 w-full">
             <img
-              className="rounded-md w-full h-auto"
+              className="rounded-md  w-32 h-auto"
               src="https://media3.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/April2025/Thun_20.jpg"
               alt=""
             />
@@ -53,9 +57,10 @@ const SingleProduct: React.FC = () => {
             <div>
               <p className="text-stone-600 text-md">Color: Black</p>
               <div className="flex mb-2 items-center gap-1 sm:gap-2 flex-wrap mt-2">
-                {["#000", "#ffffff", "#9FC5E8"].map((color, i) => (
-                  <ColorBadge key={i} color={color} active={i === 0} />
-                ))}
+                {colorBadge ||
+                  ["#000", "#ffffff", "#9FC5E8"].map((color, i) => (
+                    <ColorBadge key={i} color={color} active={i === 0} />
+                  ))}
               </div>
               <div className="flex justify-between mt-4">
                 <p className="text-stone-600 text-md">Size:</p>
@@ -64,7 +69,7 @@ const SingleProduct: React.FC = () => {
                 </Link>
               </div>
               <div className="flex flex-wrap gap-1">
-                {["S", "M", "L", "XL", "2XL"].map((size, i) => (
+                {sizeBadge.map((size, i) => (
                   <Button key={i} className="bg-gray-300 mt-2 hover:bg-gray-400 w-[40px] h-[38px] ">
                     {size}
                   </Button>

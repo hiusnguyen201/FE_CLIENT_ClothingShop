@@ -2,6 +2,7 @@ export interface Product {
   _id: string;
   name: string;
   category_id: string;
+  sub_category_id?: string;
   short_description?: string;
   content?: string;
   price: number;

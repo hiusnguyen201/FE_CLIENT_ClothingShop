@@ -1,49 +1,35 @@
-import React, { useState } from "react";
-import ProductCards from "@/pages/shop/ProductCards";
+import React from "react";
+import ProductCards from "@/pages/shop/ProductDetails/ProductCards";
 
 import productsData from "@/data/product.json";
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 
 const TrendingProducts: React.FC = () => {
-  const [visibleProducts, setVisibleProducts] = useState<number>(8);
-
-  // Hàm load thêm sản phẩm
-  const handleLoadMoreProduct = () => {
-    setVisibleProducts((prevCount) => prevCount + 8);
-  };
-
-  // Hàm ẩn sản phẩm (reset lại về 8 sản phẩm ban đầu)
-  const handleHideProducts = () => {
-    setVisibleProducts(8);
-  };
   return (
     <div>
       <section className="section__container product__container">
         <h2 className="section__header">Trending Products</h2>
-        <p className="section__subheader mb-12">
-          Explore Clothing Shop in Vietnam
-        </p>
+        <p className="section__subheader ">Explore Clothing Shop in Vietnam</p>
+        <div className="flex justify-between">
+          <div>
+            <Button className="text-white bg-gray-900 text-lg py-5 px-5 rounded-4xl">
+              New Product <i className="ri-star-line"></i>
+            </Button>
+            <Button className="text-gray-900 bg-white hover:bg-gray-100 ml-4 text-lg py-5 px-5 rounded-4xl border border-gray-900">
+              Best Seller
+            </Button>
+          </div>
+          <Link to="/shop" className="text-gray-500 bg-white hover:text-gray-900 text__underline ml-4 text-lg p-3">
+            See More
+          </Link>
+        </div>
         {/* product card */}
         {productsData && (
-          <div className="mt-12">
-            <ProductCards
-              productsData={productsData.slice(0, visibleProducts)}
-            />
+          <div className="mt-5">
+            <ProductCards productsData={productsData.slice(0, 8)} />
           </div>
         )}
-
-        {/* load more product btn */}
-        <div className="product__btn">
-          {visibleProducts < productsData.length && (
-            <button className="btn" onClick={handleLoadMoreProduct}>
-              Load More
-            </button>
-          )}
-          {visibleProducts > productsData.length && (
-            <button className="btn" onClick={handleHideProducts}>
-              Hide Products
-            </button>
-          )}
-        </div>
       </section>
     </div>
   );

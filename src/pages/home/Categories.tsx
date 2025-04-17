@@ -10,33 +10,43 @@ interface Category {
 const Categories: React.FC = () => {
   const categories: Category[] = [
     {
-      name: "Accessories",
-      slug: "accessories",
+      name: "T-Shirt",
+      slug: "shirt",
       image: "https://media3.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/March2025/image-ao-thun-1_18.jpg",
     },
     {
-      name: "Dress Collection",
-      slug: "dress",
+      name: "T-Shirt",
+      slug: "shirt",
       image: "https://media3.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/March2025/image-ao-thun-1_18.jpg",
     },
     {
-      name: "Jewellery",
-      slug: "jewellery",
+      name: "T-Shirt",
+      slug: "shirt",
       image: "https://media3.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/March2025/image-ao-thun-1_18.jpg",
     },
     {
-      name: "Shoes",
-      slug: "shoes",
+      name: "T-Shirt",
+      slug: "shirt",
+      image: "https://media3.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/March2025/image-ao-thun-1_18.jpg",
+    },
+    {
+      name: "T-Shirt",
+      slug: "shirt",
       image: "https://media3.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/March2025/image-ao-thun-1_18.jpg",
     },
   ];
   return (
-    <div>
-      <div className="product__grid">
-        {categories.map((categories) => (
-          <Link key={categories.slug} to={`/categories/${categories.slug}`} className="categories__card">
-            <img src={categories.image} alt={categories.name} />
-            <h4>{categories.name}</h4>
+    <div className="w-full overflow-x-auto section__container ">
+      <div className="flex gap-4 w-max">
+        {categories.map((c, index) => (
+          <Link to={`/categories/${c.slug}`}>
+            <div
+              key={index}
+              className="min-w-[240px] w-[240px] rounded-lg overflow-hidden bg-white shadow-md cursor-pointer hover:scale-105 transition-transform"
+            >
+              <img src={c.image} alt={c.name} className="w-full aspect-[3/4] object-cover" />
+              <div className="text-center py-2 font-semibold text-gray-700 uppercase">{c.name}</div>
+            </div>
           </Link>
         ))}
       </div>

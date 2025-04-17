@@ -2,17 +2,20 @@ import Banner from "@/pages/home/Banner";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
+import productsData from "@/data/product.json";
+import CartModal from "@/pages/shop/Cart/CartModal";
+
 const NavBar: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
-
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-  };
 
   const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
 
   const [isDropdownMenus, setIsDropdownMenus] = useState<boolean>(false);
   const [openDropdownIndex, setOpenDropdownIndex] = useState<number | null>(null);
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
 
   const handleToggleDropdown = (index: number) => {
     setOpenDropdownIndex(openDropdownIndex === index ? null : index);
@@ -97,19 +100,16 @@ const NavBar: React.FC = () => {
     <header className="fixed-nav-bar w-nav">
       <nav className="max-w-screen-2xl mx-auto px-4 flex justify-between items-center">
         <ul className="nav__links">
-          <li className="link">
+          <li className="link uppercase">
             <Link to="/">Home</Link>
-          </li>
-          <li className="link">
-            <Link to="/shop">Shop</Link>
           </li>
           <div
             className="relative"
             onMouseEnter={handleMouseEnter} // Hover vào: mở menu
             onMouseLeave={handleMouseLeave}
           >
-            <li className="link">
-              <Link to="/boy">Men</Link>
+            <li className="link uppercase">
+              <Link to="/shop">Shop</Link>
             </li>
             {isDropdownMenus && (
               <div className="flex justify-between fixed mt-3 p-4 w-full left-0 right-0 bg-white border  border-gray-200 rounded-lg shadow-lg z-50">
@@ -167,8 +167,11 @@ const NavBar: React.FC = () => {
               </div>
             )}
           </div>
-          <li className="link">
+          <li className="link uppercase">
             <Link to="/contact">Contact</Link>
+          </li>
+          <li className="link uppercase">
+            <Link to="/care&share">Care&Share</Link>
           </li>
         </ul>
         {/* logo */}
@@ -185,11 +188,11 @@ const NavBar: React.FC = () => {
             </Link>
           </span>
           <span>
-            <button className="hover:text-primary" onClick={handleCartOpenToggle}>
-              <Link to="/login">
-                <i className="ri-shopping-bag-line"></i>
-              </Link>
-              <sup className="text-sm inline-block px-1.5 text-white rounded-full bg-red-500 text-center">5</sup>
+            <button className="hover:text-red-500" onClick={handleCartOpenToggle}>
+              <i className="ri-shopping-bag-line"></i>
+              <sup className="text-sm inline-block px-1.5 text-white rounded-full bg-red-500 text-center">
+                {productsData.length}
+              </sup>
             </button>
           </span>
           <span>
@@ -204,6 +207,8 @@ const NavBar: React.FC = () => {
           </div>
         </div>
       </nav>
+
+      {/* display mobile */}
       <div
         className={`lg:hidden fixed top-0 left-0 w-full h-full z-50 bg-slate-200 p-4 overflow-y-auto transform transition-transform duration-300 ease-in-out
        ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"}`}
@@ -236,13 +241,9 @@ const NavBar: React.FC = () => {
                 </div>
 
                 {/* Dropdown with slide effect */}
-                <ul
-                  className={`ml-4 text-gray-600 space-y-2 overflow-hidden transition-all duration-300 ${
-                    openDropdownIndex === index ? "max-h-96 mt-2" : "max-h-0"
-                  }`}
-                >
-                  {category.subCategories?.map((c, subIdx) => (
-                    <li key={subIdx}>
+                <ul className={`ml-4 text-gray-600 space-y-2 overflow-hidden transition-all duration-300`}>
+                  {category.subCategories?.map((c, i) => (
+                    <li key={i}>
                       <Link to={c.path}>{c.name}</Link>
                     </li>
                   ))}
@@ -280,6 +281,7 @@ const NavBar: React.FC = () => {
           </ul>
         </div>
       </div>
+      {isCartOpen && <CartModal productsData={productsData} isCartOpen={isCartOpen} onClose={handleCartOpenToggle} />}
     </header>
   );
 };

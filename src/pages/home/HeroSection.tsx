@@ -36,11 +36,11 @@ const HeroSection: React.FC = () => {
     <section className="section__container hero__container">
       {cards.map((card) => (
         <div key={card.id} className="hero__card">
-          <img src={card.image} alt={card.title} />
+          <img src={card.image} alt={card.title} className="hover:scale-105 transition-transform" />
           <div className="hero__content">
             <h4 className="text-white">{card.title}</h4>
             <p className="text-2xl">{card.description}</p>
-            <Link to={""} className="bg-white px-7 rounded-xl py-4">
+            <Link to={""} className="bg-white px-7 hover:bg-gray-100 rounded-xl py-4">
               Mua ngay
             </Link>
           </div>

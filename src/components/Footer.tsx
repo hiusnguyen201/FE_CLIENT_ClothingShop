@@ -1,8 +1,4 @@
 import React from "react";
-import card1 from "@/assets/category-1.jpg";
-import card2 from "@/assets/category-2.jpg";
-import card3 from "@/assets/category-3.jpg";
-import card4 from "@/assets/category-4.jpg";
 
 const Footer: React.FC = () => {
   return (
@@ -21,13 +17,13 @@ const Footer: React.FC = () => {
             <span>
               <i className="ri-mail-line"></i>
             </span>
-            thaivuong02102002@gmail.com
+            gmail@gmail.com
           </p>
           <p>
             <span>
               <i className="ri-phone-line"></i>
             </span>
-            0398779258
+            0992132132
           </p>
         </div>
         <div className="footer__col">
@@ -49,10 +45,14 @@ const Footer: React.FC = () => {
         <div className="footer__col">
           <h4>FACEBOOK</h4>
           <div className="facebook__grid">
-            <img src={card1} alt="facebookImg1" />
-            <img src={card2} alt="facebookImg1" />
-            <img src={card3} alt="facebookImg1" />
-            <img src={card4} alt="facebookImg1" />
+            <img
+              src="https://media3.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/April2025/Thun_20.jpg"
+              alt="facebookImg1"
+            />
+            <img
+              src="https://media3.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/April2025/Thun_20.jpg"
+              alt="facebookImg1"
+            />
           </div>
         </div>
       </footer>
