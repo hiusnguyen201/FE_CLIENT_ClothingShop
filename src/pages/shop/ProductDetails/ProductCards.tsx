@@ -1,5 +1,5 @@
 import ProductCardItem from "@/pages/shop/ProductDetails/ProductCardItem";
-import { Product } from "@/models/Products";
+import { Product } from "@/types/product";
 
 interface ProductCardProps {
   productsData: Product[];

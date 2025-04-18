@@ -1,13 +1,31 @@
-import React from "react";
+import React, { Suspense, useEffect } from "react";
 import ProductCards from "@/pages/shop/ProductDetails/ProductCards";
 
-import productsData from "@/data/product.json";
+// import productsData from "@/data/product.json";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { useAppDispatch, useAppSelector } from "@/redux/store";
+import { searchProducts } from "@/redux/search/search.thunk";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const TrendingProducts: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const { products } = useAppSelector(
+    state => state.searchProducts
+  );
+
+  useEffect(() => {
+    dispatch(
+      searchProducts({
+        limit: 10,
+        sortBy: "createdAt"
+      })
+    );
+  }, [dispatch]);
+
+
   return (
-    <div>
+    <Suspense fallback={<Skeleton />}>
       <section className="section__container product__container">
         <h2 className="section__header">Trending Products</h2>
         <p className="section__subheader ">Explore Clothing Shop in Vietnam</p>
@@ -25,13 +43,13 @@ const TrendingProducts: React.FC = () => {
           </Link>
         </div>
         {/* product card */}
-        {productsData && (
+        {products && (
           <div className="mt-5">
-            <ProductCards productsData={productsData.slice(0, 8)} />
+            <ProductCards productsData={products} />
           </div>
         )}
       </section>
-    </div>
+    </Suspense>
   );
 };
 

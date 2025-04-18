@@ -1,47 +1,29 @@
-import React from "react";
+import { getCategories } from "@/redux/category/category.thunk";
+import { useAppDispatch, useAppSelector } from "@/redux/store";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 
-interface Category {
-  image: string;
-  name: string;
-  slug: string;
-}
-
 const Categories: React.FC = () => {
-  const categories: Category[] = [
-    {
-      name: "T-Shirt",
-      slug: "shirt",
-      image: "https://media3.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/March2025/image-ao-thun-1_18.jpg",
-    },
-    {
-      name: "T-Shirt",
-      slug: "shirt",
-      image: "https://media3.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/March2025/image-ao-thun-1_18.jpg",
-    },
-    {
-      name: "T-Shirt",
-      slug: "shirt",
-      image: "https://media3.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/March2025/image-ao-thun-1_18.jpg",
-    },
-    {
-      name: "T-Shirt",
-      slug: "shirt",
-      image: "https://media3.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/March2025/image-ao-thun-1_18.jpg",
-    },
-    {
-      name: "T-Shirt",
-      slug: "shirt",
-      image: "https://media3.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/March2025/image-ao-thun-1_18.jpg",
-    },
-  ];
+  const dispatch = useAppDispatch();
+  const { categories } = useAppSelector(
+    state => state.categories
+  );
+
+  useEffect(() => {
+    dispatch(
+      getCategories({
+        limit: 10,
+        sortBy: "createdAt"
+      })
+    );
+  }, [dispatch]);
+
   return (
     <div className="w-full overflow-x-auto section__container ">
       <div className="flex gap-4 w-max">
         {categories.map((c, index) => (
-          <Link to={`/categories/${c.slug}`}>
+          <Link to={`/search?category=${c.id}`} key={index}>
             <div
-              key={index}
               className="min-w-[240px] w-[240px] rounded-lg overflow-hidden bg-white shadow-md cursor-pointer hover:scale-105 transition-transform"
             >
               <img src={c.image} alt={c.name} className="w-full aspect-[3/4] object-cover" />

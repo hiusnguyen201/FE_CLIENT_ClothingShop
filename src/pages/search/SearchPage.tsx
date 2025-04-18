@@ -1,30 +1,76 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-import productsData from "@/data/product.json";
+// import productsData from "@/data/product.json";
 import ProductCards from "@/pages/shop/ProductDetails/ProductCards";
-import { Product } from "@/models/Products";
+import { Product } from "@/types/product";
+import { useAppDispatch, useAppSelector } from "@/redux/store";
+import { searchProducts } from "@/redux/search/search.thunk";
+import { clearProduct, setLimit, setPage } from "@/redux/search/search.slice";
+import { useSearchParams } from "react-router-dom";
+
+interface SearchFormState {
+  keyword: string;
+  category: string;
+  sortBy: "name" | "createdAt";
+  sortOrder: "asc" | "desc";
+}
 
 const SearchPage: React.FC = () => {
-  const [searchQuery, setSearchQuery] = useState<string>("");
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>(productsData);
-  const handleSearch = () => {
-    //get search query
-    const query = searchQuery.toLowerCase();
-    //filter product
-    const filtered = productsData.filter(
-      (product) =>
-        product.name.toLowerCase().includes(query) || product.short_description.toLowerCase().includes(query) || false
-    );
-    //setFillerProducts
-    setFilteredProducts(filtered);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const dispatch = useAppDispatch();
+  const { products, loading, error, totalCount, page, limit } = useAppSelector(
+    state => state.searchProducts
+  );
+
+  const [formState, setFormState] = useState<SearchFormState>(() => {
+    return {
+      keyword: searchParams.get("keyword") || "",
+      category: searchParams.get("category") || "",
+      sortBy: (searchParams.get("sortBy") as "name" | "createdAt") || "createdAt",
+      sortOrder: (searchParams.get("sortOrder") as "asc" | "desc") || "desc",
+    };
+  });
+
+  // const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+
+  // const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  //   console.log(event);
+  //   if (event.key === "Enter") {
+  //     handleSearch();
+  //   }
+  // };
+
+  const updateFormState = (field: keyof SearchFormState, value: string) => {
+    setFormState(prev => ({ ...prev, [field]: value }));
   };
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    console.log(event);
-    if (event.key === "Enter") {
-      handleSearch();
-    }
+  useEffect(() => {
+    const params = new URLSearchParams();
+    if (formState.keyword) params.set("keyword", formState.keyword);
+    if (formState.category) params.set("category", formState.category);
+    params.set("sortBy", formState.sortBy);
+    params.set("sortOrder", formState.sortOrder);
+    setSearchParams(params);
+
+    dispatch(
+      searchProducts({
+        ...formState,
+        category: formState.category || undefined,
+        page,
+        limit,
+      })
+    );
+  }, [dispatch, formState, page, limit, setSearchParams]);
+
+  const handlePageChange = (newPage: number) => {
+    dispatch(setPage(newPage));
   };
+
+  const handleLimitChange = (newLimit: number) => {
+    dispatch(setLimit(newLimit));
+  };
+
+  const totalPages = Math.ceil(totalCount / limit);
 
   return (
     <div>
@@ -38,25 +84,27 @@ const SearchPage: React.FC = () => {
         <div className="w-full mb-12 flex flex-col md:flex-row items-center justify-center gap-4">
           <input
             type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            onKeyDown={handleKeyDown}
+            value={formState.keyword}
+            onChange={(e) => updateFormState("keyword", e.target.value)}
+            // onKeyDown={handleKeyDown}
             placeholder="Search for products..."
             className="search-bar w-full max-w-4xl p-2 border rounded focus-visible:outline-none"
           />
-          <button onClick={handleSearch} className="w-full md:w-auto py-2 px-8 bg-red-500 text-white rounded">
+          <button onClick={() => { }} className="w-full md:w-auto py-2 px-8 bg-red-500 text-white rounded">
             Search
           </button>
         </div>
-        <div>
-          {filteredProducts.length === 0 ? (
-            <div>
-              <p className="section__subheader">Sorry, no result found!</p>
-            </div>
-          ) : (
-            <ProductCards productsData={filteredProducts} />
-          )}
-        </div>
+        {loading.searchProducts ? <div className="text-center">Loading...</div>
+          : <div>
+            {products.length === 0 ? (
+              <div>
+                <p className="section__subheader">Sorry, no result found!</p>
+              </div>
+            ) : (
+              <ProductCards productsData={products} />
+            )}
+          </div>}
+
       </section>
     </div>
   );

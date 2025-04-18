@@ -1,0 +1,22 @@
+import { Category } from "@/types/category";
+import { Nullable } from "@/types/common";
+import { BaseResponse } from "@/types/response";
+
+/**
+ * State
+ */
+export interface CategoriesState {
+  loading: {
+    getCategories: boolean;
+  };
+  categories: Category[];
+  error: Nullable<string>;
+  totalCount: number;
+  page: number;
+  limit: number;
+}
+
+/**
+ * Get categories
+ */
+export interface GetCategoriesResponse extends BaseResponse<{ totalCount: number, list: Category[] }> { }

@@ -6,9 +6,10 @@ interface ColorBadgeProps {
   active?: boolean;
   color?: string;
   disabled?: boolean;
+  onClick?: () => void;
 }
 
-export const ColorBadge: FC<ColorBadgeProps> = ({ active = false, color = "#000", disabled = false }) => {
+export const ColorBadge: FC<ColorBadgeProps> = ({ active = false, color = "#000", disabled = false, onClick }) => {
   return (
     <Badge
       variant="outline"
@@ -16,8 +17,9 @@ export const ColorBadge: FC<ColorBadgeProps> = ({ active = false, color = "#000"
       className={cn(
         "w-[32px] h-[18px] cursor-pointer",
         active ? "outline outline-1 outline-gray-500 outline-offset-2" : "",
-        disabled ? "opacity-60 cursor-auto outline-0" : ""
+        disabled ? "opacity-60 cursor-auto outline-0" : "",
       )}
+      onClick={onClick}
     />
   );
 };
