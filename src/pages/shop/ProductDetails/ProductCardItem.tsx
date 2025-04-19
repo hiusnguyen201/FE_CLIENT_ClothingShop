@@ -35,7 +35,7 @@ const ProductCardItem: React.FC<ProductCardItemProps> = ({ product }) => {
           {/* {product.discount && <ProductBadge title={product.discount} className="md:hidden flex" />}
           {product.isNew && <ProductBadge title="NEW" />} */}
         </div>
-        <Link className="relative block" to={`/shop/${product.id}`}>
+        <Link className="relative block" to={`/shop/${product.slug}`}>
           <img src={product.thumbnail} alt="" className="object-cover rounded-lg h-full mb-2 w-full aspect-[3/4]" />
         </Link>
         <motion.div

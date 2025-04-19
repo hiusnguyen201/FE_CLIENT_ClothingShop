@@ -196,7 +196,7 @@ const NavBar: React.FC = () => {
             </button>
           </span>
           <span>
-            <Link to="/login">
+            <Link to="/auth/login">
               <i className="ri-user-line"></i>
             </Link>
           </span>
@@ -234,9 +234,8 @@ const NavBar: React.FC = () => {
                 >
                   <span className="dropdown-items uppercase text-lg font-normal">{category.name}</span>
                   <i
-                    className={`ri-arrow-down-s-line transition-transform duration-300 ${
-                      openDropdownIndex === index ? "rotate-180" : ""
-                    }`}
+                    className={`ri-arrow-down-s-line transition-transform duration-300 ${openDropdownIndex === index ? "rotate-180" : ""
+                      }`}
                   ></i>
                 </div>
 

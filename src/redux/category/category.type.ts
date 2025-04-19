@@ -20,3 +20,8 @@ export interface CategoriesState {
  * Get categories
  */
 export interface GetCategoriesResponse extends BaseResponse<{ totalCount: number, list: Category[] }> { }
+
+/**
+ * Get category by id
+ */
+export interface GetCategoryResponse extends BaseResponse<Category> { }

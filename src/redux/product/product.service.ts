@@ -4,5 +4,5 @@ import {
 import { apiInstance } from "@/redux/api";
 
 export const getProductService = async (productId: string): Promise<GetProductResponse> => {
-  return await apiInstance.get(`/products/get-product-by-id/${productId}`);
+  return await apiInstance.get(`/products/get-product-by-customer/${productId}`);
 };

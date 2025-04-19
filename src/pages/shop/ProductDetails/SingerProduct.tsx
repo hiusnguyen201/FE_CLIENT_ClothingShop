@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { getProduct } from "@/redux/product/product.thunk";
 import { Nullable } from "@/types/common";
 import { ProductVariant } from "@/types/product";
+import { colorMap } from "@/types/color";
 
 interface SelectedVariant {
   sizeId: Nullable<string>;
@@ -17,12 +18,6 @@ interface PriceRange {
   minPrice: Nullable<number>;
   maxPrice: Nullable<number>;
 }
-
-const colorMap: Record<string, string> = {
-  Green: "#00FF00",
-  Orange: "#FFA500",
-  Brown: "#A52A2A",
-};
 
 const getPriceRange = (variants: ProductVariant[]): PriceRange => {
   if (variants.length === 0) {
@@ -90,10 +85,6 @@ const SingleProduct: React.FC = () => {
     }
   }, [dispatch, id]);
 
-  if (!product) {
-    return <div>Product not found</div>;
-  }
-
   if (loading.getProduct) {
     return <div>Loading...</div>;
   }
@@ -101,6 +92,13 @@ const SingleProduct: React.FC = () => {
   if (error) {
     return <div>Error: {error}</div>;
   }
+
+  if (!product) {
+    return <div>Product not found</div>;
+  }
+
+  console.log(product);
+
 
   const { minPrice, maxPrice } = getPriceRange(product.productVariants);
 
