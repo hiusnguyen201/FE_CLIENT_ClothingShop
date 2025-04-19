@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
 import productsData from "@/data/product.json";
-import ProductCards from "@/pages/shop/ProductDetails/ProductCards";
+import ProductCards from "@/pages/shop/productDetails/ProductCards";
 import EmptyProducts from "@/components/EmptyProducts";
 import { Product } from "@/models/Products";
 

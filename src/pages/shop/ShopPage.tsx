@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import productsData from "@/data/product.json";
-import ProductCards from "@/pages/shop/ProductDetails/ProductCards";
+import ProductCards from "@/pages/shop/productDetails/ProductCards";
 import EmptyProducts from "@/components/EmptyProducts";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -53,7 +53,7 @@ const ShopPage: React.FC = () => {
                   <Button
                     key={i}
                     onClick={() => setActiveCategory(category)}
-                    className={`text-gray-900 text-xl w-32 h-15 rounded-4xl 
+                    className={`text-gray-900 text-sm w-20 h-10 sm:w-28 sm:h-12 sm:text-lg md:w-32 md:h-14 md:text-xl rounded-4xl 
                      ${activeCategory === category ? "bg-blue-600 text-white" : "bg-gray-100 hover:bg-gray-200"}`}
                   >
                     {category}
@@ -61,13 +61,13 @@ const ShopPage: React.FC = () => {
                 ))}
               </div>
               <div className="flex justify-between">
-                <h3 className="text-md font-medium">Product Available : {products.length}</h3>
+                <h3 className="text-sm font-medium lg:text-md p-3">Product Available : {products.length}</h3>
                 <div className="flex text-md text-gray-500">
-                  <span className="items-center p-3 mr-3">Sort By</span>
+                  <span className="items-center p-3 text-sm lg:text-md">Sort By</span>
                   <div className="relative inline-block text-left">
                     <div
                       onClick={handleToggleDropdownSort}
-                      className="flex items-center justify-between w-50 h-13 px-3 py-2 bg-gray-100 rounded-full cursor-pointer hover:bg-gray-200"
+                      className="flex items-center justify-between text-sm w-30 lg:w-50 h-12 px-2 py-2 bg-gray-100 rounded-full cursor-pointer hover:bg-gray-200"
                     >
                       <span>{selected}</span>
                       <i
@@ -78,7 +78,7 @@ const ShopPage: React.FC = () => {
                     </div>
 
                     {isDropdownMenuSort && (
-                      <div className="absolute z-10 w-56 origin-top-right rounded-2xl bg-white shadow-xl transition-all duration-300">
+                      <div className="absolute z-10 w-35 origin-top-right rounded-2xl bg-white shadow-xl transition-all duration-300">
                         <ul className="py-2 text-md">
                           {sortBy.map((option, index) => (
                             <li

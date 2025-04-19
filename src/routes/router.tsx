@@ -5,7 +5,7 @@ import RegisterPage from "@/pages/auth/RegisterPage";
 import CategoryPage from "@/pages/category/CategoryPage";
 import HomePage from "@/pages/home/HomePage";
 import SearchPage from "@/pages/search/SearchPage";
-import SingleProduct from "@/pages/shop/ProductDetails/SingerProduct";
+import SingleProduct from "@/pages/shop/productDetails/SingerProduct";
 import ShopPage from "@/pages/shop/ShopPage";
 import { createBrowserRouter } from "react-router-dom";
 

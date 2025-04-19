@@ -1,4 +1,4 @@
-import ProductCardItem from "@/pages/shop/ProductDetails/ProductCardItem";
+import ProductCardItem from "@/pages/shop/productDetails/ProductCardItem";
 import { Product } from "@/models/Products";
 
 interface ProductCardProps {

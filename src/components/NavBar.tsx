@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 import productsData from "@/data/product.json";
-import CartModal from "@/pages/shop/Cart/CartModal";
+import CartModal from "@/pages/cart/CartModal";
 
 const NavBar: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
@@ -28,7 +28,7 @@ const NavBar: React.FC = () => {
   let timeoutId: ReturnType<typeof setTimeout> | null = null;
 
   const handleMouseEnter = () => {
-    clearTimeout(timeoutId);
+    clearTimeout(timeoutId!);
     setIsDropdownMenus(true);
   };
 
@@ -41,7 +41,7 @@ const NavBar: React.FC = () => {
   const allSubCategories = [
     {
       name: "All Product",
-      path: "boy",
+      path: "men",
       subCategories: [
         { name: "New Product", path: "new-product" },
         { name: "Best Seller", path: "best-seller" },
@@ -109,7 +109,7 @@ const NavBar: React.FC = () => {
             onMouseLeave={handleMouseLeave}
           >
             <li className="link uppercase">
-              <Link to="/shop">Shop</Link>
+              <Link to="/shop">Men</Link>
             </li>
             {isDropdownMenus && (
               <div className="flex justify-between fixed mt-3 p-4 w-full left-0 right-0 bg-white border  border-gray-200 rounded-lg shadow-lg z-50">
@@ -228,23 +228,28 @@ const NavBar: React.FC = () => {
           <ul className="font-medium space-y-4 p-2">
             {allSubCategories.map((category, index) => (
               <li key={index}>
-                <div
-                  className="flex justify-between items-center p-2 cursor-pointer"
-                  onClick={() => handleToggleDropdown(index)}
-                >
-                  <span className="dropdown-items uppercase text-lg font-normal">{category.name}</span>
-                  <i
-                    className={`ri-arrow-down-s-line transition-transform duration-300 ${
-                      openDropdownIndex === index ? "rotate-180" : ""
-                    }`}
-                  ></i>
-                </div>
+                <Link to={`/category/${category.path}`} onClick={toggleMobileMenu}>
+                  <div
+                    className="flex justify-between items-center p-2 cursor-pointer"
+                    onClick={() => handleToggleDropdown(index)}
+                  >
+                    <span className="dropdown-items uppercase text-lg font-normal">{category.name}</span>
+                    <i
+                      className={`ri-arrow-down-s-line transition-transform duration-300 ${
+                        openDropdownIndex === index ? "rotate-180" : ""
+                      }`}
+                    ></i>
+                  </div>
+                </Link>
 
-                {/* Dropdown with slide effect */}
-                <ul className={`ml-4 text-gray-600 space-y-2 overflow-hidden transition-all duration-300`}>
+                <ul
+                  className={`ml-4 text-gray-600 space-y-2 overflow-hidden transition-all duration-500 ${
+                    openDropdownIndex === index ? "max-h-[500px]" : "max-h-0"
+                  }`}
+                >
                   {category.subCategories?.map((c, i) => (
                     <li key={i}>
-                      <Link to={c.path}>{c.name}</Link>
+                      <Link to={`/sub_category/${c.path}`}>{c.name}</Link>
                     </li>
                   ))}
                 </ul>

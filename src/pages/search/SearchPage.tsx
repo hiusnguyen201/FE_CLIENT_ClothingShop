@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import productsData from "@/data/product.json";
-import ProductCards from "@/pages/shop/ProductDetails/ProductCards";
+import ProductCards from "@/pages/shop/productDetails/ProductCards";
 import { Product } from "@/models/Products";
 
 const SearchPage: React.FC = () => {

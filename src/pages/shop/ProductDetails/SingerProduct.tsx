@@ -55,12 +55,11 @@ const SingleProduct: React.FC = () => {
 
             {/* additional product info */}
             <div>
-              <p className="text-stone-600 text-md">Color: Black</p>
+              <p className="text-stone-600 text-md">Color : </p>
               <div className="flex mb-2 items-center gap-1 sm:gap-2 flex-wrap mt-2">
-                {colorBadge ||
-                  ["#000", "#ffffff", "#9FC5E8"].map((color, i) => (
-                    <ColorBadge key={i} color={color} active={i === 0} />
-                  ))}
+                {colorBadge.map((color, i) => (
+                  <ColorBadge key={i} color={color} active={i === 0} />
+                ))}
               </div>
               <div className="flex justify-between mt-4">
                 <p className="text-stone-600 text-md">Size:</p>
