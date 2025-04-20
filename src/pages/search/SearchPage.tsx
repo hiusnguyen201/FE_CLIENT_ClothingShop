@@ -2,10 +2,9 @@ import React, { useEffect, useState } from "react";
 
 // import productsData from "@/data/product.json";
 import ProductCards from "@/pages/shop/ProductDetails/ProductCards";
-import { Product } from "@/types/product";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { searchProducts } from "@/redux/search/search.thunk";
-import { clearProduct, setLimit, setPage } from "@/redux/search/search.slice";
+import { setLimit, setPage } from "@/redux/search/search.slice";
 import { useSearchParams } from "react-router-dom";
 
 interface SearchFormState {
@@ -18,7 +17,7 @@ interface SearchFormState {
 const SearchPage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const dispatch = useAppDispatch();
-  const { products, loading, error, totalCount, page, limit } = useAppSelector(
+  const { products, loading, totalCount, page, limit } = useAppSelector(
     state => state.searchProducts
   );
 
@@ -31,14 +30,19 @@ const SearchPage: React.FC = () => {
     };
   });
 
-  // const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
-
-  // const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-  //   console.log(event);
-  //   if (event.key === "Enter") {
-  //     handleSearch();
-  //   }
-  // };
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      updateFormState("keyword", event.currentTarget.value);
+      dispatch(
+        searchProducts({
+          ...formState,
+          category: formState.category || undefined,
+          page,
+          limit,
+        })
+      );
+    }
+  };
 
   const updateFormState = (field: keyof SearchFormState, value: string) => {
     setFormState(prev => ({ ...prev, [field]: value }));
@@ -60,7 +64,7 @@ const SearchPage: React.FC = () => {
         limit,
       })
     );
-  }, [dispatch, formState, page, limit, setSearchParams]);
+  }, [dispatch, page, limit, setSearchParams]);
 
   const handlePageChange = (newPage: number) => {
     dispatch(setPage(newPage));
@@ -86,7 +90,7 @@ const SearchPage: React.FC = () => {
             type="text"
             value={formState.keyword}
             onChange={(e) => updateFormState("keyword", e.target.value)}
-            // onKeyDown={handleKeyDown}
+            onKeyDown={handleKeyDown}
             placeholder="Search for products..."
             className="search-bar w-full max-w-4xl p-2 border rounded focus-visible:outline-none"
           />

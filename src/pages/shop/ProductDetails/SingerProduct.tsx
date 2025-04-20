@@ -54,10 +54,10 @@ const SingleProduct: React.FC = () => {
     return (
       product.productVariants.find(variant =>
         variant.variantValues.some(
-          val => val.option.name === "Size" && val.optionValue._id === selectedVariant.sizeId
+          val => val.option.name === "Size" && val.optionValue.id === selectedVariant.sizeId
         ) &&
         variant.variantValues.some(
-          val => val.option.name === "Color" && val.optionValue._id === selectedVariant.colorId
+          val => val.option.name === "Color" && val.optionValue.id === selectedVariant.colorId
         )
       ) || null
     );
@@ -158,7 +158,7 @@ const SingleProduct: React.FC = () => {
             <div>
               <p className="text-stone-600 text-md">Color:
                 {colorOption && selectedVariant.colorId
-                  ? colorOption.optionValues.find(value => value._id === selectedVariant.colorId)?.valueName
+                  ? colorOption.optionValues.find(value => value.id === selectedVariant.colorId)?.valueName
                   : null}
               </p>
               <div className="flex mb-2 items-center gap-1 sm:gap-2 flex-wrap mt-2">
@@ -167,16 +167,16 @@ const SingleProduct: React.FC = () => {
                     const isAvailable = product.productVariants.some(variant =>
                       variant.quantity > 0 &&
                       variant.variantValues.some(
-                        val => val.option.name === "Color" && val.optionValue._id === value._id
+                        val => val.option.name === "Color" && val.optionValue.id === value.id
                       )
                     );
                     return (
                       <ColorBadge
-                        key={value._id}
+                        key={value.id}
                         color={colorMap[value.valueName]}
-                        active={selectedVariant.colorId === value._id}
+                        active={selectedVariant.colorId === value.id}
                         disabled={!isAvailable}
-                        onClick={() => isAvailable && handleSelectOption("color", value._id)}
+                        onClick={() => isAvailable && handleSelectOption("color", value.id)}
                       />
                     );
                   })
@@ -197,16 +197,16 @@ const SingleProduct: React.FC = () => {
                   sizeOption.optionValues.map((value, i) => {
                     const isAvailable = product.productVariants.some(variant =>
                       variant.variantValues.some(
-                        val => val.option.name === "Size" && val.optionValue._id === value._id
+                        val => val.option.name === "Size" && val.optionValue.id === value.id
                       ) && variant.quantity > 0
                     );
                     return (
                       <Button
-                        key={value._id}
-                        onClick={() => handleSelectOption("size", value._id)}
+                        key={value.id}
+                        onClick={() => handleSelectOption("size", value.id)}
                         disabled={!isAvailable}
                         className={`bg-gray-300 mt-2 hover:bg-gray-400 w-[40px] h-[38px] cursor-pointer
-                        ${selectedVariant.sizeId === value._id ? "bg-red-300" : null}`}
+                        ${selectedVariant.sizeId === value.id ? "bg-red-300" : null}`}
                       >
                         {value.valueName}
                       </Button>
@@ -220,8 +220,8 @@ const SingleProduct: React.FC = () => {
               <Button
                 onClick={handleAddToCart}
                 disabled={!selectedVariantData || selectedVariantData.quantity === 0}
-                className="mt-6 px-5 py-3 bg-red-500 text-white rounded-md"
-              >{selectedVariantData && selectedVariantData?.quantity > 0 ?
+                className="mt-6 px-5 py-3 bg-red-500 text-white rounded-md cursor-pointer"
+              >{!selectedVariantData ? "Add to cart" : selectedVariantData && selectedVariantData?.quantity > 0 ?
                 "Add to cart" : "Out of stock"}
               </Button>
             </div>

@@ -1,9 +1,11 @@
 import Banner from "@/pages/home/Banner";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import productsData from "@/data/product.json";
 import CartModal from "@/pages/shop/Cart/CartModal";
+import { useAppDispatch, useAppSelector } from "@/redux/store";
+import { getCategories } from "@/redux/category/category.thunk";
 
 const NavBar: React.FC = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
@@ -38,57 +40,46 @@ const NavBar: React.FC = () => {
     }, 100);
   };
 
-  const allSubCategories = [
-    {
-      name: "All Product",
-      path: "boy",
-      subCategories: [
-        { name: "New Product", path: "new-product" },
-        { name: "Best Seller", path: "best-seller" },
-      ],
-    },
-    {
-      name: "Men's Shirt",
-      path: "men-shirt",
-      subCategories: [
-        { name: "TankTop Shirt", path: "tanktop-shirt-men" },
-        { name: "T-Shirt ", path: "t-shirt-men" },
-        { name: "Sports Shirt", path: "sport-shirt-men" },
-        { name: "Polo Shirt", path: "polo-shirt-men" },
-        { name: "Shirt", path: "shirt-men" },
-        { name: "Long sleeve shirt", path: "long-sleeve-shirt-men" },
-        { name: "Jacket", path: "jacket-men" },
-      ],
-    },
-    {
-      name: "Men's Pants",
-      path: "men-pants",
-      subCategories: [
-        { name: "Short Pants", path: "short-pants-men" },
-        { name: "Jogger Pants ", path: "jogger-pants-men" },
-        { name: "Sports Pants", path: "sport-pants-men" },
-        { name: "Long Pants", path: "long-pants-men" },
-        { name: "Jean Pants", path: "jean-pants-men" },
-        { name: "Swimming Trunks", path: "swimming-trunks-men" },
-      ],
-    },
-    {
-      name: "Men's Underwear",
-      path: "men-underwear",
-      subCategories: [
-        { name: "Brief", path: "brief-men" },
-        { name: "Trunk", path: "trunk-men" },
-        { name: "Boxer Brief", path: "boxer-brief-men" },
-        { name: "Long Leg", path: "long-leg-men" },
-        { name: "Home Pants", path: "home-pants-men" },
-      ],
-    },
-    {
-      name: "Accessory",
-      path: "men-accessory",
-      subCategories: [{ name: "All Accessories(socks, hats...)", path: "men-accessory" }],
-    },
-  ];
+  const newCategory = {
+    name: "All Product",
+    path: "shop",
+    subCategories: [{
+      name: "New Product",
+      path: "shop"
+    }, {
+      name: "Best Seller",
+      path: "#"
+    }]
+  }
+
+  const dispatch = useAppDispatch();
+  const { categories } = useAppSelector(
+    state => state.categories
+  );
+
+  useEffect(() => {
+    dispatch(
+      getCategories({
+        limit: 10,
+        sortBy: "createdAt"
+      })
+    );
+  }, [dispatch]);
+
+  const allSubCategories = categories.map((category) => {
+    return {
+      name: category.name,
+      path: `/categories/${category.slug}`,
+      subCategories: category.children.map((subCategory) => {
+        return {
+          name: subCategory.name,
+          path: `/categories/${subCategory.slug}`
+        }
+      })
+    }
+  });
+
+  allSubCategories.unshift(newCategory);
 
   const categoryAccordingToNeed = [
     { name: "Men's Underwear", path: "men-underwear" },
@@ -120,14 +111,14 @@ const NavBar: React.FC = () => {
                       <div key={index}>
                         <ul>
                           <Link
-                            to={`/categories/${category.path}`}
+                            to={`${category.path}`}
                             className="categories__navbar hover:text-red-500 text-xl"
                           >
                             {category.name} <i className="ri-arrow-right-long-line text-lg"></i>
                           </Link>
                           {category.subCategories?.map((subCategory, index) => (
                             <li key={index} className="py-3 text-stone-600 hover:text-red-500 text-sm">
-                              <Link to={`categories/${subCategory.path}`}>{subCategory.name}</Link>
+                              <Link to={`${subCategory.path}`}>{subCategory.name}</Link>
                             </li>
                           ))}
                         </ul>

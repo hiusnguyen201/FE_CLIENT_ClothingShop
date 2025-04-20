@@ -110,7 +110,7 @@ const ShopPage: React.FC = () => {
         />
       </section>
       <section className="section__container">
-        <div className="flex flex-col md:flex-row md:gap-12 gap-8">
+        <div className="flex flex-col gap-8">
           {/* right side */}
 
           <div>
@@ -163,17 +163,15 @@ const ShopPage: React.FC = () => {
               </div>
             </div>
 
-            {loading.searchProducts && <div className="text-center py-4">Loading...</div>}
-
-            {products.length === 0 ?
-              <EmptyProducts /> : null
+            {loading.searchProducts ?
+              <div className="text-center py-4">Loading...</div>
+              : products.length === 0 ?
+                <EmptyProducts />
+                : <div className="mt-12">
+                  <ProductCards productsData={products} />
+                </div>
             }
 
-            {products && (
-              <div className="mt-12">
-                <ProductCards productsData={products} />
-              </div>
-            )}
           </div>
         </div>
         {/* load more product btn */}
@@ -209,8 +207,8 @@ const ShopPage: React.FC = () => {
                   key={pageNumber}
                   onClick={() => handlePageChange(pageNumber)}
                   className={`relative inline-flex items-center px-4 py-2 text-sm font-semibold ${page === pageNumber
-                      ? "bg-blue-600 text-white"
-                      : "text-gray-900 ring-1 ring-gray-300 ring-inset hover:bg-gray-50"
+                    ? "bg-blue-600 text-white"
+                    : "text-gray-900 ring-1 ring-gray-300 ring-inset hover:bg-gray-50"
                     } focus:z-20 focus:outline-offset-0`}
                 >
                   {pageNumber}

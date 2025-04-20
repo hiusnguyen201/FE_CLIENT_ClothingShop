@@ -8,7 +8,9 @@ import { BaseResponse } from "@/types/response";
 export interface CategoriesState {
   loading: {
     getCategories: boolean;
+    getCategory: boolean;
   };
+  category: Nullable<Category>;
   categories: Category[];
   error: Nullable<string>;
   totalCount: number;

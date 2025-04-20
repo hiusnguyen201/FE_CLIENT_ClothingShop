@@ -7,17 +7,17 @@ export enum PRODUCT_STATUS {
 }
 
 export interface Option {
-  _id: string;
+  id: string;
   name: string;
 }
 
 export interface OptionValue {
-  _id: string;
+  id: string;
   valueName: string;
 }
 
 export interface ProductVariant {
-  _id: string;
+  id: string;
   quantity: number;
   price: number;
   sku: string;
@@ -25,7 +25,7 @@ export interface ProductVariant {
   variantValues: {
     option: Option;
     optionValue: OptionValue;
-    _id: string;
+    id: string;
   }[];
 }
 
@@ -42,6 +42,6 @@ export interface Product {
   productOptions: {
     option: Option;
     optionValues: OptionValue[];
-    _id: string;
+    id: string;
   }[];
 }

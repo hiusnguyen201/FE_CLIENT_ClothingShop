@@ -7,4 +7,5 @@ export type Category = {
     slug: string;
     level: number;
     parent: Nullable<string>;
+    children: Category[];
 };
