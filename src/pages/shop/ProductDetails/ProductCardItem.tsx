@@ -44,7 +44,7 @@ const ProductCardItem: React.FC<ProductCardItemProps> = ({ product }) => {
           style={{
             background: "linear-gradient(0deg, rgba(0, 0, 0, .1), rgba(0, 0, 0, .1)), hsla(0, 0%, 100%, .4)",
           }}
-          className="absolute p-3 mx-auto h-auto backdrop-blur-sm bottom-6 left-6 right-6 rounded md:block hidden"
+          className="absolute p-3 mx-auto md:h-auto backdrop-blur-sm bottom-6 left-6 right-6 rounded md:block hidden"
         >
           <p className="text-sx mb-2 text-center font-normal">Thêm vào giỏ hàng +</p>
           <div className="flex flex-wrap gap-1">
