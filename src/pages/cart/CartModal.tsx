@@ -1,9 +1,9 @@
-import { Product } from "@/models/Products";
+import { Product } from "@/types/products";
 import React, { useState, useEffect } from "react";
 import OrderSummary from "@/pages/cart/OrderSummary";
 import CartItems from "@/pages/cart/CartItems";
 import InformationOrder from "@/pages/cart/InformationOrder";
-import FooterCartOrder from "@/pages/cart/footerCart/footerCartOrder";
+import FooterCartOrder from "@/pages/cart/footerCart/FooterCartOrder";
 import FooterCartPayment from "./footerCart/FooterCartPayment";
 
 interface CartModalProps {

@@ -2,7 +2,7 @@ import { motion, useAnimation } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ProductBadge } from "@/components/productSlice/ProductBadge";
 import { ColorBadge } from "@/components/productSlice/ColorBadge";
-import { Product } from "@/models/Products";
+import { Product } from "@/types/products";
 import { Button } from "@/components/ui/button";
 
 interface ProductCardItemProps {

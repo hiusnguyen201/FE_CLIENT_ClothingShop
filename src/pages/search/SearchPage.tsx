@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import productsData from "@/data/product.json";
 import ProductCards from "@/pages/shop/productDetails/ProductCards";
-import { Product } from "@/models/Products";
+import { Product } from "@/types/products";
 
 const SearchPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState<string>("");

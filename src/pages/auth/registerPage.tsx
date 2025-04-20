@@ -1,37 +1,48 @@
-import * as Yup from "yup";
-import React from "react";
-import { Link } from "react-router-dom";
-import { FormikProps, useFormik } from "formik";
-import { LoginPayload } from "@/redux/auth/auth.type";
-import InputAndLabel from "@/components/InputAndLaBel";
-import BasicButton from "@/components/BasicButton";
+import React, { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { FormikHelpers, FormikProps, useFormik } from "formik";
+import { AuthState, LoginPayload } from "@/redux/auth/auth.type";
+import { useDispatch } from "react-redux";
+import { useAuth } from "@/hooks/use-auth";
+import { toast } from "@/hooks/use-toast";
+import { AppDispatch, useAppSelector } from "@/redux/store";
+import { Loader } from "lucide-react";
+import { loginSchema } from "@/pages/auth/schema/loginSchema";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
-const RegisterPage: React.FC = () => {
-  const initialValues: LoginPayload = {
-    email: "customer123@gmail.com",
-    password: "1234",
-  };
+const initialValues: LoginPayload = {
+  email: "customer123@gmail.com",
+  password: "1234",
+};
 
-  const loginSchema = Yup.object().shape({
-    email: Yup.string().required().email(),
-    password: Yup.string().required(),
-  });
+const LoginPage: React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
+  const { login } = useAuth();
 
-  const handleSubmit = async () => {
-    console.log("ok");
-    // if (!login) return;
-    // await login(values);
-    // if (!isAuthenticated || !user) return;
+  const { loading, user, isAuthenticated, error } = useAppSelector<AuthState>((selector) => selector.auth);
+  useEffect(() => {
+    if (error) {
+      toast({ variant: "destructive", title: error });
+    }
+  }, [error]);
 
-    // resetForm({});
+  const handleSubmit = async (values: LoginPayload, { resetForm }: FormikHelpers<LoginPayload>) => {
+    if (!login) return;
+    await login(values);
+    if (!isAuthenticated || !user) return;
 
-    // if (user.verifiedAt) {
-    //   toast({ title: "Login successful" });
-    //   await navigate("/");
-    // } else {
-    //   //  dispatch(sendOtpViaEmail({ email: user.email }));
-    //   await navigate("/verify-otp");
-    // }
+    resetForm({});
+
+    if (user.verifiedAt) {
+      toast({ title: "Login successful" });
+      await navigate("/");
+    } else {
+      // dispatch(sendOtpViaEmail({ email: user.email }));
+      await navigate("/verify-otp");
+    }
   };
 
   const formik: FormikProps<LoginPayload> = useFormik({
@@ -53,10 +64,11 @@ const RegisterPage: React.FC = () => {
           <p className="text-white p-3 text-sm text-muted-foreground bg-red-500 rounded">{errorMessage}</p>
         )} */}
         <form onSubmit={formik.handleSubmit}>
-          <InputAndLabel
-            label="Email"
+          <Label htmlFor="email" className="text-md text-gray-700 mb-1">
+            Email
+          </Label>
+          <Input
             id="email"
-            type="email"
             placeholder="Enter your email"
             onChange={(e) => {
               formik.handleChange(e);
@@ -64,58 +76,66 @@ const RegisterPage: React.FC = () => {
             }}
             onBlur={formik.handleBlur}
             value={formik.values.email}
-            className={formik.errors.email && formik.touched.email ? "border-red-500 border-2" : "focus-visible:ring-1"}
+            className={
+              formik.errors.email && formik.touched.email
+                ? "border-red-500 border-2"
+                : "focus-visible:ring-1 border border-gray-800"
+            }
           />
+
           {formik.errors.email && formik.touched.email && (
             <p className="text-red-500 text-sm text-muted-foreground">{formik.errors.email}</p>
           )}
+
           <div className="relative my-3">
-            <InputAndLabel
-              label="Password"
+            <Label htmlFor="password" className="text-md text-gray-700 mb-1">
+              Password
+            </Label>
+            <Input
               id="password"
-              // type={showPassword ? "text" : "password"}
-              type="password"
               placeholder="Enter your password"
               onChange={(e) => {
                 formik.handleChange(e);
-                formik.setFieldTouched("password", true);
+                formik.setFieldTouched("passoword", true);
               }}
               onBlur={formik.handleBlur}
               value={formik.values.password}
               className={
-                formik.errors.password && formik.touched.password ? "border-red-500 border-2" : "focus-visible:ring-1"
+                formik.errors.password && formik.touched.password
+                  ? "border-red-500 border-2"
+                  : "focus-visible:ring-1 border border-gray-800"
               }
             />
+
             {formik.errors.password && formik.touched.password && (
               <p className="text-red-500 text-sm text-muted-foreground">{formik.errors.password}</p>
             )}
+
             {/* <button
               className="absolute right-3 top-10 cursor-pointer text-xl"
               type="button"
-              onClick={toggleShowPassword}
+              // onClick={toggleShowPassword}
             >
               {showPassword ? <FaEyeSlash /> : <FaEye />}
             </button> */}
           </div>
           <Link
             to="/auth/forgot-password"
-            className="flex py-3 underline underline-offset-4 opacity-70 hover:opacity-100 text-md text-muted-foreground"
+            className="flex py-3 opacity-70 hover:opacity-100 text-md text-muted-foreground text__underline"
           >
             Forgot password?
           </Link>
 
-          <BasicButton
+          <Button
             className="inline-flex items-center cursor-pointer justify-center rounded-md text-md font-medium bg-slate-950 text-white shadow hover:bg-slate-800 hover:scale-105 duration-300 h-9 px-4 py-2 ml-auto w-full disabled:opacity-75"
             type="submit"
-            // disabled={isLoading}
           >
-            Login
-            {/* {isLoading ? <Loader className="w-6 h-6 animate-spin" /> : "Login"} */}
-          </BasicButton>
+            {loading.login ? <Loader className="w-6 h-6 animate-spin" /> : "Login"}
+          </Button>
         </form>
         <span className="px-8 text-center text-md text-muted-foreground opacity-75">
           Don't have an account?&nbsp;
-          <Link to="/auth/register" className="underline underline-offset-4 hover:text-slate-950 ">
+          <Link to="/auth/register" className="text__underline hover:text-slate-950 ">
             Sign up.
           </Link>
         </span>
@@ -127,14 +147,7 @@ const RegisterPage: React.FC = () => {
             <span className="bg-background px-2 text-muted-foreground text-md">Or continue with</span>
           </div>
         </div>
-        <BasicButton
-          className="bg-white border py-1 w-full rounded-md mt-2 flex justify-center items-center text-md hover:scale-105 duration-300 font-medium"
-          type="submit"
-        >
-          <i className="ri-facebook-circle-fill text-2xl mr-2 text-sky-600"></i>
-          Login with Facebook
-        </BasicButton>
-        <BasicButton
+        <Button
           type="submit"
           className="bg-white text-md border py-2 w-full rounded-md mt-2 flex justify-center items-center text-md hover:scale-105 duration-300 font-medium"
         >
@@ -157,14 +170,14 @@ const RegisterPage: React.FC = () => {
             ></path>
           </svg>
           Login with Google
-        </BasicButton>
+        </Button>
         <span className="px-8 text-center text-md text-muted-foreground">
           By clicking continue, you agree to our&nbsp;
-          <Link to="/auth/terms-of-service" className="underline underline-offset-4 hover:text-primary">
+          <Link to="/auth/terms-of-service" className="text__underline hover:text-primary">
             Terms of Service
           </Link>
           &nbsp;and&nbsp;
-          <Link to="/auth/privacy-policy" className="underline underline-offset-4 hover:text-primary">
+          <Link to="/auth/privacy-policy" className="text__underline hover:text-primary">
             Privacy Policy
           </Link>
           .
@@ -174,4 +187,4 @@ const RegisterPage: React.FC = () => {
   );
 };
 
-export default RegisterPage;
+export default LoginPage;

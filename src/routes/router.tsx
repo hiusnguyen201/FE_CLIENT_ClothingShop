@@ -1,5 +1,6 @@
 import App from "@/App";
 import AuthLayout from "@/layouts/auth/AuthLayout";
+import AccountPage from "@/pages/account/AccountPage";
 import LoginPage from "@/pages/auth/LoginPage";
 import RegisterPage from "@/pages/auth/RegisterPage";
 import CategoryPage from "@/pages/category/CategoryPage";
@@ -8,6 +9,7 @@ import SearchPage from "@/pages/search/SearchPage";
 import SingleProduct from "@/pages/shop/productDetails/SingerProduct";
 import ShopPage from "@/pages/shop/ShopPage";
 import { createBrowserRouter } from "react-router-dom";
+import UserInfo from "@/pages/account/UserInfoPage";
 
 const router = createBrowserRouter([
   {
@@ -47,6 +49,28 @@ const router = createBrowserRouter([
       {
         path: "register",
         element: <RegisterPage />,
+      },
+    ],
+  },
+  {
+    path: "/account",
+    element: <AccountPage />,
+    children: [
+      {
+        path: "info",
+        element: <UserInfo />,
+      },
+      {
+        path: "orders",
+        element: "",
+      },
+      {
+        path: "voucher-wallet",
+        element: "",
+      },
+      {
+        path: "user-address",
+        element: "",
       },
     ],
   },

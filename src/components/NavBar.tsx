@@ -1,11 +1,13 @@
 import Banner from "@/pages/home/Banner";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-
-import productsData from "@/data/product.json";
 import CartModal from "@/pages/cart/CartModal";
 
+import productsData from "@/data/product.json";
+import userData from "@/data/user.json";
+
 const NavBar: React.FC = () => {
+  const user = userData;
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
 
   const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
@@ -196,9 +198,15 @@ const NavBar: React.FC = () => {
             </button>
           </span>
           <span>
-            <Link to="/login">
-              <i className="ri-user-line"></i>
-            </Link>
+            {user ? (
+              <Link to="/account">
+                <img src="https://mcdn.coolmate.me/image/October2023/mceclip3_72.png" alt="" className="w-6 h-6" />
+              </Link>
+            ) : (
+              <Link to="/auth/login">
+                <img src="https://www.coolmate.me/images/header/icon-account-new-v2.svg" alt="" className="w-5 h-5" />
+              </Link>
+            )}
           </span>
           <div className="lg:hidden">
             <button onClick={toggleMobileMenu}>
@@ -228,19 +236,17 @@ const NavBar: React.FC = () => {
           <ul className="font-medium space-y-4 p-2">
             {allSubCategories.map((category, index) => (
               <li key={index}>
-                <Link to={`/category/${category.path}`} onClick={toggleMobileMenu}>
-                  <div
-                    className="flex justify-between items-center p-2 cursor-pointer"
-                    onClick={() => handleToggleDropdown(index)}
-                  >
-                    <span className="dropdown-items uppercase text-lg font-normal">{category.name}</span>
-                    <i
-                      className={`ri-arrow-down-s-line transition-transform duration-300 ${
-                        openDropdownIndex === index ? "rotate-180" : ""
-                      }`}
-                    ></i>
-                  </div>
-                </Link>
+                <div
+                  className="flex justify-between items-center p-2 cursor-pointer"
+                  onClick={() => handleToggleDropdown(index)}
+                >
+                  <span className="dropdown-items uppercase text-lg font-normal">{category.name}</span>
+                  <i
+                    className={`ri-arrow-down-s-line transition-transform duration-300 ${
+                      openDropdownIndex === index ? "rotate-180" : ""
+                    }`}
+                  ></i>
+                </div>
 
                 <ul
                   className={`ml-4 text-gray-600 space-y-2 overflow-hidden transition-all duration-500 ${

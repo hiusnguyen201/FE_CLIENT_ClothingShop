@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Product } from "@/models/Products";
+import { Product } from "@/types/Products";
 import React, { useState } from "react";
 
 interface CartItemsProps {
