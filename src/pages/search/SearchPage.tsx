@@ -1,60 +1,56 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import ProductCards from "../shop/productDetails/ProductCards";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 import productsData from "@/data/product.json";
-import ProductCards from "@/pages/shop/productDetails/ProductCards";
-import { Product } from "@/types/products";
+import { Input } from "@/components/ui/input";
 
 const SearchPage: React.FC = () => {
-  const [searchQuery, setSearchQuery] = useState<string>("");
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>(productsData);
-  const handleSearch = () => {
-    //get search query
-    const query = searchQuery.toLowerCase();
-    //filter product
-    const filtered = productsData.filter(
-      (product) =>
-        product.name.toLowerCase().includes(query) || product.short_description.toLowerCase().includes(query) || false
-    );
-    //setFillerProducts
-    setFilteredProducts(filtered);
-  };
-
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    console.log(event);
-    if (event.key === "Enter") {
-      handleSearch();
-    }
-  };
-
+  const [keyword, setKeyword] = useState("");
+  const [category, setCategory] = useState("");
+  const filtered = productsData.filter(
+    (p) =>
+      p.name.toLowerCase().includes(keyword.toLowerCase()) &&
+      (category === "" || p.sub_category_id === category.toLocaleLowerCase())
+  );
+  const categories = ["Shirt", "Trousers", "Sơ Mi"];
   return (
-    <div>
-      <section className="section__container bg__banner">
-        <h2 className="section__header capitalize">Search Products</h2>
-        <p className="section__subheader">
-          Browse a diverse range of categories, fromm chic dresses to versatitle accessories
-        </p>
-      </section>
+    <div className="space-y-6 section__container">
+      <h1 className="text-3xl font-bold">Sản phẩm</h1>
       <section className="section__container">
-        <div className="w-full mb-12 flex flex-col md:flex-row items-center justify-center gap-4">
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            onKeyDown={handleKeyDown}
-            placeholder="Search for products..."
-            className="search-bar w-full max-w-4xl p-2 border rounded focus-visible:outline-none"
-          />
-          <button onClick={handleSearch} className="w-full md:w-auto py-2 px-8 bg-red-500 text-white rounded">
-            Search
-          </button>
+        <div className="mb-12 w-full flex flex-col justify-between md:flex-row gap-4 lg:w-120">
+          <div className="">
+            <Input
+              type="text"
+              value={keyword}
+              onChange={(e) => setKeyword(e.target.value)}
+              placeholder="Search for products..."
+              className="w-80 border-gray-500 rounded-md focus-visible:outline-none p-5"
+            />
+          </div>
+          <Select value={category} onValueChange={setCategory}>
+            <SelectTrigger className="w-52 p-5 border-gray-500">
+              <SelectValue placeholder="Danh mục" />
+            </SelectTrigger>
+            <SelectContent className="bg-white border-none">
+              {categories.map((cat) => (
+                <SelectItem key={cat} value={cat}>
+                  {cat}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
+
+        <h2 className="text-2xl font-semibold mt-6 text-gray-700 mb-10">Kết quả</h2>
         <div>
-          {filteredProducts.length === 0 ? (
+          {filtered.length === 0 ? (
             <div>
               <p className="section__subheader">Sorry, no result found!</p>
+              <h4 className="text-lg font-normal">Other products</h4>
             </div>
           ) : (
-            <ProductCards productsData={filteredProducts} />
+            <ProductCards productsData={filtered} />
           )}
         </div>
       </section>

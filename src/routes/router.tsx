@@ -7,7 +7,8 @@ import HomePage from "@/pages/home/HomePage";
 import SearchPage from "@/pages/search/SearchPage";
 import { createBrowserRouter } from "react-router-dom";
 import UserInfo from "@/pages/account/UserInfoPage";
-import CollectionPage from "@/pages/collection/CollectionPage";
+import CategoryPage from "@/pages/category/CategoryPage";
+import SubCategoryPage from "@/pages/subCategory/SubCategoryPage";
 
 const router = createBrowserRouter([
   {
@@ -19,8 +20,12 @@ const router = createBrowserRouter([
         element: <HomePage />,
       },
       {
-        path: "/collection/:collectionName",
-        element: <CollectionPage />,
+        path: "/category/:categoryName",
+        element: <CategoryPage />,
+      },
+      {
+        path: "/category/:categoryName/:subCategoryName",
+        element: <SubCategoryPage />,
       },
       {
         path: "/search",

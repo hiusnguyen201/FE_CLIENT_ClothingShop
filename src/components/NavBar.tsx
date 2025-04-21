@@ -111,7 +111,7 @@ const NavBar: React.FC = () => {
             onMouseLeave={handleMouseLeave}
           >
             <li className="link uppercase">
-              <Link to="/collection/men-clothes">Men</Link>
+              <Link to="/category/men-clothes">Men</Link>
             </li>
             {isDropdownMenus && (
               <div className="flex justify-between fixed mt-3 p-4 w-full left-0 right-0 bg-white border  border-gray-200 rounded-lg shadow-lg z-50">
