@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import axios from "axios";
 import { Label } from "@/components/ui/label";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
-import { useFormik } from "formik";
+import { FormikProps, useFormik } from "formik";
 import { selectAddressSchema } from "@/pages/address/schema/selectAddressSchema";
 
 const GHN_TOKEN = import.meta.env.VITE_GHN_TOKEN;
@@ -24,7 +24,21 @@ interface Ward {
   WardName: string;
 }
 
-const SelectAddressDropdown: React.FC = () => {
+interface FormValues {
+  fullName: string;
+  phoneNumber: string;
+  default: boolean;
+  address: string;
+  provinces: string;
+  districts: string;
+  wards: string;
+}
+
+interface SelectAddressDropdownProps {
+  formik: FormikProps<FormValues>;
+}
+
+const SelectAddressDropdown: React.FC<SelectAddressDropdownProps> = ({ formik }) => {
   const [provinces, setProvinces] = useState<Province[]>([]);
   const [districts, setDistricts] = useState<District[]>([]);
   const [wards, setWards] = useState<Ward[]>([]);
@@ -61,18 +75,6 @@ const SelectAddressDropdown: React.FC = () => {
       .catch(console.error);
   }, [selectedDistrict]);
 
-  const formik = useFormik({
-    initialValues: {
-      address: "",
-      provinces: "",
-      districts: "",
-      wards: "",
-    },
-    validationSchema: selectAddressSchema,
-    onSubmit: (values) => {
-      console.log("Form values:", values);
-    },
-  });
   return (
     <form className="space-y-4 w-full" onSubmit={formik.handleSubmit}>
       <div>
@@ -104,6 +106,7 @@ const SelectAddressDropdown: React.FC = () => {
                 setSelectedWard("");
                 setDistricts([]);
                 setWards([]);
+                formik.setFieldValue("provinces", value)
               }}
             >
               <SelectTrigger className="w-full p-6 border border-gray-400 px-3 rounded-4xl flex items-center min-w-50">
@@ -130,6 +133,7 @@ const SelectAddressDropdown: React.FC = () => {
                 setSelectedDistrict(value);
                 setSelectedWard("");
                 setWards([]);
+                formik.setFieldValue("districts", value)
               }}
             >
               <SelectTrigger className="w-full p-6 border border-gray-400 px-3 rounded-4xl flex items-center min-w-50">
@@ -152,7 +156,10 @@ const SelectAddressDropdown: React.FC = () => {
       {/* Ward */}
       <div className="relative overflow-visible z-30">
         <Label className="block font-medium text-md mb-1">Phường / Xã</Label>
-        <Select onValueChange={(value) => setSelectedWard(value)}>
+        <Select onValueChange={(value) => {
+          setSelectedWard(value);
+          formik.setFieldValue("wards", value)
+        }}>
           <SelectTrigger className="w-full p-6 border border-gray-400 px-3 rounded-4xl flex items-center min-w-50">
             <SelectValue placeholder="-- Chọn phường / xã --" />
           </SelectTrigger>

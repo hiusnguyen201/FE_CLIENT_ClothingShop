@@ -8,13 +8,15 @@ import { Button } from "@/components/ui/button";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { searchProducts } from "@/redux/search/search.thunk";
 import { setPage } from "@/redux/search/search.slice";
+import { GetListParams } from "@/types/response";
 
-interface SearchFormState {
-  keyword: string;
-  category: string;
-  sortBy: "name" | "createdAt";
-  sortOrder: "asc" | "desc";
-  limit: string
+interface DataItem {
+  name: string;
+  createdAt: string;
+}
+
+interface ExtendedGetListParams<TData> extends GetListParams<TData> {
+  category?: string | undefined;
 }
 
 const ShopPage: React.FC = () => {
@@ -31,25 +33,26 @@ const ShopPage: React.FC = () => {
     state => state.categories
   );
 
-  const [formState, setFormState] = useState<SearchFormState>(() => {
+  const [formState, setFormState] = useState<ExtendedGetListParams<DataItem>>(() => {
     return {
+      page: Number(searchParams.get("page")) || 1,
+      limit: Number(searchParams.get("limit")) || 10,
       keyword: searchParams.get("keyword") || "",
       category: searchParams.get("category") || "",
-      sortBy: (searchParams.get("sortBy") as "name" | "createdAt") || "createdAt",
-      sortOrder: (searchParams.get("sortOrder") as "asc" | "desc") || "desc",
-      limit: searchParams.get("limit") || ""
+      sortBy: (searchParams.get("sortBy") as "name" | "createdAt" | undefined) || "createdAt",
+      sortOrder: (searchParams.get("sortOrder") as "asc" | "desc" | undefined) || "desc",
     };
   });
 
-  const handleToggleDropdownSort = () => {
-    setIsDropdownMenuSort(!isDropdownMenuSort);
-  };
+  // const handleToggleDropdownSort = () => {
+  //   setIsDropdownMenuSort(!isDropdownMenuSort);
+  // };
 
-  const handleSelectSort = (option: { name: string, value: string }) => {
-    setSelected(option.name);
-    updateFormState("sortBy", option.value);
-    setIsDropdownMenuSort(false);
-  };
+  // const handleSelectSort = (option: { name: string, value: string }) => {
+  //   setSelected(option.name);
+  //   updateFormState("sortBy", option.value);
+  //   setIsDropdownMenuSort(false);
+  // };
 
   const updateFormState = (field: keyof SearchFormState, value: string) => {
     setFormState(prev => ({ ...prev, [field]: value }));

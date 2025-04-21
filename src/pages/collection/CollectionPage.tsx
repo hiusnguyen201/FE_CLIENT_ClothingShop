@@ -7,9 +7,13 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-import productsData from "@/data/product.json";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import ProductCards from "../shop/productDetails/ProductCards";
+import { Product } from "@/types/product";
+import { useAppDispatch, useAppSelector } from "@/redux/store";
+import { getCategory } from "@/redux/category/category.thunk";
+import { searchProducts } from "@/redux/search/search.thunk";
+import { GetListParams } from "@/types/response";
 
 const subCategories = ["Jean", "Shirt", "Trousers", "Áo Polo", "Quần Lót"];
 const sizes = ["S", "M", "L", "XL"];
@@ -33,26 +37,22 @@ const colorOptions = [
   { label: "Đen xám", value: "#2f2f2f" },
 ];
 
-interface Product {
-  _id: string;
+interface DataItem {
   name: string;
-  category_id: string;
-  sub_category_id: string;
-  short_description: string;
-  price: number;
-  originalPrice: number;
-  image: string;
-  colors: string[];
-  sizes: string[];
-  discount: string;
-  rating: number;
-  author: string;
-  createdAt?: string;
-  total_sold?: number;
+  createdAt: string;
+}
+
+interface ExtendedGetListParams<TData> extends GetListParams<TData> {
+  category?: string | undefined;
 }
 
 const CollectionPage: React.FC = () => {
-  const { collectionName } = useParams();
+  const { collectionName } = useParams<{ collectionName?: string }>();
+  const dispatch = useAppDispatch();
+  const { category, loading: categoryLoading } = useAppSelector((state) => state.categories);
+  const { products, loading: productsLoading } = useAppSelector((state) => state.searchProducts);
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [selectedSubs, setSelectedSubs] = useState<string[]>([]);
   const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
@@ -60,12 +60,45 @@ const CollectionPage: React.FC = () => {
   const [sortBy, setSortBy] = useState<string>("newest");
   const [showMobileFilter, setShowMobileFilter] = useState(false);
 
+  const [formState, setFormState] = useState<ExtendedGetListParams<DataItem>>(() => {
+    return {
+      page: Number(searchParams.get("page")) || 1,
+      limit: Number(searchParams.get("limit")) || 10,
+      keyword: searchParams.get("keyword") || "",
+      category: searchParams.get("category") || "",
+      sortBy: (searchParams.get("sortBy") as "name" | "createdAt" | undefined) || "createdAt",
+      sortOrder: (searchParams.get("sortOrder") as "asc" | "desc" | undefined) || "desc",
+    };
+  });
+
+  const updateFormState = (field: keyof ExtendedGetListParams<DataItem>, value: string) => {
+    setFormState(prev => ({ ...prev, [field]: value }));
+  };
+
   useEffect(() => {
-    const filtered = (productsData as Product[]).filter(
-      (product) => product.category_id === collectionName?.toLowerCase()
-    );
-    setFilteredProducts(filtered);
-  }, [collectionName]);
+    if (!collectionName) {
+      return;
+    }
+    dispatch(getCategory(collectionName));
+  }, [dispatch, collectionName]);
+
+  useEffect(() => {
+    if (!category) {
+      setFilteredProducts([]);
+      return;
+    }
+    dispatch(searchProducts({ category: category.id }));
+  }, [dispatch, category]);
+
+  useEffect(() => {
+    if (category) {
+      const filtered = (products as Product[]).filter(
+        (product) => product.category.id === category.id
+      );
+      setFilteredProducts(filtered);
+    }
+  }, [products, category]);
+
 
   const toggleSub = (sub: string) => {
     setSelectedSubs((prev) =>
@@ -81,29 +114,29 @@ const CollectionPage: React.FC = () => {
     setSelectedColors((prev) => (prev.includes(color) ? prev.filter((c) => c !== color) : [...prev, color]));
   };
 
-  const filter = filteredProducts.filter((product) => {
-    const matchSub = selectedSubs.length === 0 || selectedSubs.includes(product.sub_category_id.toLowerCase());
-    const matchSize = selectedSizes.length === 0 || product.sizes?.some((size: string) => selectedSizes.includes(size));
-    const matchColor =
-      selectedColors.length === 0 || product.colors?.some((color: string) => selectedColors.includes(color));
-    return matchSub && matchSize && matchColor;
-  });
+  // const filter = filteredProducts.filter((product) => {
+  //   const matchSub = selectedSubs.length === 0 || selectedSubs.includes(product.sub_category_id.toLowerCase());
+  //   const matchSize = selectedSizes.length === 0 || product.sizes?.some((size: string) => selectedSizes.includes(size));
+  //   const matchColor =
+  //     selectedColors.length === 0 || product.colors?.some((color: string) => selectedColors.includes(color));
+  //   return matchSub && matchSize && matchColor;
+  // });
 
-  const sortedProducts = [...filter].sort((a, b) => {
-    switch (sortBy) {
-      case "price-asc":
-        return a.price - b.price;
-      case "price-desc":
-        return b.price - a.price;
-      case "discount-desc":
-        return (b.originalPrice - b.price) / b.originalPrice - (a.originalPrice - a.price) / a.originalPrice;
-      case "best-selling":
-        return (b.total_sold || 0) - (a.total_sold || 0);
-      case "newest":
-      default:
-        return new Date(b.createdAt || "").getTime() - new Date(a.createdAt || "").getTime();
-    }
-  });
+  // const sortedProducts = [...filter].sort((a, b) => {
+  //   switch (sortBy) {
+  //     case "price-asc":
+  //       return a.price - b.price;
+  //     case "price-desc":
+  //       return b.price - a.price;
+  //     case "discount-desc":
+  //       return (b.originalPrice - b.price) / b.originalPrice - (a.originalPrice - a.price) / a.originalPrice;
+  //     case "best-selling":
+  //       return (b.total_sold || 0) - (a.total_sold || 0);
+  //     case "newest":
+  //     default:
+  //       return new Date(b.createdAt || "").getTime() - new Date(a.createdAt || "").getTime();
+  //   }
+  // });
 
   return (
     <div className="p-4">
@@ -190,13 +223,13 @@ const CollectionPage: React.FC = () => {
         {/* Main Product Grid */}
         <section className="md:col-span-3">
           <Link to="/" className="text-gray-500 ">
-            Home / <span className="text-md text-gray-800">{filter.length} Men Clothes</span>
+            Home / <span className="text-md text-gray-800">{products.length} {category?.name}</span>
           </Link>
           <h1 className="uppercase lg:text-4xl md:text-3xl text-2xl font-bold text-gray-700 border-b border-gray-100 py-10">
-            Men Clothes
+            {category?.name}
           </h1>
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold">{filter.length} result</h2>
+            <h2 className="text-xl font-bold">{products.length} result</h2>
             {/* Top sort bar */}
             <div className="flex justify-start mb-4 mt-5">
               <div className="flex items-center gap-2 ">
@@ -216,7 +249,7 @@ const CollectionPage: React.FC = () => {
               </div>
             </div>
           </div>
-          <ProductCards productsData={sortedProducts} />
+          <ProductCards productsData={products} />
         </section>
       </div>
     </div>

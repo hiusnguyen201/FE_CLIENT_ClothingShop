@@ -7,10 +7,10 @@ import productsData from "@/data/product.json";
 // import CartModal from "@/pages/shop/Cart/CartModal";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { getCategories } from "@/redux/category/category.thunk";
-import userData from "@/data/user.json";
+
 
 const NavBar: React.FC = () => {
-  const user = userData;
+  const { user } = useAppSelector((state) => state.auth);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
 
   const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
@@ -72,11 +72,11 @@ const NavBar: React.FC = () => {
   const allSubCategories = categories.map((category) => {
     return {
       name: category.name,
-      path: `/categories/${category.slug}`,
+      path: `/collection/${category.slug}`,
       subCategories: category.children.map((subCategory) => {
         return {
           name: subCategory.name,
-          path: `/categories/${subCategory.slug}`
+          path: `/collection/${subCategory.slug}`
         }
       })
     }

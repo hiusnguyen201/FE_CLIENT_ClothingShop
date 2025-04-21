@@ -7,8 +7,14 @@ import UserAddress from "../address/UserAddress";
 import HistoryOrderPage from "./HistoryOrdersPage";
 import clsx from "clsx";
 import { useState } from "react";
+import { logout } from "@/redux/auth/auth.thunk";
+import { useAppDispatch } from "@/redux/store";
+import { useNavigate } from "react-router-dom";
 
 const AccountTabs = () => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
   const [activeTab, setActiveTab] = useState("account");
   const [showMobileContent, setShowMobileContent] = useState(false);
   const cardContent = [
@@ -20,6 +26,16 @@ const AccountTabs = () => {
     setActiveTab(value);
     setShowMobileContent(true);
   };
+
+  const handleTabChange = (value: string) => {
+    if (value === "logout") {
+      dispatch(logout())
+      setTimeout(() => {
+        navigate("/")
+      }, 2000);
+    }
+  };
+
   return (
     <div className="bg-gray-100">
       <NavBar />
@@ -30,7 +46,11 @@ const AccountTabs = () => {
             <img src="https://mcdn.coolmate.me/image/October2023/mceclip0_92.png" alt="" />
           </div>
         </section>
-        <Tabs defaultValue="lg:account" className="flex flex-col md:flex-row w-full min-h-screen p-4 gap-4">
+        <Tabs
+          onValueChange={handleTabChange}
+          defaultValue="lg:account"
+          className="flex flex-col md:flex-row w-full min-h-screen p-4 gap-4"
+        >
           {/* LEFT MENU */}
           <SideBarAccountPage onTabClick={handleTabClick} />
 

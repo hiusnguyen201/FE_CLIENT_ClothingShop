@@ -1,15 +1,21 @@
 import { Button } from "@/components/ui/button";
+import { useAppSelector } from "@/redux/store";
 import { User, USER_STATUS } from "@/types/user";
 import React from "react";
 
 const UserInfo: React.FC = () => {
+  const { user } = useAppSelector(
+    state => state.account
+  );
+
   const userInformation: User = {
-    name: "User Name",
-    phone: "0986655273",
-    gender: "male",
-    email: "abc@gmail.com",
-    status: USER_STATUS.ACTIVE,
+    name: user?.name ?? "",
+    phone: user?.phone ?? "",
+    gender: user?.gender ?? "",
+    email: user?.email ?? "",
+    status: user?.status ?? USER_STATUS.ACTIVE,
   };
+
   return (
     <div className="space-y-6">
       <h2 className="text-2xl font-medium pl-3 mb-4">Account Information</h2>

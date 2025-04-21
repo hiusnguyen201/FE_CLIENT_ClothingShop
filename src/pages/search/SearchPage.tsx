@@ -33,16 +33,20 @@ const SearchPage: React.FC = () => {
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
       updateFormState("keyword", event.currentTarget.value);
-      dispatch(
-        searchProducts({
-          ...formState,
-          category: formState.category || undefined,
-          page,
-          limit,
-        })
-      );
+      getProducts();
     }
   };
+
+  const getProducts = () => {
+    dispatch(
+      searchProducts({
+        ...formState,
+        category: formState.category || undefined,
+        page,
+        limit,
+      })
+    );
+  }
 
   const updateFormState = (field: keyof SearchFormState, value: string) => {
     setFormState(prev => ({ ...prev, [field]: value }));
@@ -94,7 +98,7 @@ const SearchPage: React.FC = () => {
             placeholder="Search for products..."
             className="search-bar w-full max-w-4xl p-2 border rounded focus-visible:outline-none"
           />
-          <button onClick={() => { }} className="w-full md:w-auto py-2 px-8 bg-red-500 text-white rounded">
+          <button onClick={getProducts} className="w-full md:w-auto py-2 px-8 bg-red-500 text-white rounded">
             Search
           </button>
         </div>

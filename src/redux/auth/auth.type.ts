@@ -10,6 +10,7 @@ export interface AuthState {
     logout: boolean;
     login: boolean;
     sendOtpViaEmail: boolean;
+    verifyOtp: boolean;
   };
   user: Nullable<User>;
   isAuthenticated: boolean;
@@ -28,7 +29,6 @@ export type LoginPayload = {
   email: string;
   password: string;
 };
-
 export interface LoginResponseData {
   isAuthenticated: boolean;
   is2FactorRequired: boolean;
@@ -45,21 +45,10 @@ export type SendOtpViaEmailPayload = {
 export interface SendOtpViaEmailResponse extends BaseResponse<null> {}
 
 /**
- * Register
+ * Verify OTP
  */
-export type RegisterPayload = {
-  name: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-  phone: string;
-  gender: string;
+export type VerifyOtpPayload = {
+  userId: string;
+  otp: string;
 };
-
-export interface RegisterResponseData {
-  isAuthenticated: boolean;
-  is2FactorRequired: boolean;
-  user: User;
-}
-
-export interface RegisterResponse extends BaseResponse<RegisterResponseData> {}
+export interface VerifyOtpResponse extends BaseResponse<LoginResponseData> {}

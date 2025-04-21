@@ -11,7 +11,7 @@ const Categories: React.FC = () => {
     <div className="w-full overflow-x-auto section__container ">
       <div className="flex gap-4 w-max">
         {categories.map((c, index) => (
-          <Link to={`/categories/${c.slug}`} key={index}>
+          <Link to={`/collection/${c.slug}`} key={index}>
             <div
               className="min-w-[240px] w-[240px] rounded-lg overflow-hidden bg-white shadow-md cursor-pointer hover:scale-105 transition-transform"
             >

@@ -18,13 +18,18 @@ const AddNewAddress: FC<AddNewAddressProps> = ({ isOpen, onClose }) => {
     initialValues: {
       fullName: "",
       phoneNumber: "",
-      saveToAddressBook: false,
+      address: "",
+      provinces: "",
+      districts: "",
+      wards: "",
+      default: false,
     },
     validationSchema: AddNewAddressSchema,
     onSubmit: (values) => {
       console.log("Form values:", values);
     },
   });
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -88,10 +93,13 @@ const AddNewAddress: FC<AddNewAddressProps> = ({ isOpen, onClose }) => {
                 </div>
               </div>
 
-              <SelectAddressDropdown />
+              <SelectAddressDropdown formik={formik} />
+
               <div className="flex items-center space-x-2">
                 <Input type="checkbox" id="default" className="w-4 h-4" />
-                <Label htmlFor="default" className="text-sm font-medium">
+                <Label htmlFor="default" className="text-sm font-medium"
+                  onClick={() => formik.setFieldValue("default", !formik.values.default)}
+                >
                   Set as default
                 </Label>
               </div>

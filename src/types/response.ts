@@ -1,6 +1,7 @@
 import { Nullable, Optional } from "@/types/common";
 
 export type SortOrderValue = "asc" | "desc";
+export type SortByValue = "name" | "createdAt";
 
 export interface BaseResponse<TData> {
   code: number;
