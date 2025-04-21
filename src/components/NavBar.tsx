@@ -1,13 +1,16 @@
 import Banner from "@/pages/home/Banner";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import CartModal from "@/pages/cart/CartModal";
 
 import productsData from "@/data/product.json";
-import CartModal from "@/pages/shop/Cart/CartModal";
+// import CartModal from "@/pages/shop/Cart/CartModal";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { getCategories } from "@/redux/category/category.thunk";
+import userData from "@/data/user.json";
 
 const NavBar: React.FC = () => {
+  const user = userData;
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
 
   const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
@@ -30,7 +33,7 @@ const NavBar: React.FC = () => {
   let timeoutId: ReturnType<typeof setTimeout> | null = null;
 
   const handleMouseEnter = () => {
-    clearTimeout(timeoutId);
+    clearTimeout(timeoutId!);
     setIsDropdownMenus(true);
   };
 
@@ -100,7 +103,7 @@ const NavBar: React.FC = () => {
             onMouseLeave={handleMouseLeave}
           >
             <li className="link uppercase">
-              <Link to="/shop">Shop</Link>
+              <Link to="/collection/men-clothes">Men</Link>
             </li>
             {isDropdownMenus && (
               <div className="flex justify-between fixed mt-3 p-4 w-full left-0 right-0 bg-white border  border-gray-200 rounded-lg shadow-lg z-50">
@@ -187,9 +190,15 @@ const NavBar: React.FC = () => {
             </button>
           </span>
           <span>
-            <Link to="/auth/login">
-              <i className="ri-user-line"></i>
-            </Link>
+            {user ? (
+              <Link to="/account">
+                <img src="https://mcdn.coolmate.me/image/October2023/mceclip3_72.png" alt="" className="w-6 h-6" />
+              </Link>
+            ) : (
+              <Link to="/auth/login">
+                <img src="https://www.coolmate.me/images/header/icon-account-new-v2.svg" alt="" className="w-5 h-5" />
+              </Link>
+            )}
           </span>
           <div className="lg:hidden">
             <button onClick={toggleMobileMenu}>
@@ -230,11 +239,13 @@ const NavBar: React.FC = () => {
                   ></i>
                 </div>
 
-                {/* Dropdown with slide effect */}
-                <ul className={`ml-4 text-gray-600 space-y-2 overflow-hidden transition-all duration-300`}>
+                <ul
+                  className={`ml-4 text-gray-600 space-y-2 overflow-hidden transition-all duration-500 ${openDropdownIndex === index ? "max-h-[500px]" : "max-h-0"
+                    }`}
+                >
                   {category.subCategories?.map((c, i) => (
                     <li key={i}>
-                      <Link to={c.path}>{c.name}</Link>
+                      <Link to={`/sub_category/${c.path}`}>{c.name}</Link>
                     </li>
                   ))}
                 </ul>

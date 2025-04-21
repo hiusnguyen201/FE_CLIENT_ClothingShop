@@ -1,5 +1,5 @@
-import ProductCardItem from "@/pages/shop/ProductDetails/ProductCardItem";
-import { Product } from "@/types/product";
+import ProductCardItem from "@/pages/shop/productDetails/ProductCardItem";
+import { Product } from "@/types/products";
 
 interface ProductCardProps {
   productsData: Product[];

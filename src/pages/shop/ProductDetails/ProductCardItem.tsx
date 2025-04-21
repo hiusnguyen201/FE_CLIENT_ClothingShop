@@ -111,7 +111,7 @@ const ProductCardItem: React.FC<ProductCardItemProps> = ({ product }) => {
           style={{
             background: "linear-gradient(0deg, rgba(0, 0, 0, .1), rgba(0, 0, 0, .1)), hsla(0, 0%, 100%, .4)",
           }}
-          className="absolute p-3 mx-auto h-auto backdrop-blur-sm bottom-6 left-6 right-6 rounded md:block hidden"
+          className="absolute p-3 mx-auto md:h-auto backdrop-blur-sm bottom-6 left-6 right-6 rounded md:block hidden"
         >
           <Button
             onClick={handleAddToCart}
@@ -176,18 +176,20 @@ const ProductCardItem: React.FC<ProductCardItemProps> = ({ product }) => {
         </Link>
         <div className="flex items-center gap-2">
           {/* <span className="font-bold text-md">{product.price.toLocaleString()}đ</span> */}
-          {selectedVariantData ? formatPrice(selectedVariantData.price) :
-            minPrice !== null && maxPrice !== null
-              ? minPrice === maxPrice
-                ? `${formatPrice(minPrice)}`
-                : `${formatPrice(minPrice)} - ${formatPrice(maxPrice)}`
-              : formatPrice(0)}
+          {
+            selectedVariantData ? formatPrice(selectedVariantData.price) :
+              minPrice !== null && maxPrice !== null
+                ? minPrice === maxPrice
+                  ? `${formatPrice(minPrice)}`
+                  : `${formatPrice(minPrice)} - ${formatPrice(maxPrice)}`
+                : formatPrice(0)
+          }
           {/* {product.discount && (
             <p className="text-white p-1 bg-red-500 md:flex hidden rounded-xl font-bold text-sm">-{product.discount}</p>
           )} */}
-        </div>
-      </div>
-    </div>
+        </div >
+      </div >
+    </div >
   );
 };
 
