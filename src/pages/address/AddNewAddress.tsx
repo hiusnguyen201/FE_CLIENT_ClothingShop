@@ -7,6 +7,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useFormik } from "formik";
 import { AddNewAddressSchema } from "./schema/selectAddressSchema";
+import { useAppDispatch } from "@/redux/store";
+import { addAddress } from "@/redux/address/address.thunk";
+import { toast } from "@/hooks/use-toast";
 
 interface AddNewAddressProps {
   isOpen: boolean;
@@ -14,19 +17,30 @@ interface AddNewAddressProps {
 }
 
 const AddNewAddress: FC<AddNewAddressProps> = ({ isOpen, onClose }) => {
+  const dispatch = useAppDispatch();
+
   const formik = useFormik({
     initialValues: {
-      fullName: "",
-      phoneNumber: "",
       address: "",
-      provinces: "",
-      districts: "",
-      wards: "",
-      default: false,
+      provinceCode: "",
+      districtCode: "",
+      wardCode: "",
+      isDefault: false,
     },
     validationSchema: AddNewAddressSchema,
     onSubmit: (values) => {
       console.log("Form values:", values);
+      dispatch(addAddress(values)).then((data) => {
+        if (data.meta.requestStatus === "fulfilled") {
+          toast({ title: "Successful" });
+          formik.resetForm();
+        } else {
+          toast({
+            variant: "destructive",
+            title: "Error"
+          });
+        }
+      });
     },
   });
 
@@ -55,50 +69,12 @@ const AddNewAddress: FC<AddNewAddressProps> = ({ isOpen, onClose }) => {
             <h2 className="text-2xl font-bold mb-6 mt-2">Địa chỉ của tôi</h2>
 
             <form className="space-y-4" onSubmit={formik.handleSubmit}>
-              <div className="flex w-full space-x-6">
-                <div className="w-1/2 lg:w-2/3">
-                  <Label htmlFor="fullName" className="text-md text-gray-700 mb-1">
-                    Full Name
-                  </Label>
-                  <Input
-                    id="fullName"
-                    name="fullName"
-                    className="border border-gray-400 p-6 rounded-4xl"
-                    placeholder="Enter your full name"
-                    value={formik.values.fullName}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                  />
-                  {formik.touched.fullName && formik.errors.fullName && (
-                    <div className="text-red-500 text-sm mt-1">{formik.errors.fullName}</div>
-                  )}
-                </div>
-
-                <div className="w-1/2 lg:w-1/3">
-                  <Label htmlFor="phoneNumber" className="text-md text-gray-700 mb-1">
-                    Phone number
-                  </Label>
-                  <Input
-                    id="phoneNumber"
-                    name="phoneNumber"
-                    className="border border-gray-400 p-6 rounded-4xl"
-                    placeholder="Enter your phone number"
-                    value={formik.values.phoneNumber}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                  />
-                  {formik.touched.phoneNumber && formik.errors.phoneNumber && (
-                    <div className="text-red-500 text-sm mt-1">{formik.errors.phoneNumber}</div>
-                  )}
-                </div>
-              </div>
-
               <SelectAddressDropdown formik={formik} />
 
               <div className="flex items-center space-x-2">
                 <Input type="checkbox" id="default" className="w-4 h-4" />
                 <Label htmlFor="default" className="text-sm font-medium"
-                  onClick={() => formik.setFieldValue("default", !formik.values.default)}
+                  onClick={() => formik.setFieldValue("isDefault", !formik.values.isDefault)}
                 >
                   Set as default
                 </Label>

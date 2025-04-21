@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { loginService, logoutService, sendOtpViaEmailService, verifyOtpService } from "@/redux/auth/auth.service";
+import { loginService, logoutService, registerService, sendOtpViaEmailService, verifyOtpService } from "@/redux/auth/auth.service";
 import { ThunkApiConfig } from "@/types/thunk-api";
 import {
   LoginResponse,
@@ -9,6 +9,8 @@ import {
   LogoutResponse,
   VerifyOtpResponse,
   VerifyOtpPayload,
+  RegisterResponse,
+  RegisterPayload,
 } from "@/redux/auth/auth.type";
 
 export const logout = createAsyncThunk<LogoutResponse, void, ThunkApiConfig>(
@@ -29,6 +31,19 @@ export const login = createAsyncThunk<LoginResponse, LoginPayload, ThunkApiConfi
   async (payload, { rejectWithValue }) => {
     try {
       const response: LoginResponse = await loginService(payload);
+      return response;
+    } catch (error: any) {
+      const message: string = error.response?.data?.message || error.message || error.toString();
+      return rejectWithValue(message);
+    }
+  }
+);
+
+export const register = createAsyncThunk<RegisterResponse, RegisterPayload, ThunkApiConfig>(
+  "auth/register",
+  async (payload, { rejectWithValue }) => {
+    try {
+      const response: RegisterResponse = await registerService(payload);
       return response;
     } catch (error: any) {
       const message: string = error.response?.data?.message || error.message || error.toString();

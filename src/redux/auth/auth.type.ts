@@ -1,4 +1,5 @@
 import { Nullable } from "@/types/common";
+import { Gender } from "@/types/constant";
 import { BaseResponse } from "@/types/response";
 import { User } from "@/types/user";
 
@@ -9,6 +10,7 @@ export interface AuthState {
   loading: {
     logout: boolean;
     login: boolean;
+    register: boolean;
     sendOtpViaEmail: boolean;
     verifyOtp: boolean;
   };
@@ -20,7 +22,7 @@ export interface AuthState {
 /**
  * Logout
  */
-export interface LogoutResponse extends BaseResponse<null> {}
+export interface LogoutResponse extends BaseResponse<null> { }
 
 /**
  * Login
@@ -34,7 +36,7 @@ export interface LoginResponseData {
   is2FactorRequired: boolean;
   user: User;
 }
-export interface LoginResponse extends BaseResponse<LoginResponseData> {}
+export interface LoginResponse extends BaseResponse<LoginResponseData> { }
 
 /**
  * Send OTP Via Email
@@ -42,7 +44,7 @@ export interface LoginResponse extends BaseResponse<LoginResponseData> {}
 export type SendOtpViaEmailPayload = {
   email: string;
 };
-export interface SendOtpViaEmailResponse extends BaseResponse<null> {}
+export interface SendOtpViaEmailResponse extends BaseResponse<null> { }
 
 /**
  * Verify OTP
@@ -51,4 +53,22 @@ export type VerifyOtpPayload = {
   userId: string;
   otp: string;
 };
-export interface VerifyOtpResponse extends BaseResponse<LoginResponseData> {}
+export interface VerifyOtpResponse extends BaseResponse<LoginResponseData> { }
+
+/**
+ * Register
+ */
+export type RegisterPayload = {
+  name: string,
+  email: string;
+  phone: string;
+  password: string;
+  confirmPassword: string;
+  gender: Gender;
+};
+export interface RegisterResponseData {
+  isAuthenticated: boolean;
+  is2FactorRequired: boolean;
+  user: User;
+}
+export interface RegisterResponse extends BaseResponse<RegisterResponseData> { }

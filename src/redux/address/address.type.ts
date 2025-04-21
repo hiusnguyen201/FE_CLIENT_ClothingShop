@@ -1,23 +1,28 @@
-import { Cart } from "@/types/cart";
+import { Address } from "@/types/address";
 import { Nullable } from "@/types/common";
-import { BaseResponse } from "@/types/response";
-import { Address } from "cluster";
+import {
+  BaseResponse,
+  GetListResponseData
+} from "@/types/response";
 
 /**
  * State
  */
-export interface CartState {
+export interface AddressState {
   loading: {
     addAddress: boolean;
-    getAddress: boolean,
-    clearAddress: boolean;
-    removeItem: boolean;
+    getAddressList: boolean,
+    // clearAddress: boolean;
+    // removeItem: boolean;
   };
-  address: Address[];
+  address: Nullable<Address>;
+  addressList: Address[];
   error: Nullable<string>;
 }
 
 /**
- * Get cart
+ * Add address
  */
-export interface GetCartResponse extends BaseResponse<Cart[]> { }
+export interface AddAddressResponse extends BaseResponse<Address> { }
+
+export interface getListAddressResponse extends GetListResponseData<Address[]> { }

@@ -10,3 +10,11 @@ export const REGEX_PATTERNS = {
   IMAGE_URL: /\.(jpg|jpeg|png)$/i,
   OTP: /^\d{6}$/,
 };
+
+export const GENDER = {
+  MALE: 'male',
+  FEMALE: 'female',
+  OTHER: 'other',
+} as const;
+
+export type Gender = typeof GENDER[keyof typeof GENDER];

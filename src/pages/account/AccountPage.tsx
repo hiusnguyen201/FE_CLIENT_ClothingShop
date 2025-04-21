@@ -10,6 +10,7 @@ import { useState } from "react";
 import { logout } from "@/redux/auth/auth.thunk";
 import { useAppDispatch } from "@/redux/store";
 import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 
 const AccountTabs = () => {
   const dispatch = useAppDispatch();
@@ -27,15 +28,6 @@ const AccountTabs = () => {
     setShowMobileContent(true);
   };
 
-  const handleTabChange = (value: string) => {
-    if (value === "logout") {
-      dispatch(logout())
-      setTimeout(() => {
-        navigate("/")
-      }, 2000);
-    }
-  };
-
   return (
     <div className="bg-gray-100">
       <NavBar />
@@ -47,8 +39,7 @@ const AccountTabs = () => {
           </div>
         </section>
         <Tabs
-          onValueChange={handleTabChange}
-          defaultValue="lg:account"
+          defaultValue={activeTab}
           className="flex flex-col md:flex-row w-full min-h-screen p-4 gap-4"
         >
           {/* LEFT MENU */}
@@ -65,10 +56,19 @@ const AccountTabs = () => {
             ))}
 
             <TabsContent value="logout">
-              <Card className="p-6 text-red-500">Bạn đã đăng xuất.</Card>
+              <Card className="p-6 text-red-500">
+                <Button onClick={() => {
+                  dispatch(logout())
+                  setTimeout(() => {
+                    navigate("/")
+                  }, 2000);
+                }}>Logout</Button>
+              </Card>
             </TabsContent>
           </div>
         </Tabs>
+
+
       </div>
     </div>
   );

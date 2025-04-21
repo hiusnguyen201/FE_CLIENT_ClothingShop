@@ -10,7 +10,8 @@ import { getCategories } from "@/redux/category/category.thunk";
 
 
 const NavBar: React.FC = () => {
-  const { user } = useAppSelector((state) => state.auth);
+  const { user } = useAppSelector((state) => state.account);
+
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
 
   const [isCartOpen, setIsCartOpen] = useState<boolean>(false);

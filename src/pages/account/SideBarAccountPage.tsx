@@ -15,7 +15,7 @@ const SideBarAccountPage: React.FC<SideBarAccountProps> = ({ onTabClick }) => {
   ];
   return (
     <>
-      <TabsList className="flex flex-col w-full md:w-1/4 rounded-xl h-70 p-2 shadow">
+      <TabsList className="flex flex-col w-full md:w-1/4 rounded-xl p-2 shadow">
         {tabsList.map((t, i) => (
           <TabsTrigger
             key={i}

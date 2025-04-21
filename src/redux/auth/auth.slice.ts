@@ -1,6 +1,6 @@
 import { ActionReducerMapBuilder, createSlice, Draft, PayloadAction } from "@reduxjs/toolkit";
-import { AuthState, LoginResponse, SendOtpViaEmailResponse, VerifyOtpResponse } from "@/redux/auth/auth.type";
-import { login, logout, sendOtpViaEmail, verifyOtp } from "@/redux/auth/auth.thunk";
+import { AuthState, LoginResponse, RegisterResponse, SendOtpViaEmailResponse, VerifyOtpResponse } from "@/redux/auth/auth.type";
+import { login, register, logout, sendOtpViaEmail, verifyOtp } from "@/redux/auth/auth.thunk";
 
 const initialState: AuthState = {
   user: null,
@@ -8,6 +8,7 @@ const initialState: AuthState = {
   loading: {
     logout: false,
     login: false,
+    register: false,
     sendOtpViaEmail: false,
     verifyOtp: false,
   },
@@ -53,6 +54,26 @@ const authSlice = createSlice({
       })
       .addCase(login.rejected, (state: Draft<AuthState>, action: PayloadAction<any>) => {
         state.loading.login = false;
+        state.error = action.payload as string;
+        state.isAuthenticated = false;
+        state.user = null;
+      });
+
+    // Register
+    builder
+      .addCase(register.pending, (state: Draft<AuthState>) => {
+        state.loading.register = true;
+        state.error = null;
+      })
+      .addCase(register.fulfilled, (state: Draft<AuthState>, action: PayloadAction<RegisterResponse>) => {
+        const { data } = action.payload;
+        state.loading.register = false;
+        state.isAuthenticated = false;
+        state.user = data.user;
+        state.error = null;
+      })
+      .addCase(register.rejected, (state: Draft<AuthState>, action: PayloadAction<any>) => {
+        state.loading.register = false;
         state.error = action.payload as string;
         state.isAuthenticated = false;
         state.user = null;
