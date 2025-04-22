@@ -24,36 +24,6 @@ const Categories: React.FC = () => {
       category: "men-clothes",
       image: "https://media3.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/March2025/image-ao-thun-1_18.jpg",
     },
-    {
-      id: "2",
-      name: "T-Shirt",
-      category: "men-clothes",
-      image: "https://media3.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/March2025/image-ao-thun-1_18.jpg",
-    },
-    {
-      id: "2",
-      name: "T-Shirt",
-      category: "men-clothes",
-      image: "https://media3.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/March2025/image-ao-thun-1_18.jpg",
-    },
-    {
-      id: "2",
-      name: "T-Shirt",
-      category: "men-clothes",
-      image: "https://media3.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/March2025/image-ao-thun-1_18.jpg",
-    },
-    {
-      id: "2",
-      name: "T-Shirt",
-      category: "men-clothes",
-      image: "https://media3.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/March2025/image-ao-thun-1_18.jpg",
-    },
-    {
-      id: "2",
-      name: "T-Shirt",
-      category: "men-clothes",
-      image: "https://media3.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/March2025/image-ao-thun-1_18.jpg",
-    },
   ];
   return (
     <div className="w-full overflow-x-auto section__container ">

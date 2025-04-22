@@ -6,9 +6,9 @@ import RegisterPage from "@/pages/auth/RegisterPage";
 import HomePage from "@/pages/home/HomePage";
 import SearchPage from "@/pages/search/SearchPage";
 import { createBrowserRouter } from "react-router-dom";
-import UserInfo from "@/pages/account/UserInfoPage";
 import CategoryPage from "@/pages/category/CategoryPage";
 import SubCategoryPage from "@/pages/subCategory/SubCategoryPage";
+import CheckOutPage from "@/pages/checkout/CheckoutPage";
 
 const router = createBrowserRouter([
   {
@@ -31,6 +31,10 @@ const router = createBrowserRouter([
         path: "/search",
         element: <SearchPage />,
       },
+      {
+        path: "/checkout",
+        element: <CheckOutPage />,
+      },
     ],
   },
   {
@@ -50,24 +54,6 @@ const router = createBrowserRouter([
   {
     path: "/account",
     element: <AccountPage />,
-    children: [
-      {
-        path: "info",
-        element: <UserInfo />,
-      },
-      {
-        path: "orders",
-        element: "",
-      },
-      {
-        path: "voucher-wallet",
-        element: "",
-      },
-      {
-        path: "user-address",
-        element: "",
-      },
-    ],
   },
 ]);
 

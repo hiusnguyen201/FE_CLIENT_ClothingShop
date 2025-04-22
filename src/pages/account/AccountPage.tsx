@@ -30,7 +30,7 @@ const AccountTabs = () => {
             <img src="https://mcdn.coolmate.me/image/October2023/mceclip0_92.png" alt="" />
           </div>
         </section>
-        <Tabs defaultValue="lg:account" className="flex flex-col md:flex-row w-full min-h-screen p-4 gap-4">
+        <Tabs defaultValue={activeTab} className="flex flex-col md:flex-row w-full min-h-screen p-4 gap-4">
           {/* LEFT MENU */}
           <SideBarAccountPage onTabClick={handleTabClick} />
 
