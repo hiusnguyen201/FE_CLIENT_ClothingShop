@@ -7,10 +7,15 @@ import productsData from "@/data/product.json";
 // import CartModal from "@/pages/shop/Cart/CartModal";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { getCategories } from "@/redux/category/category.thunk";
+import { getCart } from "@/redux/cart/cart.thunk";
+import { getAddressList } from "@/redux/address/address.thunk";
 
 
 const NavBar: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const { categories } = useAppSelector(state => state.categories);
   const { user } = useAppSelector((state) => state.account);
+  const { cart } = useAppSelector((state) => state.cart);
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
 
@@ -56,11 +61,6 @@ const NavBar: React.FC = () => {
     }]
   }
 
-  const dispatch = useAppDispatch();
-  const { categories } = useAppSelector(
-    state => state.categories
-  );
-
   useEffect(() => {
     dispatch(
       getCategories({
@@ -68,6 +68,8 @@ const NavBar: React.FC = () => {
         sortBy: "createdAt"
       })
     );
+    dispatch(getCart());
+    dispatch(getAddressList())
   }, [dispatch]);
 
   const allSubCategories = categories.map((category) => {
@@ -283,7 +285,7 @@ const NavBar: React.FC = () => {
           </ul>
         </div>
       </div>
-      {isCartOpen && <CartModal productsData={productsData} isCartOpen={isCartOpen} onClose={handleCartOpenToggle} />}
+      {isCartOpen && user && <CartModal cartData={cart} isCartOpen={isCartOpen} onClose={handleCartOpenToggle} />}
     </header>
   );
 };

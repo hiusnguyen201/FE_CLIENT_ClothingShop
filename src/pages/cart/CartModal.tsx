@@ -1,18 +1,24 @@
-import { Product } from "@/types/products";
 import React, { useState, useEffect } from "react";
 import OrderSummary from "@/pages/cart/OrderSummary";
 import CartItems from "@/pages/cart/CartItems";
 import InformationOrder from "@/pages/cart/InformationOrder";
 import FooterCartOrder from "@/pages/cart/footerCart/FooterCartOrder";
 import FooterCartPayment from "./footerCart/FooterCartPayment";
+import { Cart } from "@/types/cart";
+import { useAppSelector } from "@/redux/store";
+import { useFormik } from "formik";
+import { informationOrderSchema } from "./schema/infoOrderSchema";
 
 interface CartModalProps {
   isCartOpen: boolean;
   onClose: () => void;
-  productsData: Product[];
+  cartData: Cart[];
 }
 
-const CartModal: React.FC<CartModalProps> = ({ isCartOpen, onClose, productsData }) => {
+const CartModal: React.FC<CartModalProps> = ({ isCartOpen, onClose, cartData }) => {
+  const { addressList } = useAppSelector((state) => state.address);
+  const { user } = useAppSelector((state) => state.account);
+
   const [showAnimation, setShowAnimation] = useState(false);
   useEffect(() => {
     if (isCartOpen) {
@@ -23,13 +29,32 @@ const CartModal: React.FC<CartModalProps> = ({ isCartOpen, onClose, productsData
     }
   }, [isCartOpen]);
 
+  const addessDefault = addressList.find((address) => address.isDefault);
+
+  const formik = useFormik({
+    initialValues: {
+      fullName: user?.name || "",
+      phoneNumber: user?.phone || "",
+      email: user?.email || "",
+      address: addessDefault?.address || "",
+      province: addessDefault?.provinceName || "",
+      district: addessDefault?.districtName || "",
+      ward: addessDefault?.wardName || "",
+      note: "",
+      method: "cod"
+    },
+    validationSchema: informationOrderSchema,
+    onSubmit: (values) => {
+      console.log("Form values:", values);
+    },
+  });
+
   return (
     <div className="fixed inset-0 backdrop-blur-md transition-opacity z-50 md:px-10 lg:px-10">
       {/* Modal chính */}
       <div
-        className={`fixed right-0 w-full bg-white h-full overflow-y-auto transform transition-all duration-300 ease-in-out ${
-          showAnimation ? "translate-x-0" : "translate-x-full"
-        }`}
+        className={`fixed right-0 w-full bg-white h-full overflow-y-auto transform transition-all duration-300 ease-in-out ${showAnimation ? "translate-x-0" : "translate-x-full"
+          }`}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex flex-col lg:flex-row-reverse gap-4  border-t border-gray-100">
@@ -42,18 +67,18 @@ const CartModal: React.FC<CartModalProps> = ({ isCartOpen, onClose, productsData
             </div>
             {/* cart items */}
             <div>
-              {productsData.length && <CartItems productsData={productsData} />}
-              {productsData.length > 0 && <OrderSummary />}
+              {cartData.length ? <CartItems cartData={cartData} /> : <div className="text-center mt-10">Add item first</div>}
+              {cartData.length ? <OrderSummary cartData={cartData} /> : null}
             </div>
           </div>
           <div className="w-full lg:w-2/3 mt-3">
-            <InformationOrder />
+            <InformationOrder formik={formik} />
           </div>
         </div>
       </div>
       <div className="fixed bottom-0 w-full right-0 lg:h-25 h-42 bg-white shadow-2xl flex flex-col lg:flex-row align-end items-center text-right">
         <FooterCartPayment />
-        <FooterCartOrder />
+        <FooterCartOrder cartData={cartData} handleSubmit={formik.handleSubmit} />
       </div>
     </div>
   );

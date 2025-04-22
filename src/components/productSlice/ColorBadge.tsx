@@ -16,7 +16,7 @@ export const ColorBadge: FC<ColorBadgeProps> = ({ active = false, color = "#000"
       style={{ backgroundColor: color }}
       className={cn(
         "w-[32px] h-[18px] cursor-pointer",
-        active ? "outline outline-1 outline-gray-500 outline-offset-2" : "",
+        active ? "ring ring-offset-2" : "",
         disabled ? "opacity-60 cursor-auto outline-0" : "",
       )}
       onClick={onClick}

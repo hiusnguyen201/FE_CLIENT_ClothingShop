@@ -110,9 +110,9 @@ const SelectAddressDropdown: React.FC<SelectAddressDropdownProps> = ({ formik })
                 <SelectValue placeholder="-- Chọn tỉnh / thành phố --" />
               </SelectTrigger>
               <SelectContent className="z-[9999] bg-white shadow-xl rounded-xl border border-gray-300 ">
-                {provinces.map((p) => (
-                  <SelectItem key={p.ProvinceID} value={String(p.ProvinceID)}>
-                    {p.ProvinceName}
+                {provinces?.map((p) => (
+                  <SelectItem key={p?.ProvinceID} value={String(p?.ProvinceID)}>
+                    {p?.ProvinceName}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -137,9 +137,9 @@ const SelectAddressDropdown: React.FC<SelectAddressDropdownProps> = ({ formik })
                 <SelectValue placeholder="-- Chọn quận / huyện --" />
               </SelectTrigger>
               <SelectContent className="z-[9999] bg-white shadow-xl rounded-xl border border-gray-300">
-                {districts.map((d) => (
-                  <SelectItem key={d.DistrictID} value={String(d.DistrictID)}>
-                    {d.DistrictName}
+                {districts?.map((d) => (
+                  <SelectItem key={d?.DistrictID} value={String(d?.DistrictID)}>
+                    {d?.DistrictName}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -162,8 +162,8 @@ const SelectAddressDropdown: React.FC<SelectAddressDropdownProps> = ({ formik })
           </SelectTrigger>
           <SelectContent className="z-[9999] bg-white shadow-xl rounded-xl border border-gray-300">
             {wards.map((w) => (
-              <SelectItem key={w.WardCode} value={String(w.WardCode)}>
-                {w.WardName}
+              <SelectItem key={w?.WardCode} value={String(w?.WardCode)}>
+                {w?.WardName}
               </SelectItem>
             ))}
           </SelectContent>

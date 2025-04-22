@@ -1,29 +1,29 @@
 import React from "react";
-import { useFormik } from "formik";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import PaymentMethodCart from "@/pages/cart/PaymentMethodCart";
-import { informationOrderSchema } from "@/pages/cart/schema/infoOrderSchema";
-import SelectAddressDropdown from "@/components/SelectAddressDropdown";
+import { FormikProps } from "formik";
 
-const InformationOrder: React.FC = () => {
-  const formik = useFormik({
-    initialValues: {
-      fullName: "",
-      phoneNumber: "",
-      email: "",
-      address: "",
-      note: "",
-      saveToAddressBook: false,
-    },
-    validationSchema: informationOrderSchema,
-    onSubmit: (values) => {
-      console.log("Form values:", values);
-    },
-  });
+interface FormValues {
+  fullName: string;
+  phoneNumber: string;
+  email: string;
+  address: string;
+  province: string;
+  district: string;
+  ward: string;
+  note: string;
+  method: string;
+}
+
+interface InformationOrderProps {
+  formik: FormikProps<FormValues>;
+}
+
+const InformationOrder: React.FC<InformationOrderProps> = ({ formik }) => {
 
   return (
-    <form className="px-5 lg:ml-15" onSubmit={formik.handleSubmit}>
+    <form className="px-5 lg:ml-15">
       <h1 className="text-2xl text-gray-900 font-bold">Ordering Information</h1>
       <div className="border-b border-gray-200 my-5 space-y-6">
         <div className="flex w-full space-x-6">
@@ -37,8 +37,7 @@ const InformationOrder: React.FC = () => {
               className="border border-gray-400 p-6 rounded-4xl"
               placeholder="Enter your full name"
               value={formik.values.fullName}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
+              readOnly={true}
             />
             {formik.touched.fullName && formik.errors.fullName && (
               <div className="text-red-500 text-sm mt-1">{formik.errors.fullName}</div>
@@ -55,8 +54,7 @@ const InformationOrder: React.FC = () => {
               className="border border-gray-400 p-6 rounded-4xl"
               placeholder="Enter your phone number"
               value={formik.values.phoneNumber}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
+              readOnly={true}
             />
             {formik.touched.phoneNumber && formik.errors.phoneNumber && (
               <div className="text-red-500 text-sm mt-1">{formik.errors.phoneNumber}</div>
@@ -74,8 +72,7 @@ const InformationOrder: React.FC = () => {
             className="border border-gray-400 p-6 rounded-4xl"
             placeholder="Enter your email"
             value={formik.values.email}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
+            readOnly={true}
           />
           {formik.touched.email && formik.errors.email && (
             <div className="text-red-500 text-sm mt-1">{formik.errors.email}</div>
@@ -84,7 +81,71 @@ const InformationOrder: React.FC = () => {
 
         <div>
           <div className="mb-6">
-            <SelectAddressDropdown />
+            <div className="space-y-4 w-full">
+              <div>
+                <Label htmlFor="address" className="text-md text-gray-700 mb-1">
+                  Address
+                </Label>
+                <Input
+                  id="address"
+                  name="address"
+                  className="border border-gray-400 p-6 rounded-4xl"
+                  placeholder="Enter your address (eg: 123 Cau Giay , Ha Noi )"
+                  value={formik.values.address}
+                  readOnly={true}
+                />
+                {formik.touched.address && formik.errors.address && (
+                  <div className="text-red-500 text-sm mt-1">{formik.errors.address}</div>
+                )}
+              </div>
+            </div>
+            <div className="lg:flex justify-between text-gray-800 text-md">
+              {/* Province */}
+              <div className="grid grid-cols-2 gap-4 w-full">
+                <div className="relative overflow-visible z-50">
+                  <Label className="block font-medium text-md mb-1">Tỉnh / Thành phố</Label>
+                  <Input
+                    id="province"
+                    name="province"
+                    className="border border-gray-400 p-6 rounded-4xl"
+                    value={formik.values.province}
+                    readOnly={true}
+                  />
+                  {formik.touched.province && formik.errors.province && (
+                    <div className="text-red-500 text-sm mt-1">{formik.errors.province}</div>
+                  )}
+                </div>
+
+                {/* District */}
+                <div className="relative overflow-visible z-40">
+                  <Label className="block font-medium text-md mb-1">Quận / Huyện</Label>
+                  <Input
+                    id="district"
+                    name="district"
+                    className="border border-gray-400 p-6 rounded-4xl"
+                    value={formik.values.district}
+                    readOnly={true}
+                  />
+                  {formik.touched.district && formik.errors.district && (
+                    <div className="text-red-500 text-sm mt-1">{formik.errors.district}</div>
+                  )}
+                </div>
+              </div>
+            </div>
+            {/* Ward */}
+            <div className="relative overflow-visible z-30">
+              <Label className="block font-medium text-md mb-1">Phường / Xã</Label>
+              <Input
+                id="ward"
+                name="ward"
+                className="border border-gray-400 p-6 rounded-4xl"
+                value={formik.values.ward}
+                readOnly={true}
+              />
+              {formik.touched.ward && formik.errors.ward && (
+                <div className="text-red-500 text-sm mt-1">{formik.errors.ward}</div>
+              )}
+            </div>
           </div>
         </div>
 
@@ -101,23 +162,12 @@ const InformationOrder: React.FC = () => {
             onChange={formik.handleChange}
           />
         </div>
-
-        <div className="flex mb-10">
-          <input
-            type="checkbox"
-            name="saveToAddressBook"
-            checked={formik.values.saveToAddressBook}
-            onChange={formik.handleChange}
-            className="w-4 h-4 mt-1"
-          />
-          <span className="text-md text-gray-800 pl-2">Save to address book for next purchase</span>
-        </div>
       </div>
 
       <div className="my-10">
         <h1 className="text-2xl text-gray-900 font-bold">Payment Method</h1>
         <div>
-          <PaymentMethodCart />
+          <PaymentMethodCart formik={formik} />
         </div>
       </div>
     </form>

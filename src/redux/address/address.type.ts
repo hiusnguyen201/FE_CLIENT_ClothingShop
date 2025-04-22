@@ -18,6 +18,7 @@ export interface AddressState {
   address: Nullable<Address>;
   addressList: Address[];
   error: Nullable<string>;
+  totalCount: number;
 }
 
 /**
@@ -25,4 +26,13 @@ export interface AddressState {
  */
 export interface AddAddressResponse extends BaseResponse<Address> { }
 
-export interface getListAddressResponse extends GetListResponseData<Address[]> { }
+
+/**
+ * Get address list
+ */
+export interface GetAddressListResponse extends GetListResponseData<Address> { }
+
+/**
+ * Set default address 
+ */
+export interface SetDefaultOrRemoveAddressResponse extends BaseResponse<{ id: string }> { }

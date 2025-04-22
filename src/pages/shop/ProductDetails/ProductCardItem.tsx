@@ -1,12 +1,15 @@
 import { motion, useAnimation } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ProductBadge } from "@/components/productSlice/ProductBadge";
+// import { ProductBadge } from "@/components/productSlice/ProductBadge";
 import { ColorBadge } from "@/components/productSlice/ColorBadge";
 import { Button } from "@/components/ui/button";
 import { Product, ProductVariant } from "@/types/product";
 import { useState } from "react";
 import { Nullable } from "@/types/common";
 import { colorMap } from "@/types/color";
+import { addCart, getCart } from "@/redux/cart/cart.thunk";
+import { useAppDispatch } from "@/redux/store";
+import { toast } from "@/hooks/use-toast";
 
 interface ProductCardItemProps {
   product: Product;
@@ -37,6 +40,8 @@ const formatPrice = (price: number): string => {
   return new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(price);
 };
 const ProductCardItem: React.FC<ProductCardItemProps> = ({ product }) => {
+  const dispatch = useAppDispatch();
+
   const controls = useAnimation();
 
   const handleHoverStart = () => {
@@ -85,7 +90,17 @@ const ProductCardItem: React.FC<ProductCardItemProps> = ({ product }) => {
 
   const handleAddToCart = () => {
     if (selectedVariantData && selectedVariantData.quantity > 0) {
-      console.log(selectedVariantData);
+      dispatch(addCart({ productVariantId: selectedVariantData.id, quantity: 1 })).then((res) => {
+        if (res.meta.requestStatus === "fulfilled") {
+          toast({ title: "Added to cart successfully" })
+          dispatch(getCart())
+        } else {
+          toast({
+            title: res.payload?.toString() || "Failed to add to cart",
+            variant: "destructive"
+          })
+        }
+      })
     }
   };
 
@@ -122,7 +137,7 @@ const ProductCardItem: React.FC<ProductCardItemProps> = ({ product }) => {
           </Button>
           <div className="flex flex-wrap gap-1">
             {sizeOption ? (
-              sizeOption.optionValues.map((value, i) => {
+              sizeOption.optionValues.map((value) => {
                 const isAvailable = product.productVariants.some(variant =>
                   variant.variantValues.some(
                     val => val.option.name === "Size" && val.optionValue.id === value.id
@@ -134,7 +149,7 @@ const ProductCardItem: React.FC<ProductCardItemProps> = ({ product }) => {
                     onClick={() => handleSelectOption("size", value.id)}
                     disabled={!isAvailable}
                     className={`bg-gray-300 mt-2 hover:bg-gray-400 w-[40px] h-[38px] cursor-pointer
-                                    ${selectedVariant.sizeId === value.id ? "bg-red-300" : null}`}
+                                    ${selectedVariant.sizeId === value.id ? "bg-red-500" : null}`}
                   >
                     {value.valueName}
                   </Button>
@@ -150,7 +165,7 @@ const ProductCardItem: React.FC<ProductCardItemProps> = ({ product }) => {
       <div className="flex flex-col min-h-[94px]">
         <div className="flex mb-2 items-center gap-1 sm:gap-2 flex-wrap mt-2">
           {colorOption ? (
-            colorOption.optionValues.map((value, i) => {
+            colorOption.optionValues.map((value) => {
               const isAvailable = product.productVariants.some(variant =>
                 variant.quantity > 0 &&
                 variant.variantValues.some(

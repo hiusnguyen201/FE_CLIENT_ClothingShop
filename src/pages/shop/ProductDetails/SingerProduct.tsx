@@ -8,6 +8,7 @@ import { getProduct } from "@/redux/product/product.thunk";
 import { Nullable } from "@/types/common";
 import { ProductVariant } from "@/types/product";
 import { colorMap } from "@/types/color";
+import { formatPrice } from "@/utils/product";
 
 interface SelectedVariant {
   sizeId: Nullable<string>;
@@ -28,10 +29,6 @@ const getPriceRange = (variants: ProductVariant[]): PriceRange => {
     minPrice: Math.min(...prices),
     maxPrice: Math.max(...prices),
   };
-};
-
-const formatPrice = (price: number): string => {
-  return new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(price);
 };
 
 const SingleProduct: React.FC = () => {

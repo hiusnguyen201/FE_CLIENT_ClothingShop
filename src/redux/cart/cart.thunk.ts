@@ -1,15 +1,14 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ThunkApiConfig } from "@/types/thunk-api";
-import { GetCartResponse } from "./cart.type";
+import { AddCartPayload, AddCartResponse, ClearCartResponse, GetCartResponse, RemoveItemPayload, RemoveItemResponse } from "./cart.type";
 import { addCartService, clearCartService, getCartService, removeItemService } from "./cart.service";
-import { Cart } from "@/types/cart";
 
 
-export const addCart = createAsyncThunk<GetCartResponse, { productVariantId: string; quantity: number }, ThunkApiConfig>(
+export const addCart = createAsyncThunk<AddCartResponse, AddCartPayload, ThunkApiConfig>(
   "carts/add-item",
-  async (cart, { rejectWithValue }) => {
+  async (payload, { rejectWithValue }) => {
     try {
-      const response: GetCartResponse = await addCartService(cart);
+      const response: AddCartResponse = await addCartService(payload);
       return response;
     } catch (error: any) {
       const message: string = error.response?.data?.message || error.message || error.toString();
@@ -31,11 +30,11 @@ export const getCart = createAsyncThunk<GetCartResponse, void, ThunkApiConfig>(
   }
 );
 
-export const clearCart = createAsyncThunk<GetCartResponse, void, ThunkApiConfig>(
+export const clearCart = createAsyncThunk<ClearCartResponse, void, ThunkApiConfig>(
   "carts/clear-cart",
   async (_, { rejectWithValue }) => {
     try {
-      const response: GetCartResponse = await clearCartService();
+      const response: ClearCartResponse = await clearCartService();
       return response;
     } catch (error: any) {
       const message: string = error.response?.data?.message || error.message || error.toString();
@@ -44,11 +43,11 @@ export const clearCart = createAsyncThunk<GetCartResponse, void, ThunkApiConfig>
   }
 );
 
-export const removeItem = createAsyncThunk<GetCartResponse, string, ThunkApiConfig>(
+export const removeItem = createAsyncThunk<RemoveItemResponse, RemoveItemPayload, ThunkApiConfig>(
   "carts/remove-item",
-  async (productVariantId: string, { rejectWithValue }) => {
+  async (payload, { rejectWithValue }) => {
     try {
-      const response: GetCartResponse = await removeItemService(productVariantId);
+      const response: RemoveItemResponse = await removeItemService(payload);
       return response;
     } catch (error: any) {
       const message: string = error.response?.data?.message || error.message || error.toString();

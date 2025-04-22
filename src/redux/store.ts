@@ -6,6 +6,7 @@ import searchProductsReducer from "./search/search.slice";
 import categoriesReducer from "./category/category.slice";
 import accountReducer from "./account/account.slice";
 import addressReducer from "./address/address.slice";
+import cartReducer from "./cart/cart.slice";
 
 
 export const store = configureStore({
@@ -16,6 +17,7 @@ export const store = configureStore({
     categories: categoriesReducer,
     account: accountReducer,
     address: addressReducer,
+    cart: cartReducer,
   },
 });
 

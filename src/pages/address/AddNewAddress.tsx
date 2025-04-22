@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { useFormik } from "formik";
 import { AddNewAddressSchema } from "./schema/selectAddressSchema";
 import { useAppDispatch } from "@/redux/store";
-import { addAddress } from "@/redux/address/address.thunk";
+import { addAddress, getAddressList } from "@/redux/address/address.thunk";
 import { toast } from "@/hooks/use-toast";
 
 interface AddNewAddressProps {
@@ -29,11 +29,12 @@ const AddNewAddress: FC<AddNewAddressProps> = ({ isOpen, onClose }) => {
     },
     validationSchema: AddNewAddressSchema,
     onSubmit: (values) => {
-      console.log("Form values:", values);
       dispatch(addAddress(values)).then((data) => {
         if (data.meta.requestStatus === "fulfilled") {
           toast({ title: "Successful" });
           formik.resetForm();
+          dispatch(getAddressList());
+          onClose();
         } else {
           toast({
             variant: "destructive",
@@ -80,7 +81,7 @@ const AddNewAddress: FC<AddNewAddressProps> = ({ isOpen, onClose }) => {
                 </Label>
               </div>
               <div className="flex justify-end space-x-4 mt-6">
-                <Button type="button" onClick={onClose} className="px-6 py-2 rounded-lg bg-gray-200 text-black">
+                <Button type="button" onClick={onClose} className="px-6 py-2 rounded-lg">
                   Cancel
                 </Button>
                 <Button type="submit" className="px-6 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700">

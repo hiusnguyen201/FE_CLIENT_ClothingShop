@@ -4,7 +4,7 @@ import React from "react";
 const FooterCartPayment: React.FC = () => {
   return (
     <div className="flex flex-col lg:flex-row justify-between lg:w-1/2 w-full lg:h-24 h-20 lg:26 items-center gap-4 left-0 bg-blue-50">
-      <div className="flex flex-1 space-x-2 hidden:border-r md:border-gray-300 h-12 w-full items-center ml-5">
+      {/* <div className="flex flex-1 space-x-2 hidden:border-r md:border-gray-300 h-12 w-full items-center ml-5">
         <div className="lg:w-15 lg:h-15 h-10 w-12">
           <img src="https://mcdn.coolmate.me/image/October2024/mceclip2_42.png" alt="paymentIcon" />
         </div>
@@ -16,7 +16,7 @@ const FooterCartPayment: React.FC = () => {
           <span>Voucher</span>
         </div>
         <Button className="lg:shadow-none text__underline">Select / Enter Voucher Code</Button>
-      </div>
+      </div> */}
     </div>
   );
 };
