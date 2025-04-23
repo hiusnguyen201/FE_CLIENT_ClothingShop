@@ -10,7 +10,6 @@ import {
 export interface DivisionState {
   loading: {
     getProvinces: boolean;
-    getDistricts: boolean;
   };
   provinces: Nullable<Province[]>;
   // districts: Nullable<District[]>;

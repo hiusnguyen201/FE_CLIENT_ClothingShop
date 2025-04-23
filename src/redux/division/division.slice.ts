@@ -1,14 +1,13 @@
 import { ActionReducerMapBuilder, createSlice, Draft, PayloadAction } from "@reduxjs/toolkit";
-import { DivisionState, GetDistrictsResponse, GetProvincesResponse } from "./division.type";
-import { getDistricts, getProvinces } from "./division.thunk";
+import { DivisionState, GetProvincesResponse } from "./division.type";
+import { getProvinces } from "./division.thunk";
 
 const initialState: DivisionState = {
   loading: {
     getProvinces: false,
-    getDistricts: false,
   },
   provinces: [],
-  districts: [],
+  // districts: [],
   totalCount: 0,
   error: null,
 };
@@ -40,22 +39,7 @@ const divisionSlice = createSlice({
       })
 
     // Get districts Case
-    // .addCase(getDistricts.pending, (state: Draft<DivisionState>) => {
-    //   state.loading.getDistricts = true;
-    //   state.error = null;
-    // })
-    // .addCase(getDistricts.fulfilled, (state: Draft<DivisionState>, action: PayloadAction<GetDistrictsResponse>) => {
-    //   state.loading.getDistricts = false;
-    //   state.error = null;
-    //   state.districts = action.payload.data.list;
-    //   state.totalCount = action.payload.data.totalCount;
-    // })
-    // .addCase(getDistricts.rejected, (state: Draft<DivisionState>, action: PayloadAction<any>) => {
-    //   state.loading.getDistricts = false;
-    //   state.error = action.payload as string;
-    //   state.districts = [];
-    //   state.totalCount = 0;
-    // })
+
   },
 });
 

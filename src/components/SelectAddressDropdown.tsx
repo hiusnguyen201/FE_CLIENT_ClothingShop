@@ -42,7 +42,7 @@ const SelectAddressDropdown: React.FC<SelectAddressDropdownProps> = ({ formik })
 
   const [selectedProvince, setSelectedProvince] = useState<string>("");
   const [selectedDistrict, setSelectedDistrict] = useState<string>("");
-  const [selectedWard, setSelectedWard] = useState<string>("");
+  const [setSelectedWard] = useState<string>("");
 
   // Fetch Provinces
   useEffect(() => {
@@ -100,7 +100,7 @@ const SelectAddressDropdown: React.FC<SelectAddressDropdownProps> = ({ formik })
               onValueChange={(value) => {
                 setSelectedProvince(value);
                 setSelectedDistrict("");
-                setSelectedWard("");
+                // setSelectedWard("");
                 setDistricts([]);
                 setWards([]);
                 formik.setFieldValue("provinceCode", value)
@@ -128,7 +128,7 @@ const SelectAddressDropdown: React.FC<SelectAddressDropdownProps> = ({ formik })
             <Select
               onValueChange={(value) => {
                 setSelectedDistrict(value);
-                setSelectedWard("");
+                // setSelectedWard("");
                 setWards([]);
                 formik.setFieldValue("districtCode", value)
               }}
@@ -154,7 +154,7 @@ const SelectAddressDropdown: React.FC<SelectAddressDropdownProps> = ({ formik })
       <div className="relative overflow-visible z-30">
         <Label className="block font-medium text-md mb-1">Phường / Xã</Label>
         <Select onValueChange={(value) => {
-          setSelectedWard(value);
+          // setSelectedWard(value);
           formik.setFieldValue("wardCode", value)
         }}>
           <SelectTrigger className="w-full p-6 border border-gray-400 px-3 rounded-4xl flex items-center min-w-50">
