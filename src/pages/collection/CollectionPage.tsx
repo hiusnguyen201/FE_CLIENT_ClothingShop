@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 import { Link, useParams, useSearchParams } from "react-router-dom";
-import ProductCards from "@/pages/shop/productDetails/ProductCards";
+import ProductCards from "@/pages/shop/ProductDetails/ProductCards";
 import { Product } from "@/types/product";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { getCategory } from "@/redux/category/category.thunk";

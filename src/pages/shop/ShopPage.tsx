@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 // import productsData from "@/data/product.json";
-import ProductCards from "@/pages/shop/productDetails/ProductCards";
+import ProductCards from "@/pages/shop/ProductDetails/ProductCards";
 import EmptyProducts from "@/components/EmptyProducts";
 import { Link, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";

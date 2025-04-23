@@ -1,6 +1,6 @@
 import { ActionReducerMapBuilder, createSlice, Draft, PayloadAction } from "@reduxjs/toolkit";
 import { DivisionState, GetDistrictsResponse, GetProvincesResponse } from "./division.type";
-import { getDistricts, getProvinces } from "./division.thunk";
+import { getProvinces } from "./division.thunk";
 
 const initialState: DivisionState = {
   loading: {
@@ -16,9 +16,7 @@ const initialState: DivisionState = {
 const divisionSlice = createSlice({
   name: "division",
   initialState,
-  reducers: {
-
-  },
+  reducers: {},
   extraReducers: (builder: ActionReducerMapBuilder<DivisionState>) => {
     builder
       // Get provinces Case
@@ -37,7 +35,7 @@ const divisionSlice = createSlice({
         state.error = action.payload as string;
         state.provinces = [];
         state.totalCount = 0;
-      })
+      });
 
     // Get districts Case
     // .addCase(getDistricts.pending, (state: Draft<DivisionState>) => {

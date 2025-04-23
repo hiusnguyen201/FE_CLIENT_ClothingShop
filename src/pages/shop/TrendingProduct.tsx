@@ -1,5 +1,5 @@
 import React, { Suspense, useEffect } from "react";
-import ProductCards from "@/pages/shop/productDetails/ProductCards";
+import ProductCards from "@/pages/shop/ProductDetails/ProductCards";
 
 // import productsData from "@/data/product.json";
 import { Link } from "react-router-dom";
@@ -10,19 +10,16 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 const TrendingProducts: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { products } = useAppSelector(
-    state => state.searchProducts
-  );
+  const { products } = useAppSelector((state) => state.searchProducts);
 
   useEffect(() => {
     dispatch(
       searchProducts({
         limit: 10,
-        sortBy: "createdAt"
+        sortBy: "createdAt",
       })
     );
   }, [dispatch]);
-
 
   return (
     <Suspense fallback={<Skeleton />}>

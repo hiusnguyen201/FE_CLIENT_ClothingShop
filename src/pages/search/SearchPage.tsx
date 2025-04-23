@@ -17,9 +17,7 @@ interface SearchFormState {
 const SearchPage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const dispatch = useAppDispatch();
-  const { products, loading, totalCount, page, limit } = useAppSelector(
-    state => state.searchProducts
-  );
+  const { products, loading, totalCount, page, limit } = useAppSelector((state) => state.searchProducts);
 
   const [formState, setFormState] = useState<SearchFormState>(() => {
     return {
@@ -46,10 +44,10 @@ const SearchPage: React.FC = () => {
         limit,
       })
     );
-  }
+  };
 
   const updateFormState = (field: keyof SearchFormState, value: string) => {
-    setFormState(prev => ({ ...prev, [field]: value }));
+    setFormState((prev) => ({ ...prev, [field]: value }));
   };
 
   useEffect(() => {
@@ -102,8 +100,10 @@ const SearchPage: React.FC = () => {
             Search
           </button>
         </div>
-        {loading.searchProducts ? <div className="text-center">Loading...</div>
-          : <div>
+        {loading.searchProducts ? (
+          <div className="text-center">Loading...</div>
+        ) : (
+          <div>
             {products.length === 0 ? (
               <div>
                 <p className="section__subheader">Sorry, no result found!</p>
@@ -111,8 +111,8 @@ const SearchPage: React.FC = () => {
             ) : (
               <ProductCards productsData={products} />
             )}
-          </div>}
-
+          </div>
+        )}
       </section>
     </div>
   );

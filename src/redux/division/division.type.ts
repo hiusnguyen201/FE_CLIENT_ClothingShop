@@ -1,8 +1,6 @@
 import { District, Province, Ward } from "@/types/division";
 import { Nullable } from "@/types/common";
-import {
-  GetListResponseData
-} from "@/types/response";
+import { GetListResponseData } from "@/types/response";
 
 /**
  * State
@@ -13,17 +11,15 @@ export interface DivisionState {
     getDistricts: boolean;
   };
   provinces: Nullable<Province[]>;
-  // districts: Nullable<District[]>;
+  districts: Nullable<District[]>;
   totalCount: number;
   error: Nullable<string>;
 }
 
-
 /**
  * Get provinces
  */
-export interface GetProvincesResponse extends GetListResponseData<Province> { }
-
+export interface GetProvincesResponse extends GetListResponseData<Province> {}
 
 /**
  * Get districts payload
@@ -32,9 +28,9 @@ export type GetDistrictsPayload = {
   provinceCode: number;
 };
 /**
- * Get districts 
+ * Get districts
  */
-export interface GetDistrictsResponse extends GetListResponseData<District> { }
+export interface GetDistrictsResponse extends GetListResponseData<District> {}
 
 /**
  * Get wards payload
@@ -43,6 +39,6 @@ export type GetWardsPayload = {
   districtCode: number;
 };
 /**
- * Get wards 
+ * Get wards
  */
-export interface GetWardsResponse extends GetListResponseData<Ward> { }
+export interface GetWardsResponse extends GetListResponseData<Ward> {}
