@@ -44,15 +44,15 @@ const ShopPage: React.FC = () => {
     };
   });
 
-  // const handleToggleDropdownSort = () => {
-  //   setIsDropdownMenuSort(!isDropdownMenuSort);
-  // };
+  const handleToggleDropdownSort = () => {
+    setIsDropdownMenuSort(!isDropdownMenuSort);
+  };
 
-  // const handleSelectSort = (option: { name: string, value: string }) => {
-  //   setSelected(option.name);
-  //   updateFormState("sortBy", option.value);
-  //   setIsDropdownMenuSort(false);
-  // };
+  const handleSelectSort = (option: { name: string, value: string }) => {
+    setSelected(option.name);
+    updateFormState("sortBy", option.value);
+    setIsDropdownMenuSort(false);
+  };
 
   const updateFormState = (field: keyof SearchFormState, value: string) => {
     setFormState(prev => ({ ...prev, [field]: value }));

@@ -10,6 +10,7 @@ import { VerifyOTPPage } from "@/pages/auth/VerifyOTPPage";
 import { LoginPage } from "@/pages/auth/loginPage";
 import { RegisterPage } from "@/pages/auth/RegisterPage";
 import SingleProduct from "@/pages/shop/ProductDetails/SingerProduct";
+import ShopPage from "@/pages/shop/ShopPage";
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
       {
         path: "/search",
         element: <SearchPage />,
+      },
+      {
+        path: "/shop",
+        element: <ShopPage />,
       },
       {
         path: "/shop/:id",
