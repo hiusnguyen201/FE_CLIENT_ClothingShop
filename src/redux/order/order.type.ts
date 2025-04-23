@@ -25,7 +25,6 @@ export interface OrderState {
  */
 
 export interface NewOrderPayload {
-  customerId: string;
   customerName: string;
   customerEmail: string;
   customerPhone: string;

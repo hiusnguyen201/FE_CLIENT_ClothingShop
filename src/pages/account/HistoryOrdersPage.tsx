@@ -54,7 +54,7 @@ const HistoryOrderPage: React.FC = () => {
                       </div>
                       <div className="flex-1">
                         {/* <div className="font-medium">{item.name}</div> */}
-                        <div className="text-sm text-muted-foreground">{item.variant}</div>
+                        {/* <div className="text-sm text-muted-foreground">{item.variant}</div> */}
                         <div className="text-sm text-muted-foreground">x{item.quantity}</div>
                       </div>
                       {/* <div className="font-medium whitespace-nowrap">{item.price.toLocaleString()}đ</div> */}

@@ -54,6 +54,7 @@ const ShopPage: React.FC = () => {
     setIsDropdownMenuSort(false);
   };
 
+  type SearchFormState = ExtendedGetListParams<DataItem>;
   const updateFormState = (field: keyof SearchFormState, value: string) => {
     setFormState(prev => ({ ...prev, [field]: value }));
   };
@@ -62,9 +63,9 @@ const ShopPage: React.FC = () => {
     const params = new URLSearchParams();
     if (formState.keyword) params.set("keyword", formState.keyword);
     if (formState.category) params.set("category", formState.category);
-    params.set("sortBy", formState.sortBy);
-    params.set("sortOrder", formState.sortOrder);
-    if (formState.limit) params.set("limit", formState.limit);
+    params.set("sortBy", formState.sortBy || "");
+    params.set("sortOrder", formState.sortOrder || "");
+    if (formState.limit) params.set("limit", formState.limit.toString());
     setSearchParams(params);
 
     dispatch(
@@ -73,6 +74,9 @@ const ShopPage: React.FC = () => {
         category: formState.category || undefined,
         page,
         limit,
+        keyword: "",
+        sortBy: "name",
+        sortOrder: "desc"
       })
     );
   }, [dispatch, formState, page, limit, setSearchParams]);

@@ -5,12 +5,13 @@ import HomePage from "@/pages/home/HomePage";
 import SearchPage from "@/pages/search/SearchPage";
 import { createBrowserRouter } from "react-router-dom";
 import UserInfo from "@/pages/account/UserInfoPage";
-import CollectionPage from "@/pages/collection/CollectionPage";
+// import CollectionPage from "@/pages/collection/CollectionPage";
 import { VerifyOTPPage } from "@/pages/auth/VerifyOTPPage";
 import { LoginPage } from "@/pages/auth/loginPage";
 import { RegisterPage } from "@/pages/auth/RegisterPage";
 import SingleProduct from "@/pages/shop/ProductDetails/SingerProduct";
 import ShopPage from "@/pages/shop/ShopPage";
+import CollectionPage from "@/pages/collection/CollectionPage";
 
 const router = createBrowserRouter([
   {

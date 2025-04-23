@@ -12,6 +12,7 @@ import { getDistricts, getWards } from "@/redux/division/division.thunk";
 import { toast } from "@/hooks/use-toast";
 import { createOrder } from "@/redux/order/order.thunk";
 import { useNavigate } from "react-router-dom";
+import { removeItem } from "@/redux/cart/cart.thunk";
 
 interface CartModalProps {
   isCartOpen: boolean;
@@ -96,7 +97,6 @@ const CartModal: React.FC<CartModalProps> = ({ isCartOpen, onClose, cartData }) 
           districtCode: values.districtCode,
           wardCode: values.wardCode,
           address: values.address,
-          customerId: user?.id,
           notes: values.note,
           paymentMethod: values.method,
           productVariants: cartData.map((cart) => {
@@ -118,8 +118,11 @@ const CartModal: React.FC<CartModalProps> = ({ isCartOpen, onClose, cartData }) 
     }
   });
 
-  const cartFormat = cartData.filter((cart) => cart.productVariant.quantity > 0)
-
+  cartData.map((cart) => {
+    if (cart.productVariant.quantity < 1) {
+      dispatch(removeItem({ productVariantId: cart.productVariant._id }));
+    }
+  });
 
   return (
     <div className="fixed inset-0 backdrop-blur-md transition-opacity z-50 md:px-10 lg:px-10">
@@ -139,8 +142,8 @@ const CartModal: React.FC<CartModalProps> = ({ isCartOpen, onClose, cartData }) 
             </div>
             {/* cart items */}
             <div>
-              {cartFormat.length ? <CartItems cartData={cartFormat} /> : <div className="text-center mt-10">Add item first</div>}
-              {cartFormat.length ? <OrderSummary cartData={cartFormat} /> : null}
+              {cartData.length ? <CartItems cartData={cartData} /> : <div className="text-center mt-10">Add item first</div>}
+              {cartData.length ? <OrderSummary cartData={cartData} /> : null}
             </div>
           </div>
           <div className="w-full lg:w-2/3 mt-3">
@@ -150,7 +153,7 @@ const CartModal: React.FC<CartModalProps> = ({ isCartOpen, onClose, cartData }) 
       </div>
       <div className="fixed bottom-0 w-full right-0 lg:h-25 h-42 bg-white shadow-2xl flex flex-col lg:flex-row align-end items-center text-right">
         <FooterCartPayment />
-        <FooterCartOrder cartData={cartFormat} handleSubmit={formik.handleSubmit} />
+        <FooterCartOrder cartData={cartData} handleSubmit={formik.handleSubmit} />
       </div>
     </div>
   );

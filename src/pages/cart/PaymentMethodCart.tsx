@@ -20,6 +20,9 @@ interface FormValues {
   ward: string;
   note: string;
   method: string;
+  provinceCode: number,
+  districtCode: number,
+  wardCode: string,
 }
 
 interface InformationOrderProps {

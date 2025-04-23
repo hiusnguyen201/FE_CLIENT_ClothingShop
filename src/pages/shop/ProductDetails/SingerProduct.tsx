@@ -168,7 +168,7 @@ const SingleProduct: React.FC = () => {
               </p>
               <div className="flex mb-2 items-center gap-1 sm:gap-2 flex-wrap mt-2">
                 {colorOption ? (
-                  colorOption.optionValues.map((value, i) => {
+                  colorOption.optionValues.map((value) => {
                     const isAvailable = product.productVariants.some(variant =>
                       variant.quantity > 0 &&
                       variant.variantValues.some(
@@ -199,7 +199,7 @@ const SingleProduct: React.FC = () => {
 
               <div className="flex flex-wrap gap-1">
                 {sizeOption ? (
-                  sizeOption.optionValues.map((value, i) => {
+                  sizeOption.optionValues.map((value) => {
                     const isAvailable = product.productVariants.some(variant =>
                       variant.variantValues.some(
                         val => val.option.name === "Size" && val.optionValue.id === value.id

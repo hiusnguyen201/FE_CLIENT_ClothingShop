@@ -7,13 +7,12 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-import { Link, useParams, useSearchParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import ProductCards from "../shop/productDetails/ProductCards";
-import { Product } from "@/types/product";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { getCategory } from "@/redux/category/category.thunk";
 import { searchProducts } from "@/redux/search/search.thunk";
-import { GetListParams } from "@/types/response";
+// import { GetListParams } from "@/types/response";
 import { setPage } from "@/redux/search/search.slice";
 
 const subCategories = ["Jean", "Shirt", "Trousers", "Áo Polo", "Quần Lót"];
@@ -38,43 +37,43 @@ const colorOptions = [
   { label: "Đen xám", value: "#2f2f2f" },
 ];
 
-interface DataItem {
-  name: string;
-  createdAt: string;
-}
+// interface DataItem {
+//   name: string;
+//   createdAt: string;
+// }
 
-interface ExtendedGetListParams<TData> extends GetListParams<TData> {
-  category?: string | undefined;
-}
+// interface ExtendedGetListParams<TData> extends GetListParams<TData> {
+//   category?: string | undefined;
+// }
 
 const CollectionPage: React.FC = () => {
   const { collectionName } = useParams<{ collectionName?: string }>();
   const dispatch = useAppDispatch();
-  const { category, loading: categoryLoading } = useAppSelector((state) => state.categories);
-  const { products, loading: productsLoading, limit, page, totalCount } = useAppSelector((state) => state.searchProducts);
-  const [searchParams, setSearchParams] = useSearchParams();
+  const { category } = useAppSelector((state) => state.categories);
+  const { products, limit, page, totalCount } = useAppSelector((state) => state.searchProducts);
+  // const [searchParams] = useSearchParams();
 
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+  // const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [selectedSubs, setSelectedSubs] = useState<string[]>([]);
   const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
   const [selectedColors, setSelectedColors] = useState<string[]>([]);
   const [sortBy, setSortBy] = useState<string>("newest");
   const [showMobileFilter, setShowMobileFilter] = useState(false);
 
-  const [formState, setFormState] = useState<ExtendedGetListParams<DataItem>>(() => {
-    return {
-      page: Number(searchParams.get("page")) || 1,
-      limit: Number(searchParams.get("limit")) || 10,
-      keyword: searchParams.get("keyword") || "",
-      category: searchParams.get("category") || "",
-      sortBy: (searchParams.get("sortBy") as "name" | "createdAt" | undefined) || "createdAt",
-      sortOrder: (searchParams.get("sortOrder") as "asc" | "desc" | undefined) || "desc",
-    };
-  });
+  // const [formState, setFormState] = useState<ExtendedGetListParams<DataItem>>(() => {
+  //   return {
+  //     page: Number(searchParams.get("page")) || 1,
+  //     limit: Number(searchParams.get("limit")) || 10,
+  //     keyword: searchParams.get("keyword") || "",
+  //     category: searchParams.get("category") || "",
+  //     sortBy: (searchParams.get("sortBy") as "name" | "createdAt" | undefined) || "createdAt",
+  //     sortOrder: (searchParams.get("sortOrder") as "asc" | "desc" | undefined) || "desc",
+  //   };
+  // });
 
-  const updateFormState = (field: keyof ExtendedGetListParams<DataItem>, value: string) => {
-    setFormState(prev => ({ ...prev, [field]: value }));
-  };
+  // const updateFormState = (field: keyof ExtendedGetListParams<DataItem>, value: string) => {
+  //   setFormState(prev => ({ ...prev, [field]: value }));
+  // };
 
   const handlePageChange = (newPage: number) => {
     dispatch(setPage(newPage));
@@ -89,21 +88,10 @@ const CollectionPage: React.FC = () => {
 
   useEffect(() => {
     if (!category) {
-      setFilteredProducts([]);
       return;
     }
     dispatch(searchProducts({ category: category.id }));
   }, [dispatch, category]);
-
-  useEffect(() => {
-    if (category) {
-      const filtered = (products as Product[]).filter(
-        (product) => product.category.id === category.id
-      );
-      setFilteredProducts(filtered);
-    }
-  }, [products, category]);
-
 
   const toggleSub = (sub: string) => {
     setSelectedSubs((prev) =>
@@ -120,30 +108,6 @@ const CollectionPage: React.FC = () => {
   };
 
   const totalPages = Math.ceil(totalCount / limit);
-
-  // const filter = filteredProducts.filter((product) => {
-  //   const matchSub = selectedSubs.length === 0 || selectedSubs.includes(product.sub_category_id.toLowerCase());
-  //   const matchSize = selectedSizes.length === 0 || product.sizes?.some((size: string) => selectedSizes.includes(size));
-  //   const matchColor =
-  //     selectedColors.length === 0 || product.colors?.some((color: string) => selectedColors.includes(color));
-  //   return matchSub && matchSize && matchColor;
-  // });
-
-  // const sortedProducts = [...filter].sort((a, b) => {
-  //   switch (sortBy) {
-  //     case "price-asc":
-  //       return a.price - b.price;
-  //     case "price-desc":
-  //       return b.price - a.price;
-  //     case "discount-desc":
-  //       return (b.originalPrice - b.price) / b.originalPrice - (a.originalPrice - a.price) / a.originalPrice;
-  //     case "best-selling":
-  //       return (b.total_sold || 0) - (a.total_sold || 0);
-  //     case "newest":
-  //     default:
-  //       return new Date(b.createdAt || "").getTime() - new Date(a.createdAt || "").getTime();
-  //   }
-  // });
 
   return (
     <div className="p-4">
