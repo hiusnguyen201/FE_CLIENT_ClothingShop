@@ -9,6 +9,7 @@ import CollectionPage from "@/pages/collection/CollectionPage";
 import { VerifyOTPPage } from "@/pages/auth/VerifyOTPPage";
 import { LoginPage } from "@/pages/auth/loginPage";
 import { RegisterPage } from "@/pages/auth/RegisterPage";
+import SingleProduct from "@/pages/shop/ProductDetails/SingerProduct";
 
 const router = createBrowserRouter([
   {
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
       {
         path: "/search",
         element: <SearchPage />,
+      },
+      {
+        path: "/shop/:id",
+        element: <SingleProduct />,
       },
     ],
   },

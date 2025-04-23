@@ -9,6 +9,8 @@ import { Nullable } from "@/types/common";
 import { ProductVariant } from "@/types/product";
 import { colorMap } from "@/types/color";
 import { formatPrice } from "@/utils/product";
+import { addCart, getCart } from "@/redux/cart/cart.thunk";
+import { toast } from "@/hooks/use-toast";
 
 interface SelectedVariant {
   sizeId: Nullable<string>;
@@ -69,10 +71,19 @@ const SingleProduct: React.FC = () => {
 
   const handleAddToCart = () => {
     if (selectedVariantData && selectedVariantData.quantity > 0) {
-      console.log(selectedVariantData);
+      dispatch(addCart({ productVariantId: selectedVariantData.id, quantity: 1 })).then((res) => {
+        if (res.meta.requestStatus === "fulfilled") {
+          toast({ title: "Added to cart successfully" })
+          dispatch(getCart())
+        } else {
+          toast({
+            title: res.payload?.toString() || "Failed to add to cart",
+            variant: "destructive"
+          })
+        }
+      })
     }
   };
-
   useEffect(() => {
     window.scrollTo(0, 0);
     if (id) {
@@ -93,9 +104,6 @@ const SingleProduct: React.FC = () => {
   if (!product) {
     return <div>Product not found</div>;
   }
-
-  console.log(product);
-
 
   const { minPrice, maxPrice } = getPriceRange(product.productVariants);
 
@@ -126,7 +134,7 @@ const SingleProduct: React.FC = () => {
           {/* product image */}
           <div className="md:w-1/2 w-full">
             <img
-              className="rounded-md  w-32 h-auto"
+              className="rounded-md h-auto"
               src={product.thumbnail}
               alt={product.slug}
             />
@@ -203,7 +211,7 @@ const SingleProduct: React.FC = () => {
                         onClick={() => handleSelectOption("size", value.id)}
                         disabled={!isAvailable}
                         className={`bg-gray-300 mt-2 hover:bg-gray-400 w-[40px] h-[38px] cursor-pointer
-                        ${selectedVariant.sizeId === value.id ? "bg-red-300" : null}`}
+                        ${selectedVariant.sizeId === value.id ? "bg-red-500" : null}`}
                       >
                         {value.valueName}
                       </Button>
