@@ -14,6 +14,7 @@ import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { getCategory } from "@/redux/category/category.thunk";
 import { searchProducts } from "@/redux/search/search.thunk";
 import { GetListParams } from "@/types/response";
+import { setPage } from "@/redux/search/search.slice";
 
 const subCategories = ["Jean", "Shirt", "Trousers", "Áo Polo", "Quần Lót"];
 const sizes = ["S", "M", "L", "XL"];
@@ -50,7 +51,7 @@ const CollectionPage: React.FC = () => {
   const { collectionName } = useParams<{ collectionName?: string }>();
   const dispatch = useAppDispatch();
   const { category, loading: categoryLoading } = useAppSelector((state) => state.categories);
-  const { products, loading: productsLoading } = useAppSelector((state) => state.searchProducts);
+  const { products, loading: productsLoading, limit, page, totalCount } = useAppSelector((state) => state.searchProducts);
   const [searchParams, setSearchParams] = useSearchParams();
 
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
@@ -73,6 +74,10 @@ const CollectionPage: React.FC = () => {
 
   const updateFormState = (field: keyof ExtendedGetListParams<DataItem>, value: string) => {
     setFormState(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handlePageChange = (newPage: number) => {
+    dispatch(setPage(newPage));
   };
 
   useEffect(() => {
@@ -113,6 +118,8 @@ const CollectionPage: React.FC = () => {
   const toggleColor = (color: string) => {
     setSelectedColors((prev) => (prev.includes(color) ? prev.filter((c) => c !== color) : [...prev, color]));
   };
+
+  const totalPages = Math.ceil(totalCount / limit);
 
   // const filter = filteredProducts.filter((product) => {
   //   const matchSub = selectedSubs.length === 0 || selectedSubs.includes(product.sub_category_id.toLowerCase());
@@ -250,6 +257,44 @@ const CollectionPage: React.FC = () => {
             </div>
           </div>
           <ProductCards productsData={products} />
+
+          <div className="flex items-center justify-between bg-white px-4 mt-2 sm:px-6">
+            <div className="flex flex-1 justify-between ">
+              <p className="text-sm text-gray-500 text-center lg:block">
+                Showing {Math.min((page - 1) * limit + 1, totalCount)}-{Math.min(page * limit, totalCount)} of {totalCount} products
+              </p>
+            </div>
+            <div className="lg:items-center bg-white">
+              <nav className="isolate inline-flex -space-x-px rounded-md " aria-label="Pagination">
+                <button
+                  onClick={() => handlePageChange(Math.max(page - 1, 1))}
+                  disabled={page === 1}
+                  className="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+                >
+                  <i className="ri-arrow-left-s-line text-sm"></i>
+                </button>
+                {Array.from({ length: totalPages }, (_, index) => index + 1).map((pageNumber) => (
+                  <button
+                    key={pageNumber}
+                    onClick={() => handlePageChange(pageNumber)}
+                    className={`relative inline-flex items-center px-4 py-2 text-sm font-semibold ${page === pageNumber
+                      ? "bg-blue-600 text-white"
+                      : "text-gray-900 ring-1 ring-gray-300 ring-inset hover:bg-gray-50"
+                      } focus:z-20 focus:outline-offset-0`}
+                  >
+                    {pageNumber}
+                  </button>
+                ))}
+                <button
+                  onClick={() => handlePageChange(Math.min(page + 1, totalPages))}
+                  disabled={page === totalPages}
+                  className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
+                >
+                  <i className="ri-arrow-right-s-line text-sm"></i>
+                </button>
+              </nav>
+            </div>
+          </div>
         </section>
       </div>
     </div>
