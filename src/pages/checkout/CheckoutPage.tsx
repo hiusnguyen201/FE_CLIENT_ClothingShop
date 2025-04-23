@@ -1,11 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import InfoOrderCheckout from "./InfoOrderCheckout";
 import InfoUserCheckout from "./InfoUserCheckout";
-import { Link } from "react-router-dom";
-// import { cn } from "@/lib/utils";
-// import { Button } from "@/components/ui/button";
+import { Link, useSearchParams } from "react-router-dom";
+
+type PaymentStatus = "success" | "failure" | "pending";
 
 const CheckOutPage: React.FC = () => {
+  const [searchParams] = useSearchParams();
+  const [paymentStatus, setPaymentStatus] = useState<PaymentStatus>("pending");
+
+  useEffect(() => {
+    const resultCode = searchParams.get("resultCode");
+    if (resultCode === "0") {
+      setPaymentStatus("success");
+    } else {
+      setPaymentStatus("failure");
+    }
+  }, [searchParams]);
+
   const ordersData = {
     orderId: "123231",
     productOrderItem: [
@@ -29,6 +41,7 @@ const CheckOutPage: React.FC = () => {
       },
     ],
   };
+
   const infoUserOrder = {
     name: "name",
     email: "abc@gmail.com",
@@ -36,41 +49,59 @@ const CheckOutPage: React.FC = () => {
     paymentMethod: "Thanh toán khi nhận hàng (COD)",
     address: "Cầu Giấy, Hà Nội, Phường Mai Dịch, Quận Cầu Giấy, Hà Nội",
   };
+
   return (
     <>
-      <h2 className="section__header capitalize">Order Successfully</h2>
-      <div className="text-center text-sm md:text-md space-y-2 px-4">
-        <p>
-          Trên thị trường có quá nhiều sự lựa chọn, cảm ơn bạn đã lựa chọn mua sắm tại <strong>Coolmate.me</strong>
-        </p>
-        <p>
-          Đơn hàng của bạn <strong>CHẮC CHẮN</strong> đã được chuyển tới hệ thống xử lý đơn hàng của Coolmate. Trong quá
-          trình xử lý Coolmate sẽ liên hệ lại nếu như cần thêm thông tin từ bạn.
-        </p>
-        <p>
-          Ngoài ra Coolmate cũng sẽ có gửi xác nhận đơn hàng bằng <strong>Email</strong> và <strong>tin nhắn</strong>
-        </p>
-      </div>
-      <div className="w-full text-center py-10">
-        <Link
-          to="/"
-          className="min-w-50 p-5 bg-gray-900 hover:bg-gray-700 text-white rounded-4xl border-gray-50 text-center"
-        >
-          Explore more shop products here.
-        </Link>
-      </div>
-      {ordersData.productOrderItem.length >= 1 ? (
-        <div className="">
-          <InfoOrderCheckout orderId={ordersData.orderId} productOderItem={ordersData.productOrderItem} />
-          <InfoUserCheckout infoUserOrder={infoUserOrder} />
-        </div>
-      ) : (
-        <div className="text-center lg-text:xl py-10 text-muted-foreground text-red-500">
-          Order false in{" "}
-          <Link to="/" className="text__underline hover:text-blue-500 text-red-500 text-md">
-            Shop.
-          </Link>{" "}
-          Please try again
+      <h2 className="section__header capitalize">
+        {paymentStatus === "success"
+          ? "Order Successfully"
+          : paymentStatus === "failure"
+          ? "Payment Failed"
+          : "Processing Payment..."}
+      </h2>
+
+      {paymentStatus === "success" && (
+        <>
+          <div className="text-center text-sm md:text-md space-y-2 px-4">
+            <p>
+              Trên thị trường có quá nhiều sự lựa chọn, cảm ơn bạn đã lựa chọn mua sắm tại <strong>Coolmate.me</strong>
+            </p>
+            <p>
+              Đơn hàng của bạn <strong>CHẮC CHẮN</strong> đã được chuyển tới hệ thống xử lý đơn hàng của Coolmate. Trong
+              quá trình xử lý Coolmate sẽ liên hệ lại nếu như cần thêm thông tin từ bạn.
+            </p>
+            <p>
+              Ngoài ra Coolmate cũng sẽ có gửi xác nhận đơn hàng bằng <strong>Email</strong> và{" "}
+              <strong>tin nhắn</strong>
+            </p>
+          </div>
+
+          <div className="w-full text-center py-10">
+            <Link
+              to="/"
+              className="min-w-50 p-5 bg-gray-900 hover:bg-gray-700 text-white rounded-4xl border-gray-50 text-center"
+            >
+              Explore more shop products here.
+            </Link>
+          </div>
+
+          {ordersData.productOrderItem.length >= 1 && (
+            <>
+              <InfoOrderCheckout orderId={ordersData.orderId} productOderItem={ordersData.productOrderItem} />
+              <InfoUserCheckout infoUserOrder={infoUserOrder} />
+            </>
+          )}
+        </>
+      )}
+
+      {paymentStatus === "failure" && (
+        <div className="text-center text-xl py-10 text-red-500">
+          Đơn hàng không thành công. Vui lòng thử lại hoặc liên hệ bộ phận hỗ trợ.
+          <div className="pt-4">
+            <Link to="/" className="text__underline hover:text-blue-500">
+              Quay lại trang chủ
+            </Link>
+          </div>
         </div>
       )}
     </>

@@ -65,8 +65,7 @@ const CategoryPage: React.FC = () => {
         return a.price - b.price;
       case "price-desc":
         return b.price - a.price;
-      case "discount-desc":
-        return (b.originalPrice - b.price) / b.originalPrice - (a.originalPrice - a.price) / a.originalPrice;
+
       case "best-selling":
         return (b.total_sold || 0) - (a.total_sold || 0);
       case "newest":
@@ -189,7 +188,6 @@ const CategoryPage: React.FC = () => {
                     <SelectItem value="best-selling">Bán chạy</SelectItem>
                     <SelectItem value="price-asc">Giá thấp đến cao</SelectItem>
                     <SelectItem value="price-desc">Giá cao đến thấp</SelectItem>
-                    <SelectItem value="discount-desc">%Giảm giá nhiều</SelectItem>
                   </SelectContent>
                 </Select>
               </div>

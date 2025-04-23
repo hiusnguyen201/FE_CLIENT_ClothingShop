@@ -93,8 +93,6 @@ const SubCategoryPage: React.FC = () => {
         return a.price - b.price;
       case "price-desc":
         return b.price - a.price;
-      case "discount-desc":
-        return (b.originalPrice - b.price) / b.originalPrice - (a.originalPrice - a.price) / a.originalPrice;
       case "best-selling":
         return (b.total_sold || 0) - (a.total_sold || 0);
       case "newest":

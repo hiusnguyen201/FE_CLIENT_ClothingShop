@@ -6,7 +6,6 @@ export interface Product {
   sub_sub_category_id: string;
   short_description: string;
   price: number;
-  originalPrice: number;
   image: string;
   colors: string[];
   sizes: string[];
