@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 import { Link, useParams, useSearchParams } from "react-router-dom";
-import ProductCards from "../shop/productDetails/ProductCards";
+import ProductCards from "@/pages/shop/productDetails/ProductCards";
 import { Product } from "@/types/product";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { getCategory } from "@/redux/category/category.thunk";
@@ -72,7 +72,7 @@ const CollectionPage: React.FC = () => {
   });
 
   const updateFormState = (field: keyof ExtendedGetListParams<DataItem>, value: string) => {
-    setFormState(prev => ({ ...prev, [field]: value }));
+    setFormState((prev) => ({ ...prev, [field]: value }));
   };
 
   useEffect(() => {
@@ -92,13 +92,10 @@ const CollectionPage: React.FC = () => {
 
   useEffect(() => {
     if (category) {
-      const filtered = (products as Product[]).filter(
-        (product) => product.category.id === category.id
-      );
+      const filtered = (products as Product[]).filter((product) => product.category.id === category.id);
       setFilteredProducts(filtered);
     }
   }, [products, category]);
-
 
   const toggleSub = (sub: string) => {
     setSelectedSubs((prev) =>
@@ -223,7 +220,10 @@ const CollectionPage: React.FC = () => {
         {/* Main Product Grid */}
         <section className="md:col-span-3">
           <Link to="/" className="text-gray-500 ">
-            Home / <span className="text-md text-gray-800">{products.length} {category?.name}</span>
+            Home /{" "}
+            <span className="text-md text-gray-800">
+              {products.length} {category?.name}
+            </span>
           </Link>
           <h1 className="uppercase lg:text-4xl md:text-3xl text-2xl font-bold text-gray-700 border-b border-gray-100 py-10">
             {category?.name}

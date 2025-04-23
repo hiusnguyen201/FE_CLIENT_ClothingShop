@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 // import productsData from "@/data/product.json";
-import ProductCards from "@/pages/shop/ProductDetails/ProductCards";
+import ProductCards from "@/pages/shop/productDetails/ProductCards";
 import EmptyProducts from "@/components/EmptyProducts";
 import { Link, useSearchParams } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -17,6 +17,15 @@ interface DataItem {
 
 interface ExtendedGetListParams<TData> extends GetListParams<TData> {
   category?: string | undefined;
+}
+
+interface SearchFormState {
+  page: number;
+  limit: number;
+  keyword: string;
+  category: string;
+  sortBy: "name" | "createdAt";
+  sortOrder: "asc" | "desc";
 }
 
 const ShopPage: React.FC = () => {
@@ -40,15 +49,15 @@ const ShopPage: React.FC = () => {
     };
   });
 
-  // const handleToggleDropdownSort = () => {
-  //   setIsDropdownMenuSort(!isDropdownMenuSort);
-  // };
+  const handleToggleDropdownSort = () => {
+    setIsDropdownMenuSort(!isDropdownMenuSort);
+  };
 
-  // const handleSelectSort = (option: { name: string, value: string }) => {
-  //   setSelected(option.name);
-  //   updateFormState("sortBy", option.value);
-  //   setIsDropdownMenuSort(false);
-  // };
+  const handleSelectSort = (option: { name: string; value: string }) => {
+    setSelected(option.name);
+    updateFormState("sortBy", option.value);
+    setIsDropdownMenuSort(false);
+  };
 
   const updateFormState = (field: keyof SearchFormState, value: string) => {
     setFormState((prev) => ({ ...prev, [field]: value }));
@@ -58,9 +67,9 @@ const ShopPage: React.FC = () => {
     const params = new URLSearchParams();
     if (formState.keyword) params.set("keyword", formState.keyword);
     if (formState.category) params.set("category", formState.category);
-    params.set("sortBy", formState.sortBy);
-    params.set("sortOrder", formState.sortOrder);
-    if (formState.limit) params.set("limit", formState.limit);
+    if (formState.sortBy) params.set("sortBy", formState.sortBy);
+    if (formState.sortOrder) params.set("sortOrder", formState.sortOrder);
+    if (formState.limit) params.set("limit", formState.limit.toString());
     setSearchParams(params);
 
     dispatch(
@@ -69,6 +78,8 @@ const ShopPage: React.FC = () => {
         category: formState.category || undefined,
         page,
         limit,
+        sortBy: formState.sortBy as "name" | "createdAt" | undefined,
+        sortOrder: formState.sortOrder as "asc" | "desc" | undefined,
       })
     );
   }, [dispatch, formState, page, limit, setSearchParams]);

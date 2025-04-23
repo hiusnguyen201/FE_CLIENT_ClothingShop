@@ -29,7 +29,7 @@ const getPriceRange = (variants: ProductVariant[]): PriceRange => {
   if (variants.length === 0) {
     return { minPrice: null, maxPrice: null };
   }
-  const prices = variants.map(variant => variant.price);
+  const prices = variants.map((variant) => variant.price);
   return {
     minPrice: Math.min(...prices),
     maxPrice: Math.max(...prices),
@@ -70,19 +70,20 @@ const ProductCardItem: React.FC<ProductCardItemProps> = ({ product }) => {
       return null;
     }
     return (
-      product.productVariants.find(variant =>
-        variant.variantValues.some(
-          val => val.option.name === "Size" && val.optionValue.id === selectedVariant.sizeId
-        ) &&
-        variant.variantValues.some(
-          val => val.option.name === "Color" && val.optionValue.id === selectedVariant.colorId
-        )
+      product.productVariants.find(
+        (variant) =>
+          variant.variantValues.some(
+            (val) => val.option.name === "Size" && val.optionValue.id === selectedVariant.sizeId
+          ) &&
+          variant.variantValues.some(
+            (val) => val.option.name === "Color" && val.optionValue.id === selectedVariant.colorId
+          )
       ) || null
     );
   };
 
   const handleSelectOption = (type: "size" | "color", valueId: string) => {
-    setSelectedVariant(prev => ({
+    setSelectedVariant((prev) => ({
       ...prev,
       [type === "size" ? "sizeId" : "colorId"]: valueId,
     }));
@@ -92,22 +93,22 @@ const ProductCardItem: React.FC<ProductCardItemProps> = ({ product }) => {
     if (selectedVariantData && selectedVariantData.quantity > 0) {
       dispatch(addCart({ productVariantId: selectedVariantData.id, quantity: 1 })).then((res) => {
         if (res.meta.requestStatus === "fulfilled") {
-          toast({ title: "Added to cart successfully" })
-          dispatch(getCart())
+          toast({ title: "Added to cart successfully" });
+          dispatch(getCart());
         } else {
           toast({
             title: res.payload?.toString() || "Failed to add to cart",
-            variant: "destructive"
-          })
+            variant: "destructive",
+          });
         }
-      })
+      });
     }
   };
 
   const { minPrice, maxPrice } = getPriceRange(product.productVariants);
 
-  const colorOption = product.productOptions.find(opt => opt.option.name === "Color");
-  const sizeOption = product.productOptions.find(opt => opt.option.name === "Size");
+  const colorOption = product.productOptions.find((opt) => opt.option.name === "Color");
+  const sizeOption = product.productOptions.find((opt) => opt.option.name === "Size");
   const selectedVariantData = findVariant();
 
   return (
@@ -132,79 +133,78 @@ const ProductCardItem: React.FC<ProductCardItemProps> = ({ product }) => {
             onClick={handleAddToCart}
             disabled={!selectedVariantData || selectedVariantData.quantity === 0}
             className="mt-6 px-5 py-3 bg-red-500 text-white rounded-md cursor-pointer"
-          >{!selectedVariantData ? "Add to cart" : selectedVariantData && selectedVariantData?.quantity > 0 ?
-            "Add to cart" : "Out of stock"}
+          >
+            {!selectedVariantData
+              ? "Add to cart"
+              : selectedVariantData && selectedVariantData?.quantity > 0
+              ? "Add to cart"
+              : "Out of stock"}
           </Button>
           <div className="flex flex-wrap gap-1">
-            {sizeOption ? (
-              sizeOption.optionValues.map((value) => {
-                const isAvailable = product.productVariants.some(variant =>
-                  variant.variantValues.some(
-                    val => val.option.name === "Size" && val.optionValue.id === value.id
-                  ) && variant.quantity > 0
-                );
-                return (
-                  <Button
-                    key={value.id}
-                    onClick={() => handleSelectOption("size", value.id)}
-                    disabled={!isAvailable}
-                    className={`bg-gray-300 mt-2 hover:bg-gray-400 w-[40px] h-[38px] cursor-pointer
+            {sizeOption
+              ? sizeOption.optionValues.map((value) => {
+                  const isAvailable = product.productVariants.some(
+                    (variant) =>
+                      variant.variantValues.some(
+                        (val) => val.option.name === "Size" && val.optionValue.id === value.id
+                      ) && variant.quantity > 0
+                  );
+                  return (
+                    <Button
+                      key={value.id}
+                      onClick={() => handleSelectOption("size", value.id)}
+                      disabled={!isAvailable}
+                      className={`bg-gray-300 mt-2 hover:bg-gray-400 w-[40px] h-[38px] cursor-pointer
                                     ${selectedVariant.sizeId === value.id ? "bg-red-500" : null}`}
-                  >
-                    {value.valueName}
-                  </Button>
-                );
-              })
-            ) : (
-              null
-            )}
+                    >
+                      {value.valueName}
+                    </Button>
+                  );
+                })
+              : null}
           </div>
         </motion.div>
       </motion.div>
 
       <div className="flex flex-col min-h-[94px]">
         <div className="flex mb-2 items-center gap-1 sm:gap-2 flex-wrap mt-2">
-          {colorOption ? (
-            colorOption.optionValues.map((value) => {
-              const isAvailable = product.productVariants.some(variant =>
-                variant.quantity > 0 &&
-                variant.variantValues.some(
-                  val => val.option.name === "Color" && val.optionValue.id === value.id
-                )
-              );
-              return (
-                <ColorBadge
-                  key={value.id}
-                  color={colorMap[value.valueName]}
-                  active={selectedVariant.colorId === value.id}
-                  disabled={!isAvailable}
-                  onClick={() => isAvailable && handleSelectOption("color", value.id)}
-                />
-              );
-            })
-          ) : (
-            null
-          )}
+          {colorOption
+            ? colorOption.optionValues.map((value) => {
+                const isAvailable = product.productVariants.some(
+                  (variant) =>
+                    variant.quantity > 0 &&
+                    variant.variantValues.some((val) => val.option.name === "Color" && val.optionValue.id === value.id)
+                );
+                return (
+                  <ColorBadge
+                    key={value.id}
+                    color={colorMap[value.valueName]}
+                    active={selectedVariant.colorId === value.id}
+                    disabled={!isAvailable}
+                    onClick={() => isAvailable && handleSelectOption("color", value.id)}
+                  />
+                );
+              })
+            : null}
         </div>
         <Link to="#">
           <h4 className="line-clamp-2 mb-1">{product.name}</h4>
         </Link>
         <div className="flex items-center gap-2">
           {/* <span className="font-bold text-md">{product.price.toLocaleString()}đ</span> */}
-          {
-            selectedVariantData ? formatPrice(selectedVariantData.price) :
-              minPrice !== null && maxPrice !== null
-                ? minPrice === maxPrice
-                  ? `${formatPrice(minPrice)}`
-                  : `${formatPrice(minPrice)} - ${formatPrice(maxPrice)}`
-                : formatPrice(0)
-          }
+          {selectedVariantData
+            ? formatPrice(selectedVariantData.price)
+            : minPrice !== null && maxPrice !== null
+            ? minPrice === maxPrice
+              ? `${formatPrice(minPrice)}`
+              : `${formatPrice(minPrice)} - ${formatPrice(maxPrice)}`
+            : formatPrice(0)}
           {/* {product.discount && (
             <p className="text-white p-1 bg-red-500 md:flex hidden rounded-xl font-bold text-sm">-{product.discount}</p>
           )} */}
-        </div >
-      </div >
-    </div >
+        </div>
+      </div>
+    </div>
   );
 };
 

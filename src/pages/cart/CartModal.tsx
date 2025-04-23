@@ -27,6 +27,7 @@ const CartModal: React.FC<CartModalProps> = ({ isCartOpen, onClose, cartData }) 
   const { user } = useAppSelector((state) => state.account);
   const { provinces } = useAppSelector((state) => state.division);
   const [showAnimation, setShowAnimation] = useState(false);
+
   useEffect(() => {
     if (isCartOpen) {
       setTimeout(() => setShowAnimation(true), 3);
@@ -44,21 +45,21 @@ const CartModal: React.FC<CartModalProps> = ({ isCartOpen, onClose, cartData }) 
       phoneNumber: user?.phone || "",
       email: user?.email || "",
       address: addessDefault?.address || "",
-      province: addessDefault?.provinceName || "",
-      district: addessDefault?.districtName || "",
       ward: addessDefault?.wardName || "",
       note: "notes",
       method: "cash on delivery",
       provinceCode: 0,
       districtCode: 0,
       wardCode: "",
+      province: addessDefault?.provinceName || "",
+      district: addessDefault?.districtName || "",
     },
     validationSchema: informationOrderSchema,
     onSubmit: async (values) => {
       if (!provinces) {
-        return
+        return;
       }
-      const province = provinces.find(province => province.ProvinceName === values.province);
+      const province = provinces.find((province) => province.ProvinceName === values.province);
 
       if (!province) {
         toast({ title: "Invalid address", variant: "destructive" });
@@ -70,7 +71,7 @@ const CartModal: React.FC<CartModalProps> = ({ isCartOpen, onClose, cartData }) 
         const resDistricts = await dispatch(getDistricts({ provinceCode: province.ProvinceID })).unwrap();
         const districts = resDistricts.data.list;
 
-        const district = districts.find(d => d.DistrictName === values.district);
+        const district = districts.find((d) => d.DistrictName === values.district);
         if (!district) {
           toast({ title: "Invalid district", variant: "destructive" });
           return;
@@ -80,7 +81,7 @@ const CartModal: React.FC<CartModalProps> = ({ isCartOpen, onClose, cartData }) 
         const resWards = await dispatch(getWards({ districtCode: district.DistrictID })).unwrap();
         const wards = resWards.data.list;
 
-        const ward = wards.find(d => d.WardName === values.ward);
+        const ward = wards.find((d) => d.WardName === values.ward);
         if (!ward) {
           toast({ title: "Invalid ward", variant: "destructive" });
           return;
@@ -88,45 +89,46 @@ const CartModal: React.FC<CartModalProps> = ({ isCartOpen, onClose, cartData }) 
 
         values.wardCode = ward.WardCode;
 
-        const order = await dispatch(createOrder({
-          customerName: values.fullName,
-          customerEmail: values.email,
-          customerPhone: values.phoneNumber,
-          provinceCode: values.provinceCode,
-          districtCode: values.districtCode,
-          wardCode: values.wardCode,
-          address: values.address,
-          customerId: user?.id,
-          notes: values.note,
-          paymentMethod: values.method,
-          productVariants: cartData.map((cart) => {
-            return {
-              id: cart.productVariant._id,
-              quantity: cart.quantity
-            }
+        const order = await dispatch(
+          createOrder({
+            customerName: values.fullName,
+            customerEmail: values.email,
+            customerPhone: values.phoneNumber,
+            provinceCode: values.provinceCode,
+            districtCode: values.districtCode,
+            wardCode: values.wardCode,
+            address: values.address,
+            customerId: user?.id || "",
+            notes: values.note,
+            paymentMethod: values.method,
+            productVariants: cartData.map((cart) => {
+              return {
+                id: cart.productVariant._id,
+                quantity: cart.quantity,
+              };
+            }),
           })
-        })).unwrap();
+        ).unwrap();
         if (order.code === 200) {
-          toast({ title: "Order successfully" })
-          navigate('/')
+          toast({ title: "Order successfully" });
+          navigate("/");
         }
-
       } catch (error) {
         toast({ title: "Invalid address or unknown error", variant: "destructive" });
         console.error(error);
       }
-    }
+    },
   });
 
-  const cartFormat = cartData.filter((cart) => cart.productVariant.quantity > 0)
-
+  const cartFormat = cartData.filter((cart) => cart.productVariant.quantity > 0);
 
   return (
     <div className="fixed inset-0 backdrop-blur-md transition-opacity z-50 md:px-10 lg:px-10">
       {/* Modal chính */}
       <div
-        className={`fixed right-0 w-full bg-white h-full overflow-y-auto transform transition-all duration-300 ease-in-out ${showAnimation ? "translate-x-0" : "translate-x-full"
-          }`}
+        className={`fixed right-0 w-full bg-white h-full overflow-y-auto transform transition-all duration-300 ease-in-out ${
+          showAnimation ? "translate-x-0" : "translate-x-full"
+        }`}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex flex-col lg:flex-row-reverse gap-4  border-t border-gray-100">
@@ -139,7 +141,11 @@ const CartModal: React.FC<CartModalProps> = ({ isCartOpen, onClose, cartData }) 
             </div>
             {/* cart items */}
             <div>
-              {cartFormat.length ? <CartItems cartData={cartFormat} /> : <div className="text-center mt-10">Add item first</div>}
+              {cartFormat.length ? (
+                <CartItems cartData={cartFormat} />
+              ) : (
+                <div className="text-center mt-10">Add item first</div>
+              )}
               {cartFormat.length ? <OrderSummary cartData={cartFormat} /> : null}
             </div>
           </div>

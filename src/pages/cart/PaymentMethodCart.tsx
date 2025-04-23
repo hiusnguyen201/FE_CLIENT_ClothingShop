@@ -20,6 +20,9 @@ interface FormValues {
   ward: string;
   note: string;
   method: string;
+  provinceCode: number;
+  districtCode: number;
+  wardCode: string;
 }
 
 interface InformationOrderProps {
@@ -38,7 +41,7 @@ const PaymentMethodCart: React.FC<InformationOrderProps> = ({ formik }) => {
       id: "2",
       label: "MoMo Wallet",
       iconImg: "https://mcdn.coolmate.me/image/October2024/mceclip1_171.png",
-      method: "momo"
+      method: "momo",
     },
   ];
   const [selectedMethod, setSelectedMethod] = useState<string>("1");
@@ -51,12 +54,13 @@ const PaymentMethodCart: React.FC<InformationOrderProps> = ({ formik }) => {
             key={method.id}
             onClick={() => {
               setSelectedMethod(method.id);
-              formik.setFieldValue("method", method.method)
+              formik.setFieldValue("method", method.method);
             }}
-            className={`flex items-center gap-4 p-4 rounded-xl border cursor-pointer transition-all w-full h-17 ${selectedMethod === method.id
-              ? "border-blue-600 bg-blue-50 shadow-md"
-              : "border-gray-300 bg-white hover:bg-gray-50"
-              }`}
+            className={`flex items-center gap-4 p-4 rounded-xl border cursor-pointer transition-all w-full h-17 ${
+              selectedMethod === method.id
+                ? "border-blue-600 bg-blue-50 shadow-md"
+                : "border-gray-300 bg-white hover:bg-gray-50"
+            }`}
           >
             <div className="flex justify-center items-center space-x-2">
               <img src={method.iconImg} alt="" className="w-12 h-12" />
@@ -64,8 +68,9 @@ const PaymentMethodCart: React.FC<InformationOrderProps> = ({ formik }) => {
             </div>
             <div className="ml-auto">
               <div
-                className={`w-4 h-4 rounded-full border-2 ${selectedMethod === method.id ? "border-blue-500 bg-blue-500" : "border-gray-400"
-                  }`}
+                className={`w-4 h-4 rounded-full border-2 ${
+                  selectedMethod === method.id ? "border-blue-500 bg-blue-500" : "border-gray-400"
+                }`}
               ></div>
             </div>
           </Button>

@@ -15,6 +15,9 @@ interface FormValues {
   ward: string;
   note: string;
   method: string;
+  provinceCode: number;
+  districtCode: number;
+  wardCode: string;
 }
 
 interface InformationOrderProps {
@@ -22,7 +25,6 @@ interface InformationOrderProps {
 }
 
 const InformationOrder: React.FC<InformationOrderProps> = ({ formik }) => {
-
   return (
     <form className="px-5 lg:ml-15">
       <h1 className="text-2xl text-gray-900 font-bold">Ordering Information</h1>
@@ -87,8 +89,9 @@ const InformationOrder: React.FC<InformationOrderProps> = ({ formik }) => {
                 <Label htmlFor="address" className="text-md text-gray-700 mb-1">
                   Address
                 </Label>
-                <Link to={"/account"}
-                  className="rounded-md p-2 ring-2">+ Add new address</Link>
+                <Link to={"/account"} className="rounded-md p-2 ring-2">
+                  + Add new address
+                </Link>
               </div>
               <Input
                 id="address"
@@ -101,7 +104,6 @@ const InformationOrder: React.FC<InformationOrderProps> = ({ formik }) => {
               {formik.touched.address && formik.errors.address && (
                 <div className="text-red-500 text-sm mt-1">{formik.errors.address}</div>
               )}
-
             </div>
             <div className="lg:flex justify-between text-gray-800 text-md">
               {/* Province */}
