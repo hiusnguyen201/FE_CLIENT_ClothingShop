@@ -1,5 +1,5 @@
 import React, { Suspense, useEffect } from "react";
-import ProductCards from "@/pages/shop/productDetails/ProductCards";
+import ProductCards from "@/pages/shop/ProductDetails/ProductCards";
 
 // import productsData from "@/data/product.json";
 import { Link } from "react-router-dom";

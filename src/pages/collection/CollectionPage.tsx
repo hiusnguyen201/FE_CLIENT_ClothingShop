@@ -8,12 +8,12 @@ import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 import { Link, useParams } from "react-router-dom";
-import ProductCards from "../shop/productDetails/ProductCards";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { getCategory } from "@/redux/category/category.thunk";
 import { searchProducts } from "@/redux/search/search.thunk";
 // import { GetListParams } from "@/types/response";
 import { setPage } from "@/redux/search/search.slice";
+import ProductCards from "../shop/ProductDetails/ProductCards";
 
 const subCategories = ["Jean", "Shirt", "Trousers", "Áo Polo", "Quần Lót"];
 const sizes = ["S", "M", "L", "XL"];

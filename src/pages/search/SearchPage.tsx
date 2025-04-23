@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 
 // import productsData from "@/data/product.json";
-import ProductCards from "@/pages/shop/ProductDetails/ProductCards";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { searchProducts } from "@/redux/search/search.thunk";
 import { setPage } from "@/redux/search/search.slice";
 import { useSearchParams } from "react-router-dom";
+import ProductCards from "../shop/ProductDetails/ProductCards";
 
 interface SearchFormState {
   keyword: string;
