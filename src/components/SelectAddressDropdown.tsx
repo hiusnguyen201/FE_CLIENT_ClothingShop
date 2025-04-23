@@ -42,7 +42,6 @@ const SelectAddressDropdown: React.FC<SelectAddressDropdownProps> = ({ formik })
 
   const [selectedProvince, setSelectedProvince] = useState<string>("");
   const [selectedDistrict, setSelectedDistrict] = useState<string>("");
-  const [setSelectedWard] = useState<string>("");
 
   // Fetch Provinces
   useEffect(() => {
