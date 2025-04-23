@@ -47,9 +47,10 @@ const authSlice = createSlice({
       })
       .addCase(login.fulfilled, (state: Draft<AuthState>, action: PayloadAction<LoginResponse>) => {
         const { data } = action.payload;
+        console.log(data.customer);
         state.loading.login = false;
         state.isAuthenticated = true;
-        state.user = data.user;
+        state.user = data.customer;
         state.error = null;
       })
       .addCase(login.rejected, (state: Draft<AuthState>, action: PayloadAction<any>) => {
@@ -105,7 +106,7 @@ const authSlice = createSlice({
         state.loading.verifyOtp = false;
         state.error = null;
         state.isAuthenticated = true;
-        state.user = data.user;
+        state.user = data.customer;
       })
       .addCase(verifyOtp.rejected, (state: Draft<AuthState>, action: PayloadAction<any>) => {
         state.loading.verifyOtp = false;

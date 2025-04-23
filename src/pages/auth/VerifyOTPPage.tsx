@@ -5,6 +5,7 @@ import { useAuth } from "@/hooks/use-auth";
 
 export function VerifyOTPPage() {
   const { user } = useAuth();
+
   if (!user) {
     return <Navigate to="/auth/login" replace />;
   }

@@ -34,7 +34,7 @@ export type LoginPayload = {
 export interface LoginResponseData {
   isAuthenticated: boolean;
   is2FactorRequired: boolean;
-  user: User;
+  customer: User;
 }
 export interface LoginResponse extends BaseResponse<LoginResponseData> { }
 

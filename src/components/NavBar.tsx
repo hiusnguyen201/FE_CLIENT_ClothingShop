@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { getCategories } from "@/redux/category/category.thunk";
 import { getCart } from "@/redux/cart/cart.thunk";
 import { getAddressList } from "@/redux/address/address.thunk";
+import { getProvinces } from "@/redux/division/division.thunk";
 
 
 const NavBar: React.FC = () => {
@@ -69,7 +70,8 @@ const NavBar: React.FC = () => {
       })
     );
     dispatch(getCart());
-    dispatch(getAddressList())
+    dispatch(getAddressList());
+    dispatch(getProvinces())
   }, [dispatch]);
 
   const allSubCategories = categories.map((category) => {

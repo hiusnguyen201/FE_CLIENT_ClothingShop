@@ -112,19 +112,19 @@ const UserAddress: React.FC = () => {
                     Set as default
                   </Button>
                 )}
-                <Button
+                {/* <Button
                   variant="link"
                   className="hover:text-gray-700 text-blue-600"
                 // onClick={() => addressList.onUpdate(addr.id)}
                 >
                   Update
-                </Button>
+                </Button> */}
                 <Button
                   variant="link"
                   className="hover:text-gray-700 text-blue-600"
                   onClick={() => handleDeleteAddress(addr.id)}
                 >
-                  Deleted
+                  Delete
                 </Button>
               </div>
             </div>

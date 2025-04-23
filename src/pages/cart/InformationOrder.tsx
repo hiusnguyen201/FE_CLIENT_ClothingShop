@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import PaymentMethodCart from "@/pages/cart/PaymentMethodCart";
 import { FormikProps } from "formik";
+import { Link } from "react-router-dom";
 
 interface FormValues {
   fullName: string;
@@ -82,22 +83,25 @@ const InformationOrder: React.FC<InformationOrderProps> = ({ formik }) => {
         <div>
           <div className="mb-6">
             <div className="space-y-4 w-full">
-              <div>
+              <div className="flex justify-between">
                 <Label htmlFor="address" className="text-md text-gray-700 mb-1">
                   Address
                 </Label>
-                <Input
-                  id="address"
-                  name="address"
-                  className="border border-gray-400 p-6 rounded-4xl"
-                  placeholder="Enter your address (eg: 123 Cau Giay , Ha Noi )"
-                  value={formik.values.address}
-                  readOnly={true}
-                />
-                {formik.touched.address && formik.errors.address && (
-                  <div className="text-red-500 text-sm mt-1">{formik.errors.address}</div>
-                )}
+                <Link to={"/account"}
+                  className="rounded-md p-2 ring-2">+ Add new address</Link>
               </div>
+              <Input
+                id="address"
+                name="address"
+                className="border border-gray-400 p-6 rounded-4xl"
+                placeholder="Enter your address (eg: 123 Cau Giay , Ha Noi )"
+                value={formik.values.address}
+                readOnly={true}
+              />
+              {formik.touched.address && formik.errors.address && (
+                <div className="text-red-500 text-sm mt-1">{formik.errors.address}</div>
+              )}
+
             </div>
             <div className="lg:flex justify-between text-gray-800 text-md">
               {/* Province */}

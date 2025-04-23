@@ -2,6 +2,7 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { Cart } from "@/types/cart";
 import { calculateTotalPrice, formatPrice } from "@/utils/product";
+import { useAppSelector } from "@/redux/store";
 
 interface CartItemsProps {
   cartData: Cart[];
@@ -9,6 +10,7 @@ interface CartItemsProps {
 }
 
 const FooterCartOrder: React.FC<CartItemsProps> = ({ cartData, handleSubmit }) => {
+  const { loading } = useAppSelector((state) => state.order)
   const totalPrice = calculateTotalPrice(cartData);
   const discount = 0;
   const freeDelivery = 0;
@@ -27,6 +29,8 @@ const FooterCartOrder: React.FC<CartItemsProps> = ({ cartData, handleSubmit }) =
         </div>
       </div>
       <Button
+        type="button"
+        disabled={grandTotal === 0 || loading.createOrder}
         onClick={handleSubmit}
         className="lg:w-42 lg:h-12 md:w-36 md:h-10 bg-green-600 text-white rounded-md uppercase lg:text-lg mr-5 disabled:bg-gray-500">
         Order now <i className="ri-bank-card-line"></i>

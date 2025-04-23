@@ -4,7 +4,7 @@ import { addCart, clearCart, getCart, removeItem } from "@/redux/cart/cart.thunk
 import { useAppDispatch } from "@/redux/store";
 import { Cart } from "@/types/cart";
 import { formatPrice } from "@/utils/product";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
 interface CartItemsProps {
   cartData: Cart[];
@@ -60,6 +60,17 @@ const CartItems: React.FC<CartItemsProps> = ({ cartData }) => {
   useEffect(() => {
     dispatch(getCart());
   }, [dispatch]);
+
+  useEffect(() => {
+    cartData.forEach((item) => {
+      if (item.productVariant.quantity === 0) {
+        return
+      }
+      if (item.quantity > item.productVariant.quantity) {
+        dispatch(addCart({ productVariantId: item.productVariant._id, quantity: item.productVariant.quantity }))
+      }
+    })
+  }, [dispatch, cartData]);
 
   // const handleToggleItem = (id: string) => {
   //   setSelectedItems((prev) => (prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]));

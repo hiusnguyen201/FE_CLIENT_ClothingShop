@@ -32,7 +32,7 @@ const PaymentMethodCart: React.FC<InformationOrderProps> = ({ formik }) => {
       id: "1",
       label: "Cash on Delivery",
       iconImg: "https://mcdn.coolmate.me/image/October2024/mceclip2_42.png",
-      method: "cod",
+      method: "cash on delivery",
     },
     {
       id: "2",
