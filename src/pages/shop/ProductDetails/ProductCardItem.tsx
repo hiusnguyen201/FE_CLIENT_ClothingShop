@@ -39,6 +39,7 @@ const getPriceRange = (variants: ProductVariant[]): PriceRange => {
 const formatPrice = (price: number): string => {
   return new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(price);
 };
+
 const ProductCardItem: React.FC<ProductCardItemProps> = ({ product }) => {
   const dispatch = useAppDispatch();
 

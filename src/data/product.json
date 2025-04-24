@@ -4,6 +4,7 @@
     "name": "Leather Handbag",
     "category_id": "men-clothes",
     "sub_category_id": "shirt",
+    "sub_sub_category_id": "shirt-polo",
     "short_description": "Stylish leather handbag with ample storage space.",
     "price": 79.99999,
     "originalPrice": 99.99999,
@@ -19,6 +20,7 @@
     "name": "Evening Gown",
     "category_id": "men-clothes",
     "sub_category_id": "shirt",
+    "sub_sub_category_id": "shirt-polo",
     "short_description": "Elegant evening gown for special occasions.",
     "price": 25.79,
     "originalPrice": 199.99,
@@ -33,11 +35,13 @@
     "name": "Vòng tay nữ cao cấp",
     "category_id": "men-clothes",
     "sub_category_id": "shirt",
+    "sub_sub_category_id": "shirt-polo",
     "short_description": "Exquisite gold necklace with intricate design.",
     "price": 199.99,
     "image": "https://images.unsplash.com/photo-1631097969294-c38afba59496?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ix_id=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     "colors": ["#000", "#ffffff", "#9FC5E8"],
     "sizes": ["S", "M", "L", "XL"],
+    "total_sold": 10,
     "rating": 4.7
   },
   {
@@ -45,12 +49,13 @@
     "name": "Matte Lipstick",
     "category_id": "men-clothes",
     "sub_category_id": "shirt",
+    "sub_sub_category_id": "shirt-polo",
     "short_description": "Long-lasting matte lipstick in various shades.",
     "price": 19.99,
     "image": "https://images.unsplash.com/photo-1631214500115-598fc2cb8d2d?q=80&w=1925&auto=format&fit=crop&ixlib=rb-4.0.3&ix_id=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     "colors": ["#000", "#ffffff", "#9FC5E8"],
-
     "sizes": ["S", "M", "L", "XL"],
+    "total_sold": 20,
     "rating": 4.2
   },
   {
@@ -58,12 +63,14 @@
     "name": "Silk Scarf",
     "category_id": "men-clothes",
     "sub_category_id": "shirt",
+    "sub_sub_category_id": "shirt-tanktop",
     "short_description": "Luxurious silk scarf with vibrant colors.",
     "price": 29.99,
     "originalPrice": 39.99,
     "image": "https://images.unsplash.com/photo-1485527691629-8e370684924c?q=80&w=2074&auto=format&fit=crop&ixlib=rb-4.0.3&ix_id=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     "colors": ["#000", "#ffffff", "#9FC5E8"],
     "sizes": ["S", "M", "L", "XL"],
+    "total_sold": 10,
     "rating": 4.3
   },
   {
@@ -71,11 +78,13 @@
     "name": "Cocktail Dress",
     "category_id": "men-clothes",
     "sub_category_id": "trousers",
+    "sub_sub_category_id": "shirt-tanktop",
     "short_description": "Chic cocktail dress for parties and events.",
     "price": 89.99,
     "image": "https://images.unsplash.com/photo-1496747611176-843222e1e57c?q=80&w=2073&auto=format&fit=crop&ixlib=rb-4.0.3&ix_id=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     "colors": ["#000", "#ffffff", "#9FC5E8"],
     "sizes": ["S", "M", "L", "XL"],
+    "total_sold": 30,
     "rating": 4.4
   },
   {
@@ -83,12 +92,14 @@
     "name": "Diamond Earrings",
     "category_id": "men-clothes",
     "sub_category_id": "trousers",
+    "sub_sub_category_id": "shirt-tanktop",
     "short_description": "Sparkling diamond earrings that add elegance to any outfit.",
     "price": 299.99,
     "originalPrice": 349.99,
     "image": "https://images.unsplash.com/photo-1587467442586-7bcc51828a10?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ix_id=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     "colors": ["#000", "#ffffff", "#9FC5E8"],
     "sizes": ["S", "M", "L", "XL"],
+    "total_sold": 50,
     "rating": 4.8
   },
   {
@@ -96,11 +107,13 @@
     "name": "Foundation",
     "category_id": "men-clothes",
     "sub_category_id": "trousers",
+    "sub_sub_category_id": "shirt-tanktop",
     "short_description": "High-coverage foundation for a flawless finish.",
     "price": 39.99,
     "image": "https://images.unsplash.com/photo-1599733589046-10c005739ef9?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ix_id=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     "colors": ["#000", "#ffffff", "#9FC5E8"],
     "sizes": ["S", "M", "L", "XL"],
+    "total_sold": 10,
     "rating": 4.1
   },
   {
@@ -108,11 +121,13 @@
     "name": "Sunglasses",
     "category_id": "men-clothes",
     "sub_category_id": "trousers",
+    "sub_sub_category_id": "shirt-tanktop",
     "short_description": "Trendy sunglasses with UV protection.",
     "price": 49.99,
     "image": "https://images.unsplash.com/photo-1469334031218-e382a71b716b?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ix_id=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     "colors": ["#000", "#ffffff", "#9FC5E8"],
     "sizes": ["S", "M", "L", "XL"],
+    "total_sold": 10,
     "rating": 4.6
   },
   {
@@ -120,12 +135,14 @@
     "name": "Casual Pants",
     "category_id": "girl",
     "sub_category_id": "jean",
+    "sub_sub_category_id": "shirt-tanktop",
     "short_description": "Comfortable maxi dress for casual outings.",
     "price": 59.99,
     "originalPrice": 79.99,
     "image": "https://plus.unsplash.com/premium_photo-1664298355914-bc65d2c9af64?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ix_id=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     "colors": ["#000", "#ffffff", "#9FC5E8"],
     "sizes": ["S", "M", "L", "XL"],
+    "total_sold": 10,
     "rating": 4.2
   }
 ]

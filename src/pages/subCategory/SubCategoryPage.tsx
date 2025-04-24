@@ -6,16 +6,27 @@ import { Label } from "@/components/ui/label";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-
 import { Link, useParams } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "@/redux/store";
-import { getCategory } from "@/redux/category/category.thunk";
-import { searchProducts } from "@/redux/search/search.thunk";
-// import { GetListParams } from "@/types/response";
-import { setPage } from "@/redux/search/search.slice";
-import ProductCards from "../shop/ProductDetails/ProductCards";
+import { Product } from "@/types/products";
+import ProductCards from "@/pages/shop/productDetails/ProductCards";
 
-const subCategories = ["Jean", "Shirt", "Trousers", "Áo Polo", "Quần Lót"];
+import productsData from "@/data/product.json";
+import SubCategories from "@/pages/subCategory/FilterCategories";
+
+const subSubCategories = [
+  {
+    name: "Shirt Tanktop",
+    category: "men-clothes",
+    subSubCategory: "shirt-tanktop",
+    image: "https://media3.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/March2025/image-ao-thun-1_18.jpg",
+  },
+  {
+    name: "Shirt Polo",
+    category: "men-clothes",
+    subSubCategory: "shirt-polo",
+    image: "https://media3.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/March2025/image-ao-thun-1_18.jpg",
+  },
+];
 const sizes = ["S", "M", "L", "XL"];
 const colorOptions = [
   { label: "Phối màu", value: "#ff0000", gradient: true },
@@ -37,64 +48,24 @@ const colorOptions = [
   { label: "Đen xám", value: "#2f2f2f" },
 ];
 
-// interface DataItem {
-//   name: string;
-//   createdAt: string;
-// }
-
-// interface ExtendedGetListParams<TData> extends GetListParams<TData> {
-//   category?: string | undefined;
-// }
-
-const CollectionPage: React.FC = () => {
-  const { collectionName } = useParams<{ collectionName?: string }>();
-  const dispatch = useAppDispatch();
-  const { category } = useAppSelector((state) => state.categories);
-  const { products, limit, page, totalCount } = useAppSelector((state) => state.searchProducts);
-  // const [searchParams] = useSearchParams();
-
-  // const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
-  const [selectedSubs, setSelectedSubs] = useState<string[]>([]);
+const SubCategoryPage: React.FC = () => {
+  const { subCategoryName, categoryName } = useParams();
+  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+  const [selectedSubSubs, setSelectedSubSubs] = useState<string[]>([]);
   const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
   const [selectedColors, setSelectedColors] = useState<string[]>([]);
   const [sortBy, setSortBy] = useState<string>("newest");
   const [showMobileFilter, setShowMobileFilter] = useState(false);
 
-  // const [formState, setFormState] = useState<ExtendedGetListParams<DataItem>>(() => {
-  //   return {
-  //     page: Number(searchParams.get("page")) || 1,
-  //     limit: Number(searchParams.get("limit")) || 10,
-  //     keyword: searchParams.get("keyword") || "",
-  //     category: searchParams.get("category") || "",
-  //     sortBy: (searchParams.get("sortBy") as "name" | "createdAt" | undefined) || "createdAt",
-  //     sortOrder: (searchParams.get("sortOrder") as "asc" | "desc" | undefined) || "desc",
-  //   };
-  // });
-
-  // const updateFormState = (field: keyof ExtendedGetListParams<DataItem>, value: string) => {
-  //   setFormState(prev => ({ ...prev, [field]: value }));
-  // };
-
-  const handlePageChange = (newPage: number) => {
-    dispatch(setPage(newPage));
-  };
-
   useEffect(() => {
-    if (!collectionName) {
-      return;
-    }
-    dispatch(getCategory(collectionName));
-  }, [dispatch, collectionName]);
+    const filtered = (productsData as Product[]).filter(
+      (product) => product.sub_category_id === subCategoryName?.toLowerCase()
+    );
+    setFilteredProducts(filtered);
+  }, [subCategoryName]);
 
-  useEffect(() => {
-    if (!category) {
-      return;
-    }
-    dispatch(searchProducts({ category: category.id }));
-  }, [dispatch, category]);
-
-  const toggleSub = (sub: string) => {
-    setSelectedSubs((prev) =>
+  const toggleSubSub = (sub: string) => {
+    setSelectedSubSubs((prev) =>
       prev.includes(sub.toLowerCase()) ? prev.filter((s) => s !== sub.toLowerCase()) : [...prev, sub.toLowerCase()]
     );
   };
@@ -107,10 +78,31 @@ const CollectionPage: React.FC = () => {
     setSelectedColors((prev) => (prev.includes(color) ? prev.filter((c) => c !== color) : [...prev, color]));
   };
 
-  const totalPages = Math.ceil(totalCount / limit);
+  const filter = filteredProducts.filter((product) => {
+    const matchSub =
+      selectedSubSubs.length === 0 || selectedSubSubs.includes(product?.sub_sub_category_id.toLowerCase());
+    const matchSize = selectedSizes.length === 0 || product.sizes?.some((size: string) => selectedSizes.includes(size));
+    const matchColor =
+      selectedColors.length === 0 || product.colors?.some((color: string) => selectedColors.includes(color));
+    return matchSub && matchSize && matchColor;
+  });
+
+  const sortedProducts = [...filter].sort((a, b) => {
+    switch (sortBy) {
+      case "price-asc":
+        return a.price - b.price;
+      case "price-desc":
+        return b.price - a.price;
+      case "best-selling":
+        return (b.total_sold || 0) - (a.total_sold || 0);
+      case "newest":
+      default:
+        return new Date(b.createdAt || "").getTime() - new Date(a.createdAt || "").getTime();
+    }
+  });
 
   return (
-    <div className="p-4">
+    <div className="my-5">
       {/* Mobile Filter Button */}
       <div className="md:hidden mb-4">
         <Button
@@ -122,32 +114,34 @@ const CollectionPage: React.FC = () => {
         </Button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mx-5">
         {/* Sidebar Filter as Dropdown Accordion */}
         <aside className={cn("space-y-6 md:block", showMobileFilter ? "block" : "hidden", "md:col-span-1 ")}>
           <Accordion
             type="multiple"
             className="w-full space-y-4 divide-y divide-gray-200"
-            defaultValue={["subCategory"]}
+            defaultValue={["subSubCategory"]}
           >
-            <AccordionItem value="subCategory">
+            {/* sub subcategory */}
+            <AccordionItem value="subSubCategory">
               <AccordionTrigger className="bg-white text-gray-500 mx-5">Product group</AccordionTrigger>
               <AccordionContent className="px-4">
                 <div className="space-y-2">
-                  {subCategories.map((sub, i) => (
+                  {subSubCategories.map((sub, i) => (
                     <div key={i} className="flex items-center gap-2 text-sm text-gray-600 mb-2">
                       <Checkbox
-                        checked={selectedSubs.includes(sub.toLowerCase())}
-                        onCheckedChange={() => toggleSub(sub)}
+                        checked={selectedSubSubs.includes(sub.subSubCategory.toLowerCase())}
+                        onCheckedChange={() => toggleSubSub(sub.subSubCategory)}
                         id={`sub-${i}`}
                       />
-                      <Label htmlFor={`sub-${i}`}>{sub.toUpperCase()}</Label>
+                      <Label htmlFor={`sub-${i}`}>{sub.name.toUpperCase()}</Label>
                     </div>
                   ))}
                 </div>
               </AccordionContent>
             </AccordionItem>
 
+            {/* size */}
             <AccordionItem value="size">
               <AccordionTrigger className="bg-white text-gray-500 mx-5">Sizes</AccordionTrigger>
               <AccordionContent className="px-4">
@@ -166,6 +160,7 @@ const CollectionPage: React.FC = () => {
               </AccordionContent>
             </AccordionItem>
 
+            {/* color */}
             <AccordionItem value="color">
               <AccordionTrigger className="bg-white text-gray-500 px-5">Colors</AccordionTrigger>
               <AccordionContent className="py-1">
@@ -192,77 +187,63 @@ const CollectionPage: React.FC = () => {
         </aside>
 
         {/* Main Product Grid */}
-        <section className="md:col-span-3">
-          <Link to="/" className="text-gray-500 ">
-            Home / <span className="text-md text-gray-800">{products.length} {category?.name}</span>
-          </Link>
+        <section className="md:col-span-3 lg:mr-5">
+          <div className="space-x-2">
+            <span className="link opacity-70">
+              <Link to="/">Home</Link>
+              <i className="ri-arrow-right-s-line"></i>
+            </span>
+            <span className="link opacity-70">
+              <Link to={`/category/${categoryName}`}>Men Clothes</Link>
+              <i className="ri-arrow-right-s-line"></i>
+            </span>
+            <span className="link">
+              <Link to={`/category/${categoryName}`} className="text-gray-900">
+                {filteredProducts.length} {subCategoryName}
+              </Link>
+            </span>
+          </div>
           <h1 className="uppercase lg:text-4xl md:text-3xl text-2xl font-bold text-gray-700 border-b border-gray-100 py-10">
-            {category?.name}
+            Men {subCategoryName}
           </h1>
+          <div className="w-full overflow-x-auto flex h-72">
+            {subSubCategories.map((ss, i) => (
+              <SubCategories
+                key={i}
+                name={ss.name}
+                image={ss.image}
+                subSubCategory={ss.subSubCategory}
+                category={categoryName}
+                toggleSubSub={toggleSubSub}
+              />
+            ))}
+          </div>
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold">{products.length} result</h2>
+            <h2 className="text-xl font-bold">{filter.length} result</h2>
             {/* Top sort bar */}
             <div className="flex justify-start mb-4 mt-5">
-              <div className="flex items-center gap-2 ">
+              <div className="flex items-center gap-2">
                 <span className="text-sm font-medium border-gray-100">Sort By</span>
                 <Select value={sortBy} onValueChange={setSortBy}>
                   <SelectTrigger className="w-[180px] ">
                     <SelectValue placeholder="Sắp xếp theo" />
                   </SelectTrigger>
                   <SelectContent className="bg-white border-gray-100">
-                    <SelectItem value="newest">Mới nhất</SelectItem>
-                    <SelectItem value="best-selling">Bán chạy</SelectItem>
-                    <SelectItem value="price-asc">Giá thấp đến cao</SelectItem>
-                    <SelectItem value="price-desc">Giá cao đến thấp</SelectItem>
-                    <SelectItem value="discount-desc">%Giảm giá nhiều</SelectItem>
+                    <SelectItem value="newest">Newest </SelectItem>
+                    <SelectItem value="best-selling">Best Selling</SelectItem>
+                    <SelectItem value="price-asc">Price Asc</SelectItem>
+                    <SelectItem value="price-desc">Price Desc</SelectItem>
+                    <SelectItem value="discount-desc">%Discount Desc</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
             </div>
           </div>
-          <ProductCards productsData={products} />
-
-          <div className="flex items-center justify-between bg-white px-4 mt-2 sm:px-6">
-            <div className="flex flex-1 justify-between ">
-              <p className="text-sm text-gray-500 text-center lg:block">
-                Showing {Math.min((page - 1) * limit + 1, totalCount)}-{Math.min(page * limit, totalCount)} of {totalCount} products
-              </p>
-            </div>
-            <div className="lg:items-center bg-white">
-              <nav className="isolate inline-flex -space-x-px rounded-md " aria-label="Pagination">
-                <button
-                  onClick={() => handlePageChange(Math.max(page - 1, 1))}
-                  disabled={page === 1}
-                  className="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
-                >
-                  <i className="ri-arrow-left-s-line text-sm"></i>
-                </button>
-                {Array.from({ length: totalPages }, (_, index) => index + 1).map((pageNumber) => (
-                  <button
-                    key={pageNumber}
-                    onClick={() => handlePageChange(pageNumber)}
-                    className={`relative inline-flex items-center px-4 py-2 text-sm font-semibold ${page === pageNumber
-                      ? "bg-blue-600 text-white"
-                      : "text-gray-900 ring-1 ring-gray-300 ring-inset hover:bg-gray-50"
-                      } focus:z-20 focus:outline-offset-0`}
-                  >
-                    {pageNumber}
-                  </button>
-                ))}
-                <button
-                  onClick={() => handlePageChange(Math.min(page + 1, totalPages))}
-                  disabled={page === totalPages}
-                  className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
-                >
-                  <i className="ri-arrow-right-s-line text-sm"></i>
-                </button>
-              </nav>
-            </div>
-          </div>
+          <ProductCards productsData={sortedProducts} />
         </section>
       </div>
     </div>
   );
 };
 
-export default CollectionPage;
+export default SubCategoryPage;

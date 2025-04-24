@@ -1,10 +1,10 @@
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { Card } from "@/components/ui/card";
-import SideBarAccountPage from "./SideBarAccountPage";
+import SideBarAccountPage from "@/pages/account/SideBarAccountPage";
 import NavBar from "@/components/NavBar";
-import UserInfo from "./UserInfoPage";
-import UserAddress from "../address/UserAddress";
-import HistoryOrderPage from "./HistoryOrdersPage";
+import UserInfo from "@/pages/account/UserInfoPage";
+import UserAddress from "@/pages/address/UserAddress";
+import HistoryOrderPage from "../orders/HistoryOrdersPage";
 import clsx from "clsx";
 import { useState } from "react";
 import { logout } from "@/redux/auth/auth.thunk";

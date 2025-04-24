@@ -77,13 +77,8 @@ const SearchPage: React.FC = () => {
   const totalPages = Math.ceil(totalCount / limit);
 
   return (
-    <div>
-      <section className="section__container bg__banner">
-        <h2 className="section__header capitalize">Search Products</h2>
-        <p className="section__subheader">
-          Browse a diverse range of categories, fromm chic dresses to versatitle accessories
-        </p>
-      </section>
+    <div className="space-y-6 section__container">
+      <h1 className="text-3xl font-bold">Sản phẩm</h1>
       <section className="section__container">
         <div className="w-full mb-12 flex flex-col md:flex-row items-center justify-center gap-4">
           <input

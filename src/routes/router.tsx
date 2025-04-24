@@ -12,6 +12,11 @@ import { RegisterPage } from "@/pages/auth/RegisterPage";
 import SingleProduct from "@/pages/shop/ProductDetails/SingerProduct";
 import ShopPage from "@/pages/shop/ShopPage";
 import CollectionPage from "@/pages/collection/CollectionPage";
+import CategoryPage from "@/pages/category/CategoryPage";
+import SubCategoryPage from "@/pages/subCategory/SubCategoryPage";
+import CheckOutPage from "@/pages/checkout/CheckoutPage";
+import DetailProduct from "@/pages/shop/productDetails/DetailProduct";
+import GetOrders from "@/pages/orders/GetOrders";
 
 const router = createBrowserRouter([
   {
@@ -23,8 +28,12 @@ const router = createBrowserRouter([
         element: <HomePage />,
       },
       {
-        path: "/collection/:collectionName",
-        element: <CollectionPage />,
+        path: "/category/:categoryName",
+        element: <CategoryPage />,
+      },
+      {
+        path: "/category/:categoryName/:subCategoryName",
+        element: <SubCategoryPage />,
       },
       {
         path: "/search",
@@ -37,6 +46,14 @@ const router = createBrowserRouter([
       {
         path: "/shop/:id",
         element: <SingleProduct />,
+      },
+      {
+        path: "/checkout",
+        element: <CheckOutPage />,
+      },
+      {
+        path: "/product/:id",
+        element: <DetailProduct />,
       },
     ],
   },
@@ -61,24 +78,10 @@ const router = createBrowserRouter([
   {
     path: "/account",
     element: <AccountPage />,
-    children: [
-      {
-        path: "info",
-        element: <UserInfo />,
-      },
-      {
-        path: "orders",
-        element: "",
-      },
-      {
-        path: "voucher-wallet",
-        element: "",
-      },
-      {
-        path: "user-address",
-        element: "",
-      },
-    ],
+  },
+  {
+    path: "/get-order",
+    element: <GetOrders />,
   },
 ]);
 
