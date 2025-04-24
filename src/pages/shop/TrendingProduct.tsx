@@ -43,13 +43,14 @@ const TrendingProducts: React.FC = () => {
           </Link>
         </div>
         {/* product card */}
-        {products && (
-          <div className="mt-5">
-            <ProductCards productsData={products} />
-          </div>
-        )}
+        {
+          products && (
+            <div className="mt-5">
+              <ProductCards productsData={products} />
+            </div>
+          )}
       </section>
-    </Suspense>
+    </Suspense >
   );
 };
 
