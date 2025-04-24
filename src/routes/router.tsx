@@ -10,6 +10,7 @@ import CategoryPage from "@/pages/category/CategoryPage";
 import SubCategoryPage from "@/pages/subCategory/SubCategoryPage";
 import CheckOutPage from "@/pages/checkout/CheckoutPage";
 import DetailProduct from "@/pages/shop/productDetails/DetailProduct";
+import GetOrders from "@/pages/orders/GetOrders";
 
 const router = createBrowserRouter([
   {
@@ -36,6 +37,7 @@ const router = createBrowserRouter([
         path: "/checkout",
         element: <CheckOutPage />,
       },
+
       {
         path: "/product/:id",
         element: <DetailProduct />,
@@ -59,6 +61,10 @@ const router = createBrowserRouter([
   {
     path: "/account",
     element: <AccountPage />,
+  },
+  {
+    path: "/get-order",
+    element: <GetOrders />,
   },
 ]);
 

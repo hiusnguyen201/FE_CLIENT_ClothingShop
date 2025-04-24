@@ -65,7 +65,6 @@ const InfoOrderCheckout: React.FC<InfoOrderCheckoutProps> = ({ orderId, productO
             </div>
           ))}
 
-          {/* Order Summary (fake for now) */}
           <div className="divide-y divide-gray-200 text-sm mt-2">
             <div className="flex justify-between py-2">
               <span>Total product value</span>
