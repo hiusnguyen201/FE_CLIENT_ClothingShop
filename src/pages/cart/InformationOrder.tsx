@@ -91,7 +91,7 @@ const InformationOrder: React.FC<InformationOrderProps> = ({ formik }) => {
                   Address
                 </Label>
                 <Link to={"/account"}
-                  className="rounded-md p-2 ring-2">+ Add new address</Link>
+                  className="rounded-md p-2 border-2">+ Add new address</Link>
               </div>
               <Input
                 id="address"

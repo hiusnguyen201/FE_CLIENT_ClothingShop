@@ -2,11 +2,8 @@ import Banner from "@/pages/home/Banner";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import CartModal from "@/pages/cart/CartModal";
-
-import productsData from "@/data/product.json";
-// import CartModal from "@/pages/shop/Cart/CartModal";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
-import { getCategories } from "@/redux/category/category.thunk";
+import { getListCategory } from "@/redux/category/category.thunk";
 import { getCart } from "@/redux/cart/cart.thunk";
 import { getAddressList } from "@/redux/address/address.thunk";
 import { getProvinces } from "@/redux/division/division.thunk";
@@ -14,7 +11,7 @@ import { getProvinces } from "@/redux/division/division.thunk";
 
 const NavBar: React.FC = () => {
   const dispatch = useAppDispatch();
-  const { categories } = useAppSelector(state => state.categories);
+  const { list } = useAppSelector((state) => state.categories);
   const { user } = useAppSelector((state) => state.account);
   const { cart } = useAppSelector((state) => state.cart);
 
@@ -55,7 +52,7 @@ const NavBar: React.FC = () => {
     path: "shop",
     subCategories: [{
       name: "New Product",
-      path: "shop"
+      path: "#"
     }, {
       name: "Best Seller",
       path: "#"
@@ -64,7 +61,7 @@ const NavBar: React.FC = () => {
 
   useEffect(() => {
     dispatch(
-      getCategories({
+      getListCategory({
         limit: 10,
         sortBy: "createdAt"
       })
@@ -74,14 +71,14 @@ const NavBar: React.FC = () => {
     dispatch(getProvinces())
   }, [dispatch]);
 
-  const allSubCategories = categories.map((category) => {
+  const allSubCategories = list.map((category) => {
     return {
       name: category.name,
-      path: `/collection/${category.slug}`,
+      path: `/category/${category.slug}`,
       subCategories: category.children.map((subCategory) => {
         return {
           name: subCategory.name,
-          path: `/collection/${subCategory.slug}`
+          path: `/category/${subCategory.slug}`
         }
       })
     }
@@ -108,7 +105,7 @@ const NavBar: React.FC = () => {
             onMouseLeave={handleMouseLeave}
           >
             <li className="link uppercase">
-              <Link to="/category/men-clothes">Men</Link>
+              <Link to="#">Men</Link>
             </li>
             {isDropdownMenus && (
               <div className="flex justify-between fixed mt-3 p-4 w-full left-0 right-0 bg-white border  border-gray-200 rounded-lg shadow-lg z-50">
@@ -190,7 +187,7 @@ const NavBar: React.FC = () => {
             <button className="hover:text-red-500" onClick={handleCartOpenToggle}>
               <i className="ri-shopping-bag-line"></i>
               <sup className="text-sm inline-block px-1.5 text-white rounded-full bg-red-500 text-center">
-                {productsData.length}
+                {cart.length}
               </sup>
             </button>
           </span>

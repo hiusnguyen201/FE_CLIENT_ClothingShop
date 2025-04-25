@@ -1,22 +1,15 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { getCategoriesService, getCategoryService } from "@/redux/category/category.service";
-import { GetCategoriesResponse, GetCategoryResponse } from "@/redux/category/category.type";
+import { GetCategoryPayload, GetCategoryResponse, GetListCategoryResponse } from "@/redux/category/category.type";
 import { ThunkApiConfig } from "@/types/thunk-api";
+import { GetListProductPayload } from "../product/product.type";
 
 
-export interface SearchCategoriesParams {
-  // keyword?: string;
-  sortBy?: 'name' | 'createdAt';
-  sortOrder?: 'asc' | 'desc';
-  page?: number;
-  limit?: number;
-}
-
-export const getCategories = createAsyncThunk<GetCategoriesResponse, SearchCategoriesParams, ThunkApiConfig>(
+export const getListCategory = createAsyncThunk<GetListCategoryResponse, GetListProductPayload, ThunkApiConfig>(
   "categories/get-categories-by-customer",
-  async (params, { rejectWithValue }) => {
+  async (filters, { rejectWithValue }) => {
     try {
-      const response: GetCategoriesResponse = await getCategoriesService(params);
+      const response: GetListCategoryResponse = await getCategoriesService(filters);
       return response;
     } catch (error: any) {
       const message: string = error.response?.data?.message || error.message || error.toString();
@@ -25,11 +18,11 @@ export const getCategories = createAsyncThunk<GetCategoriesResponse, SearchCateg
   }
 );
 
-export const getCategory = createAsyncThunk<GetCategoryResponse, string, ThunkApiConfig>(
+export const getCategory = createAsyncThunk<GetCategoryResponse, GetCategoryPayload, ThunkApiConfig>(
   "categories/get-category-by-customer",
-  async (categoryId: string, { rejectWithValue }) => {
+  async (payload, { rejectWithValue }) => {
     try {
-      const response: GetCategoryResponse = await getCategoryService(categoryId);
+      const response: GetCategoryResponse = await getCategoryService(payload);
       return response;
     } catch (error: any) {
       const message: string = error.response?.data?.message || error.message || error.toString();

@@ -3,13 +3,6 @@ import { FormikProps } from "formik";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-interface PaymentMethod {
-  id: string;
-  label: string;
-  iconImg: string;
-  method: string;
-}
-
 interface FormValues {
   fullName: string;
   phoneNumber: string;
@@ -30,7 +23,7 @@ interface InformationOrderProps {
 }
 
 const PaymentMethodCart: React.FC<InformationOrderProps> = ({ formik }) => {
-  const paymentMethods: PaymentMethod[] = [
+  const paymentMethods = [
     {
       id: "1",
       label: "Cash on Delivery",

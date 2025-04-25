@@ -9,7 +9,7 @@ import { useFormik } from "formik";
 import { AddNewAddressSchema } from "./schema/selectAddressSchema";
 import { useAppDispatch } from "@/redux/store";
 import { addAddress, getAddressList } from "@/redux/address/address.thunk";
-import { toast } from "@/hooks/use-toast";
+import { showToast } from "@/utils/toast";
 
 interface AddNewAddressProps {
   isOpen: boolean;
@@ -28,21 +28,18 @@ const AddNewAddress: FC<AddNewAddressProps> = ({ isOpen, onClose }) => {
       isDefault: false,
     },
     validationSchema: AddNewAddressSchema,
-    onSubmit: (values) => {
-      dispatch(addAddress(values)).then((data) => {
-        if (data.meta.requestStatus === "fulfilled") {
-          toast({ title: "Successful" });
-          formik.resetForm();
-          dispatch(getAddressList());
-          onClose();
-        } else {
-          toast({
-            variant: "destructive",
-            title: "Error"
-          });
-        }
-      });
-    },
+    onSubmit: async (values) => {
+      try {
+        const res = await dispatch(addAddress(values)).unwrap();
+        formik.resetForm();
+        dispatch(getAddressList());
+        onClose();
+        showToast(true, "Add address successfully");
+      } catch (error) {
+        showToast(false, "Error");
+        console.log(error);
+      }
+    }
   });
 
   return (

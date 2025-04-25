@@ -6,7 +6,7 @@ export enum USER_STATUS {
 }
 
 export type User = {
-  id?: string;
+  id: string;
   avatar?: Nullable<string>;
   name: string;
   email: string;

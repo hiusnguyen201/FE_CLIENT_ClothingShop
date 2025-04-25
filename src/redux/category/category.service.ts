@@ -1,16 +1,12 @@
-import { GetCategoriesResponse, GetCategoryResponse } from "@/redux/category/category.type";
+import { GetCategoryPayload, GetCategoryResponse, GetListCategoryPayload, GetListCategoryResponse } from "@/redux/category/category.type";
 import { apiInstance } from "@/redux/api";
-import { SearchCategoriesParams } from "./category.thunk";
+import { filterObj } from "@/utils/object";
 
-export const getCategoriesService = async (params: SearchCategoriesParams): Promise<GetCategoriesResponse> => {
-  const queryString = new URLSearchParams(
-    Object.entries(params)
-      .filter(([, value]) => value !== undefined && value !== null)
-      .map(([key, value]) => [key, value.toString()])
-  ).toString();
-  return await apiInstance.get(`/categories/get-categories-by-customer?${queryString}`);
+export const getCategoriesService = async (filters: GetListCategoryPayload): Promise<GetListCategoryResponse> => {
+  const filteredFilters: Record<string, string> = filterObj(filters);
+  return await apiInstance.get(`/categories/get-categories-by-customer?${filteredFilters}`);
 };
 
-export const getCategoryService = async (categoryId: string): Promise<GetCategoryResponse> => {
-  return await apiInstance.get(`/categories/get-category-by-customer/${categoryId}`);
+export const getCategoryService = async (payload: GetCategoryPayload): Promise<GetCategoryResponse> => {
+  return await apiInstance.get(`/categories/get-category-by-customer/${payload.id}`);
 };

@@ -23,7 +23,7 @@ const DealsSection: React.FC = () => {
           <h5>Get Up To 50% Discount</h5>
         </div>
         <Link to={""} className="bg-white px-9 rounded-xl py-3 lg:py-4 ">
-          By now <i className="ri-arrow-right-long-line mt-1 ml-2"></i>
+          Buy now <i className="ri-arrow-right-long-line mt-1 ml-2"></i>
         </Link>
       </div>
     </section>

@@ -12,6 +12,7 @@ export interface OrderState {
   loading: {
     createOrder: boolean;
     getOrders: boolean;
+    getOrder: boolean;
   };
   order: Nullable<Order>;
   orders: Order[],
@@ -22,7 +23,7 @@ export interface OrderState {
 
 /**
  * Create order
- */
+*/
 
 export interface NewOrderPayload {
   customerName: string;
@@ -42,4 +43,17 @@ export interface NewOrderPayload {
 
 export interface CreateOrderResponse extends BaseResponse<Order> { }
 
+/**
+ * Get list order
+*/
+
 export interface GetOrdersResponse extends GetListResponseData<Order> { }
+
+
+/**
+ * Get Order
+ */
+export interface GetOrderPayload {
+  id: string;
+}
+export interface GetOrderResponse extends BaseResponse<Order> { }

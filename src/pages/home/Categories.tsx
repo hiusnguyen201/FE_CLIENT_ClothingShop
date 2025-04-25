@@ -3,15 +3,13 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const Categories: React.FC = () => {
-  const { categories } = useAppSelector(
-    state => state.categories
-  );
+  const { list } = useAppSelector((state) => state.categories);
 
   return (
     <div className="w-full overflow-x-auto section__container ">
       <div className="flex gap-4 w-max">
-        {categories.map((c, index) => (
-          <Link to={`/collection/${c.slug}`} key={index}>
+        {list.map((c) => (
+          <Link to={`/category/${c.slug}`} key={c.id}>
             <div
               className="min-w-[240px] w-[240px] rounded-lg overflow-hidden bg-white shadow-md cursor-pointer hover:scale-105 transition-transform"
             >

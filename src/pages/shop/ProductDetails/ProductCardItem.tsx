@@ -1,47 +1,18 @@
 import { motion, useAnimation } from "framer-motion";
 import { Link } from "react-router-dom";
-// import { ProductBadge } from "@/components/productSlice/ProductBadge";
 import { ColorBadge } from "@/components/productSlice/ColorBadge";
 import { Button } from "@/components/ui/button";
 import { Product, ProductVariant } from "@/types/product";
 import { useState } from "react";
-import { Nullable } from "@/types/common";
 import { colorMap } from "@/types/color";
-import { addCart, getCart } from "@/redux/cart/cart.thunk";
-import { useAppDispatch } from "@/redux/store";
-import { toast } from "@/hooks/use-toast";
+import { formatPrice, getPriceRange, SelectedVariant, useAddToCart } from "@/utils/product";
 
 interface ProductCardItemProps {
   product: Product;
 }
 
-interface SelectedVariant {
-  sizeId: Nullable<string>;
-  colorId: Nullable<string>;
-}
-
-interface PriceRange {
-  minPrice: Nullable<number>;
-  maxPrice: Nullable<number>;
-}
-
-const getPriceRange = (variants: ProductVariant[]): PriceRange => {
-  if (variants.length === 0) {
-    return { minPrice: null, maxPrice: null };
-  }
-  const prices = variants.map(variant => variant.price);
-  return {
-    minPrice: Math.min(...prices),
-    maxPrice: Math.max(...prices),
-  };
-};
-
-const formatPrice = (price: number): string => {
-  return new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(price);
-};
-
 const ProductCardItem: React.FC<ProductCardItemProps> = ({ product }) => {
-  const dispatch = useAppDispatch();
+  const { handleAddToCart } = useAddToCart();
 
   const controls = useAnimation();
 
@@ -89,36 +60,15 @@ const ProductCardItem: React.FC<ProductCardItemProps> = ({ product }) => {
     }));
   };
 
-  const handleAddToCart = () => {
-    if (selectedVariantData && selectedVariantData.quantity > 0) {
-      dispatch(addCart({ productVariantId: selectedVariantData.id, quantity: 1 })).then((res) => {
-        if (res.meta.requestStatus === "fulfilled") {
-          toast({ title: "Added to cart successfully" })
-          dispatch(getCart())
-        } else {
-          toast({
-            title: res.payload?.toString() || "Failed to add to cart",
-            variant: "destructive"
-          })
-        }
-      })
-    }
-  };
-
-  const { minPrice, maxPrice } = getPriceRange(product.productVariants);
-
   const colorOption = product.productOptions.find(opt => opt.option.name === "Color");
   const sizeOption = product.productOptions.find(opt => opt.option.name === "Size");
   const selectedVariantData = findVariant();
+  const { minPrice, maxPrice } = getPriceRange(product.productVariants);
 
   return (
     <div className="product__card">
       <motion.div className="relative" onHoverStart={handleHoverStart} onHoverEnd={handleHoverEnd}>
-        <div className="absolute z-10 right-2 left-2 top-2 flex items-center justify-end flex-wrap gap-1">
-          {/* {product.discount && <ProductBadge title={product.discount} className="md:hidden flex" />}
-          {product.isNew && <ProductBadge title="NEW" />} */}
-        </div>
-        <Link className="relative block" to={`/shop/${product.slug}`}>
+        <Link className="relative block" to={`/product/${product.slug}`}>
           <img src={product.thumbnail} alt="" className="object-cover rounded-lg h-full mb-2 w-full aspect-[3/4]" />
         </Link>
         <motion.div
@@ -129,15 +79,19 @@ const ProductCardItem: React.FC<ProductCardItemProps> = ({ product }) => {
           }}
           className="absolute p-3 mx-auto md:h-auto backdrop-blur-sm bottom-6 left-6 right-6 rounded md:block hidden"
         >
-          <Button
-            onClick={handleAddToCart}
-            disabled={!selectedVariantData || selectedVariantData.quantity === 0}
-            className="mt-6 px-5 py-3 bg-red-500 text-white rounded-md cursor-pointer"
-          >{!selectedVariantData ? "Add to cart" : selectedVariantData && selectedVariantData?.quantity > 0 ?
-            "Add to cart" : "Out of stock"}
-          </Button>
+          <div className="flex justify-center my-4">
+            <Button
+              onClick={() => handleAddToCart(selectedVariantData)}
+              disabled={!selectedVariantData || selectedVariantData.quantity < 1}
+              className="text-white rounded-md cursor-pointer"
+            >{!selectedVariantData ? "Add to cart" : selectedVariantData && selectedVariantData?.quantity > 0 ?
+              "Add to cart" : "Out of stock"}
+            </Button>
+          </div>
+
+
           <div className="flex flex-wrap gap-1">
-            {sizeOption ? (
+            {sizeOption && (
               sizeOption.optionValues.map((value) => {
                 const isAvailable = product.productVariants.some(variant =>
                   variant.variantValues.some(
@@ -147,17 +101,16 @@ const ProductCardItem: React.FC<ProductCardItemProps> = ({ product }) => {
                 return (
                   <Button
                     key={value.id}
+                    // variant={selectedVariant.sizeId === value.id ? "outline" : null}
+                    className={`w-[48px] h-[44px] font-semibold text-black bg-gray-300 hover:text-white
+                    ${selectedVariant.sizeId === value.id && "text-white bg-black"}`}
                     onClick={() => handleSelectOption("size", value.id)}
                     disabled={!isAvailable}
-                    className={`bg-gray-300 mt-2 hover:bg-gray-400 w-[40px] h-[38px] cursor-pointer
-                                    ${selectedVariant.sizeId === value.id ? "bg-red-500" : null}`}
                   >
                     {value.valueName}
                   </Button>
                 );
               })
-            ) : (
-              null
             )}
           </div>
         </motion.div>
@@ -165,7 +118,7 @@ const ProductCardItem: React.FC<ProductCardItemProps> = ({ product }) => {
 
       <div className="flex flex-col min-h-[94px]">
         <div className="flex mb-2 items-center gap-1 sm:gap-2 flex-wrap mt-2">
-          {colorOption ? (
+          {colorOption && (
             colorOption.optionValues.map((value) => {
               const isAvailable = product.productVariants.some(variant =>
                 variant.quantity > 0 &&
@@ -183,15 +136,12 @@ const ProductCardItem: React.FC<ProductCardItemProps> = ({ product }) => {
                 />
               );
             })
-          ) : (
-            null
           )}
         </div>
-        <Link to="#">
+        <Link to={`/shop/${product.slug}`}>
           <h4 className="line-clamp-2 mb-1">{product.name}</h4>
         </Link>
         <div className="flex items-center gap-2">
-          {/* <span className="font-bold text-md">{product.price.toLocaleString()}đ</span> */}
           {
             selectedVariantData ? formatPrice(selectedVariantData.price) :
               minPrice !== null && maxPrice !== null
@@ -200,9 +150,6 @@ const ProductCardItem: React.FC<ProductCardItemProps> = ({ product }) => {
                   : `${formatPrice(minPrice)} - ${formatPrice(maxPrice)}`
                 : formatPrice(0)
           }
-          {/* {product.discount && (
-            <p className="text-white p-1 bg-red-500 md:flex hidden rounded-xl font-bold text-sm">-{product.discount}</p>
-          )} */}
         </div >
       </div >
     </div >

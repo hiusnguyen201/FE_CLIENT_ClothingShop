@@ -1,18 +1,16 @@
 import { ActionReducerMapBuilder, createSlice, Draft, PayloadAction } from "@reduxjs/toolkit";
-import { CategoriesState, GetCategoriesResponse, GetCategoryResponse } from "@/redux/category/category.type";
-import { getCategories, getCategory } from "@/redux/category/category.thunk";
+import { CategoriesState, GetCategoryResponse, GetListCategoryResponse } from "@/redux/category/category.type";
+import { getCategory, getListCategory } from "@/redux/category/category.thunk";
 
 const initialState: CategoriesState = {
   loading: {
-    getCategories: false,
+    getListCategory: false,
     getCategory: false,
   },
   category: null,
-  categories: [],
+  list: [],
   error: null,
   totalCount: 0,
-  page: 1,
-  limit: 10,
 };
 
 const categoriesSlice = createSlice({
@@ -21,24 +19,24 @@ const categoriesSlice = createSlice({
   reducers: {},
   extraReducers: (builder: ActionReducerMapBuilder<CategoriesState>) => {
     builder
-      // Get categpries Case
-      .addCase(getCategories.pending, (state: Draft<CategoriesState>) => {
-        state.loading.getCategories = true;
+      // Get list category
+      .addCase(getListCategory.pending, (state: Draft<CategoriesState>) => {
+        state.loading.getListCategory = true;
         state.error = null;
       })
-      .addCase(getCategories.fulfilled, (state: Draft<CategoriesState>, action: PayloadAction<GetCategoriesResponse>) => {
-        state.loading.getCategories = false;
+      .addCase(getListCategory.fulfilled, (state: Draft<CategoriesState>, action: PayloadAction<GetListCategoryResponse>) => {
+        state.loading.getListCategory = false;
         state.error = null;
-        state.categories = action.payload.data.list;
+        state.list = action.payload.data.list;
         state.totalCount = action.payload.data.totalCount;
       })
-      .addCase(getCategories.rejected, (state: Draft<CategoriesState>, action: PayloadAction<any>) => {
-        state.loading.getCategories = false;
+      .addCase(getListCategory.rejected, (state: Draft<CategoriesState>, action: PayloadAction<any>) => {
+        state.loading.getListCategory = false;
         state.error = action.payload as string;
-        state.categories = [];
+        state.list = [];
         state.totalCount = 0;
       })
-      // Get category Case
+      // Get category
       .addCase(getCategory.pending, (state: Draft<CategoriesState>) => {
         state.loading.getCategory = true;
         state.error = null;

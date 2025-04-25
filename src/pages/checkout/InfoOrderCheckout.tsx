@@ -17,15 +17,6 @@ interface InfoOrderCheckoutProps {
 }
 
 const InfoOrderCheckout: React.FC<InfoOrderCheckoutProps> = ({ orderId, productOderItem }) => {
-  const totalPrice = productOderItem.reduce((acc, product) => acc + product.price * product.quantity, 0);
-
-  const totalDiscount = productOderItem.reduce(
-    (acc, product) => acc + (product.originalPrice * product.quantity - product.price * product.quantity),
-    0
-  );
-
-  const shippingFee = 0;
-  const totalPayment = totalPrice + shippingFee;
 
   return (
     <div>

@@ -6,14 +6,15 @@ import { Label } from "@/components/ui/label";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { getCategory } from "@/redux/category/category.thunk";
-import { searchProducts } from "@/redux/search/search.thunk";
-// import { GetListParams } from "@/types/response";
-import { setPage } from "@/redux/search/search.slice";
 import ProductCards from "../shop/ProductDetails/ProductCards";
+import Pagination from "@/components/Pagination";
+import { getListProduct } from "@/redux/product/product.thunk";
+import { SortByValue, SortOrderValue } from "@/types/response";
+import { getValidSortBy, getValidSortOrder } from "@/utils/product";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const subCategories = ["Jean", "Shirt", "Trousers"];
 const sizes = ["S", "M", "L", "XL"];
@@ -24,46 +25,42 @@ const colorOptions = [
   { label: "Trắng", value: "#fff" },
 ];
 
-// interface DataItem {
-//   name: string;
-//   createdAt: string;
-// }
-
-// interface ExtendedGetListParams<TData> extends GetListParams<TData> {
-//   category?: string | undefined;
-// }
+interface SearchFormState {
+  page: number;
+  limit: number;
+  sortBy?: SortByValue;
+  sortOrder?: SortOrderValue;
+}
 
 const CategoryPage: React.FC = () => {
   const { categoryName } = useParams<{ categoryName?: string }>();
-  const dispatch = useAppDispatch();
-  const { category } = useAppSelector((state) => state.categories);
-  const { products, limit, page, totalCount } = useAppSelector((state) => state.searchProducts);
-  // const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  // const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+  const dispatch = useAppDispatch();
+  const { category, loading } = useAppSelector((state) => state.categories);
+  const { list, totalCount } = useAppSelector((state) => state.product);
+
   const [selectedSubs, setSelectedSubs] = useState<string[]>([]);
   const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
   const [selectedColors, setSelectedColors] = useState<string[]>([]);
   const [sortBy, setSortBy] = useState<string>("newest");
   const [showMobileFilter, setShowMobileFilter] = useState(false);
 
-  // const [formState, setFormState] = useState<ExtendedGetListParams<DataItem>>(() => {
-  //   return {
-  //     page: Number(searchParams.get("page")) || 1,
-  //     limit: Number(searchParams.get("limit")) || 10,
-  //     keyword: searchParams.get("keyword") || "",
-  //     category: searchParams.get("category") || "",
-  //     sortBy: (searchParams.get("sortBy") as "name" | "createdAt" | undefined) || "createdAt",
-  //     sortOrder: (searchParams.get("sortOrder") as "asc" | "desc" | undefined) || "desc",
-  //   };
-  // });
+  const [formState, setFormState] = useState<SearchFormState>(() => {
+    return {
+      page: Number(searchParams.get("page")) || 1,
+      limit: Number(searchParams.get("limit")) || 10,
+      sortBy: getValidSortBy(searchParams.get("sortBy")),
+      sortOrder: getValidSortOrder(searchParams.get("sortOrder")),
+    };
+  });
 
-  // const updateFormState = (field: keyof ExtendedGetListParams<DataItem>, value: string) => {
-  //   setFormState(prev => ({ ...prev, [field]: value }));
-  // };
+  const updateFormState = (field: keyof SearchFormState, value: string | number) => {
+    setFormState(prev => ({ ...prev, [field]: value }));
+  };
 
   const handlePageChange = (newPage: number) => {
-    dispatch(setPage(newPage));
+    updateFormState("page", newPage);
   };
 
   useEffect(() => {
@@ -77,8 +74,23 @@ const CategoryPage: React.FC = () => {
     if (!category) {
       return;
     }
-    dispatch(searchProducts({ category: category.id }));
-  }, [dispatch, category]);
+    const params = new URLSearchParams();
+    if (formState.sortBy) params.set("sortBy", formState.sortBy);
+    if (formState.sortOrder) params.set("sortOrder", formState.sortOrder);
+    if (formState.page) params.set("page", formState.page.toString());
+    if (formState.limit) params.set("limit", formState.limit.toString());
+
+    setSearchParams(params);
+    dispatch(
+      getListProduct({
+        ...formState,
+        sortBy: formState.sortBy,
+        sortOrder: formState.sortOrder,
+        limit: formState.limit,
+        page: formState.page,
+      })
+    );
+  }, [formState, category, dispatch, setSearchParams]);
 
   const toggleSub = (sub: string) => {
     setSelectedSubs((prev) =>
@@ -94,7 +106,7 @@ const CategoryPage: React.FC = () => {
     setSelectedColors((prev) => (prev.includes(color) ? prev.filter((c) => c !== color) : [...prev, color]));
   };
 
-  const totalPages = Math.ceil(totalCount / limit);
+  const totalPages = Math.ceil(totalCount / formState.limit);
 
   return (
     <div className="my-5">
@@ -196,7 +208,7 @@ const CategoryPage: React.FC = () => {
             {category?.name}
           </h1>
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold">{products.length} result</h2>
+            <h2 className="text-xl font-bold">{list.length} result</h2>
             {/* Top sort bar */}
             <div className="flex justify-start mb-4 mt-5">
               <div className="flex items-center gap-2 ">
@@ -215,45 +227,22 @@ const CategoryPage: React.FC = () => {
               </div>
             </div>
           </div>
-          <ProductCards productsData={products} />
 
-          <div className="flex items-center justify-between bg-white px-4 mt-2 sm:px-6">
-            <div className="flex flex-1 justify-between ">
-              <p className="text-sm text-gray-500 text-center lg:block">
-                Showing {Math.min((page - 1) * limit + 1, totalCount)}-{Math.min(page * limit, totalCount)} of {totalCount} products
-              </p>
-            </div>
-            <div className="lg:items-center bg-white">
-              <nav className="isolate inline-flex -space-x-px rounded-md " aria-label="Pagination">
-                <button
-                  onClick={() => handlePageChange(Math.max(page - 1, 1))}
-                  disabled={page === 1}
-                  className="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
-                >
-                  <i className="ri-arrow-left-s-line text-sm"></i>
-                </button>
-                {Array.from({ length: totalPages }, (_, index) => index + 1).map((pageNumber) => (
-                  <button
-                    key={pageNumber}
-                    onClick={() => handlePageChange(pageNumber)}
-                    className={`relative inline-flex items-center px-4 py-2 text-sm font-semibold ${page === pageNumber
-                      ? "bg-blue-600 text-white"
-                      : "text-gray-900 ring-1 ring-gray-300 ring-inset hover:bg-gray-50"
-                      } focus:z-20 focus:outline-offset-0`}
-                  >
-                    {pageNumber}
-                  </button>
-                ))}
-                <button
-                  onClick={() => handlePageChange(Math.min(page + 1, totalPages))}
-                  disabled={page === totalPages}
-                  className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
-                >
-                  <i className="ri-arrow-right-s-line text-sm"></i>
-                </button>
-              </nav>
-            </div>
-          </div>
+
+          {loading.getCategory ?
+            <Skeleton className="h-4 w-[250px]" />
+            : <>
+              <ProductCards productsData={list} />
+              <Pagination
+                currentPage={formState.page}
+                totalPages={totalPages}
+                totalCount={totalCount}
+                limit={formState.limit}
+                onPageChange={handlePageChange}
+              />
+            </>
+          }
+
         </section>
       </div>
     </div>

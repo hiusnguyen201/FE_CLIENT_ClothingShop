@@ -1,11 +1,12 @@
 import { ActionReducerMapBuilder, createSlice, Draft, PayloadAction } from "@reduxjs/toolkit";
-import { CreateOrderResponse, GetOrdersResponse, OrderState } from "./order.type";
-import { createOrder, getOrders } from "./order.thunk";
+import { CreateOrderResponse, GetOrderResponse, GetOrdersResponse, OrderState } from "./order.type";
+import { createOrder, getOrder, getOrders } from "./order.thunk";
 
 const initialState: OrderState = {
   loading: {
     createOrder: false,
     getOrders: false,
+    getOrder: false,
   },
   order: null,
   orders: [],
@@ -53,6 +54,22 @@ const orderSlice = createSlice({
         state.error = action.payload as string;
         state.orders = [];
         state.totalCount = 0;
+      })
+
+      // Get order Case
+      .addCase(getOrder.pending, (state: Draft<OrderState>) => {
+        state.loading.getOrder = true;
+        state.error = null;
+      })
+      .addCase(getOrder.fulfilled, (state: Draft<OrderState>, action: PayloadAction<GetOrderResponse>) => {
+        state.loading.getOrder = false;
+        state.error = null;
+        state.order = action.payload.data;
+      })
+      .addCase(getOrder.rejected, (state: Draft<OrderState>, action: PayloadAction<any>) => {
+        state.loading.getOrder = false;
+        state.error = action.payload as string;
+        state.order = null;
       })
   },
 });

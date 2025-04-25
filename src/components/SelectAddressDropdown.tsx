@@ -103,7 +103,6 @@ const SelectAddressDropdown: React.FC<SelectAddressDropdownProps> = ({ formik })
                 // setSelectedWard("");
                 setDistricts([]);
                 setWards([]);
-                formik.setFieldValue("provinceCode", value)
               }}
             >
               <SelectTrigger className="w-full p-6 border border-gray-400 px-3 rounded-4xl flex items-center min-w-50">
@@ -130,7 +129,6 @@ const SelectAddressDropdown: React.FC<SelectAddressDropdownProps> = ({ formik })
                 setSelectedDistrict(value);
                 // setSelectedWard("");
                 setWards([]);
-                formik.setFieldValue("districtCode", value)
               }}
             >
               <SelectTrigger className="w-full p-6 border border-gray-400 px-3 rounded-4xl flex items-center min-w-50">

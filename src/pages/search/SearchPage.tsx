@@ -1,147 +1,137 @@
 import React, { useEffect, useState } from "react";
-
-// import productsData from "@/data/product.json";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
-import { searchProducts } from "@/redux/search/search.thunk";
-import { setPage } from "@/redux/search/search.slice";
 import { useSearchParams } from "react-router-dom";
 import ProductCards from "../shop/ProductDetails/ProductCards";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useDebounce } from "@/hooks/use-debounce";
+import { SortByValue, SortOrderValue } from "@/types/response";
+import { getListProduct } from "@/redux/product/product.thunk";
+import Pagination from "@/components/Pagination";
 
 interface SearchFormState {
-  keyword: string;
-  category: string;
-  sortBy: "name" | "createdAt";
-  sortOrder: "asc" | "desc";
+  page: number;
+  limit: number;
+  keyword?: string;
+  category?: string;
+  sortBy?: SortByValue;
+  sortOrder?: SortOrderValue;
 }
 
 const SearchPage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const dispatch = useAppDispatch();
-  const { products, loading, totalCount, page, limit } = useAppSelector(
-    state => state.searchProducts
-  );
+  const { list: productList, loading, totalCount } = useAppSelector((state) => state.product);
+  const { list: categoryList } = useAppSelector(state => state.categories);
+
+  const getValidSortBy = (value: string | null): "name" | "createdAt" | undefined => {
+    return value === "name" || value === "createdAt" ? value : "createdAt";
+  };
+
+  const getValidSortOrder = (value: string | null): "asc" | "desc" | undefined => {
+    return value === "asc" || value === "desc" ? value : "desc";
+  };
 
   const [formState, setFormState] = useState<SearchFormState>(() => {
     return {
-      keyword: searchParams.get("keyword") || "",
-      category: searchParams.get("category") || "",
-      sortBy: (searchParams.get("sortBy") as "name" | "createdAt") || "createdAt",
-      sortOrder: (searchParams.get("sortOrder") as "asc" | "desc") || "desc",
+      page: Number(searchParams.get("page")) || 1,
+      limit: Number(searchParams.get("limit")) || 10,
+      keyword: searchParams.get("keyword") || undefined,
+      category: searchParams.get("category") || undefined,
+      sortBy: getValidSortBy(searchParams.get("sortBy")),
+      sortOrder: getValidSortOrder(searchParams.get("sortOrder")),
     };
   });
 
-  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter") {
-      updateFormState("keyword", event.currentTarget.value);
-      getProducts();
-    }
+  const debouncedKeyword = useDebounce(formState.keyword, 700);
+
+  const updateFormState = (field: keyof SearchFormState, value: string | number) => {
+    setFormState(prev => ({ ...prev, [field]: value }));
   };
 
-  const getProducts = () => {
-    dispatch(
-      searchProducts({
-        ...formState,
-        category: formState.category || undefined,
-        page,
-        limit,
-      })
-    );
-  }
-
-  const updateFormState = (field: keyof SearchFormState, value: string) => {
-    setFormState(prev => ({ ...prev, [field]: value }));
+  const handlePageChange = (newPage: number) => {
+    updateFormState("page", newPage);
   };
 
   useEffect(() => {
     const params = new URLSearchParams();
-    if (formState.keyword) params.set("keyword", formState.keyword);
+    if (debouncedKeyword) params.set("keyword", debouncedKeyword);
     if (formState.category) params.set("category", formState.category);
-    params.set("sortBy", formState.sortBy);
-    params.set("sortOrder", formState.sortOrder);
+    if (formState.sortBy) params.set("sortBy", formState.sortBy);
+    if (formState.sortOrder) params.set("sortOrder", formState.sortOrder);
+    if (formState.page) params.set("page", formState.page.toString());
+    if (formState.limit) params.set("limit", formState.limit.toString());
+
     setSearchParams(params);
 
     dispatch(
-      searchProducts({
+      getListProduct({
         ...formState,
-        category: formState.category || undefined,
-        page,
-        limit,
+        keyword: debouncedKeyword,
+        category: formState.category,
+        sortBy: formState.sortBy,
+        sortOrder: formState.sortOrder,
+        limit: formState.limit,
+        page: formState.page,
       })
     );
-  }, [dispatch, page, limit, setSearchParams]);
+  }, [debouncedKeyword, formState.category, formState.sortBy, formState.sortOrder, formState.page, formState.limit, dispatch, setSearchParams]);
 
-  const handlePageChange = (newPage: number) => {
-    dispatch(setPage(newPage));
-  };
-
-  const totalPages = Math.ceil(totalCount / limit);
+  const totalPages = Math.ceil(totalCount / formState.limit);
 
   return (
     <div className="space-y-6 section__container">
       <h1 className="text-3xl font-bold">Sản phẩm</h1>
       <section className="section__container">
-        <div className="w-full mb-12 flex flex-col md:flex-row items-center justify-center gap-4">
-          <input
-            type="text"
-            value={formState.keyword}
-            onChange={(e) => updateFormState("keyword", e.target.value)}
-            onKeyDown={handleKeyDown}
-            placeholder="Search for products..."
-            className="search-bar w-full max-w-4xl p-2 border rounded focus-visible:outline-none"
-          />
-          <button onClick={getProducts} className="w-full md:w-auto py-2 px-8 bg-red-500 text-white rounded">
-            Search
-          </button>
+        <div className="mb-12 w-full flex flex-col justify-between md:flex-row gap-4 lg:w-120">
+          <div>
+            <Input
+              type="text"
+              value={formState.keyword}
+              onChange={(e) => updateFormState("keyword", e.target.value)}
+              placeholder="Search for products..."
+              className="w-80 border-gray-500 rounded-md focus-visible:outline-none p-5"
+            />
+          </div>
+          <Select onValueChange={(value) => updateFormState("category", value)}>
+            <SelectTrigger className="w-52 p-5 border-gray-500">
+              <SelectValue placeholder="Danh mục" />
+            </SelectTrigger>
+            <SelectContent className="bg-white border-none">
+              {categoryList.map((category) => (
+                <SelectItem
+                  key={category.id}
+                  value={category.slug}>
+                  {category.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
-        {loading.searchProducts ? <div className="text-center">Loading...</div>
-          : <div>
-            {products.length === 0 ? (
+
+        <h2 className="text-2xl font-semibold mt-6 text-gray-700 mb-10">Kết quả</h2>
+        <div>
+          {loading.getListProduct ? <Skeleton className="h-8 w-[250px]" />
+            : productList.length === 0 ? (
               <div>
                 <p className="section__subheader">Sorry, no result found!</p>
+                {/* <h4 className="text-lg font-normal">Other products</h4> */}
               </div>
-            ) : (
-              <ProductCards productsData={products} />
-            )}
-          </div>}
+            ) : <>
+              <ProductCards productsData={productList} />
 
-        <div className="flex items-center justify-between bg-white px-4 mt-2 sm:px-6">
-          <div className="flex flex-1 justify-between ">
-            <p className="text-sm text-gray-500 text-center lg:block">
-              Showing {Math.min((page - 1) * limit + 1, totalCount)}-{Math.min(page * limit, totalCount)} of {totalCount} products
-            </p>
-          </div>
-          <div className="lg:items-center bg-white">
-            <nav className="isolate inline-flex -space-x-px rounded-md " aria-label="Pagination">
-              <button
-                onClick={() => handlePageChange(Math.max(page - 1, 1))}
-                disabled={page === 1}
-                className="relative inline-flex items-center rounded-l-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
-              >
-                <i className="ri-arrow-left-s-line text-sm"></i>
-              </button>
-              {Array.from({ length: totalPages }, (_, index) => index + 1).map((pageNumber) => (
-                <button
-                  key={pageNumber}
-                  onClick={() => handlePageChange(pageNumber)}
-                  className={`relative inline-flex items-center px-4 py-2 text-sm font-semibold ${page === pageNumber
-                    ? "bg-blue-600 text-white"
-                    : "text-gray-900 ring-1 ring-gray-300 ring-inset hover:bg-gray-50"
-                    } focus:z-20 focus:outline-offset-0`}
-                >
-                  {pageNumber}
-                </button>
-              ))}
-              <button
-                onClick={() => handlePageChange(Math.min(page + 1, totalPages))}
-                disabled={page === totalPages}
-                className="relative inline-flex items-center rounded-r-md px-2 py-2 text-gray-400 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 focus:z-20 focus:outline-offset-0"
-              >
-                <i className="ri-arrow-right-s-line text-sm"></i>
-              </button>
-            </nav>
-          </div>
+              <Pagination
+                currentPage={formState.page}
+                totalPages={totalPages}
+                totalCount={totalCount}
+                limit={formState.limit}
+                onPageChange={handlePageChange}
+              />
+            </>
+
+          }
         </div>
-
       </section>
     </div>
   );

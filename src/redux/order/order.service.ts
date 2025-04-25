@@ -1,5 +1,5 @@
 import { apiInstance } from "@/redux/api";
-import { CreateOrderResponse, GetOrdersResponse, NewOrderPayload } from "./order.type";
+import { CreateOrderResponse, GetOrderPayload, GetOrderResponse, GetOrdersResponse, NewOrderPayload } from "./order.type";
 
 export const createOrderService = async (payload: NewOrderPayload): Promise<CreateOrderResponse> => {
   return await apiInstance.post("/orders/create-order-by-customer", payload,
@@ -9,6 +9,12 @@ export const createOrderService = async (payload: NewOrderPayload): Promise<Crea
 
 export const getOrdersService = async (): Promise<GetOrdersResponse> => {
   return await apiInstance.get("/orders/get-orders-by-customer", {
+    withCredentials: true,
+  });
+};
+
+export const getOrderService = async (payload: GetOrderPayload): Promise<GetOrderResponse> => {
+  return await apiInstance.get(`orders/get-order-by-customer/${payload.id}`, {
     withCredentials: true,
   });
 };

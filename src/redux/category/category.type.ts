@@ -1,29 +1,37 @@
 import { Category } from "@/types/category";
-import { Nullable } from "@/types/common";
-import { BaseResponse } from "@/types/response";
+import { Nullable, Optional } from "@/types/common";
+import { BaseResponse, GetListParams, GetListResponseData } from "@/types/response";
 
 /**
  * State
  */
 export interface CategoriesState {
   loading: {
-    getCategories: boolean;
+    getListCategory: boolean;
     getCategory: boolean;
   };
   category: Nullable<Category>;
-  categories: Category[];
+  list: Category[];
   error: Nullable<string>;
   totalCount: number;
-  page: number;
-  limit: number;
 }
 
 /**
- * Get categories
+ * Get list category
  */
-export interface GetCategoriesResponse extends BaseResponse<{ totalCount: number, list: Category[] }> { }
+type CategoryFieldsSort = Extract<"name" | "createdAt", Category>;
+export interface GetListCategoryPayload extends GetListParams<Category> {
+  sortBy: Optional<Nullable<CategoryFieldsSort>>;
+}
+
+export interface GetListCategoryResponse extends GetListResponseData<Category> { }
+
+
 
 /**
- * Get category by id
+ * Get category
  */
+export interface GetCategoryPayload {
+  id: string;
+}
 export interface GetCategoryResponse extends BaseResponse<Category> { }
