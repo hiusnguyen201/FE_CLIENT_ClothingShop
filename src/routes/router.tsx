@@ -11,6 +11,10 @@ import SubCategoryPage from "@/pages/subCategory/SubCategoryPage";
 import CheckOutPage from "@/pages/checkout/CheckoutPage";
 import DetailProduct from "@/pages/shop/productDetails/DetailProduct";
 import GetOrders from "@/pages/orders/GetOrders";
+import NotFoundPage from "@/components/NotFoundPage";
+import ForgotPasswordPage from "@/pages/auth/ForgotPassword";
+import ResetPasswordPage from "@/pages/auth/ResetPassword";
+import VerifyOtp from "@/pages/auth/VerifyOtp";
 
 const router = createBrowserRouter([
   {
@@ -56,6 +60,18 @@ const router = createBrowserRouter([
         path: "register",
         element: <RegisterPage />,
       },
+      {
+        path: "forgot-password",
+        element: <ForgotPasswordPage />,
+      },
+      {
+        path: "reset-password",
+        element: <ResetPasswordPage />,
+      },
+      {
+        path: "verify-otp",
+        element: <VerifyOtp />,
+      },
     ],
   },
   {
@@ -65,6 +81,10 @@ const router = createBrowserRouter([
   {
     path: "/get-order",
     element: <GetOrders />,
+  },
+  {
+    path: "*",
+    element: <NotFoundPage />,
   },
 ]);
 

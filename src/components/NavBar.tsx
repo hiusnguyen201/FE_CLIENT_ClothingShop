@@ -179,7 +179,7 @@ const NavBar: React.FC = () => {
         {/* logo */}
         <div className="nav__logo">
           <Link to="/">
-            Shop<span>.</span>
+            Clothes Men<span>.</span>
           </Link>
         </div>
         {/* nav icon */}
