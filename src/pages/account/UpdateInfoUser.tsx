@@ -80,12 +80,12 @@ const UpdateInfoUser: FC<UpdateUserInfoProps> = ({ isOpenUpdateInfo, onClose }) 
                 </div>
 
                 <div className="w-full space-y-4">
-                  <Label>Ngày sinh</Label>
+                  <Label>Day of birth</Label>
                   <DayOfBirth name="birthday" formik={formik} />
                 </div>
 
                 <div className="space-y-4">
-                  <Label>Giới tính</Label>
+                  <Label>Gender</Label>
                   <RadioGroup
                     defaultValue={formik.values.gender}
                     className="flex gap-4 mt-2"
@@ -104,13 +104,13 @@ const UpdateInfoUser: FC<UpdateUserInfoProps> = ({ isOpenUpdateInfo, onClose }) 
                 </div>
                 <div className="w-full">
                   <Label htmlFor="phone" className="text-md text-gray-700 mb-1">
-                    Full Name
+                    Phone number
                   </Label>
                   <Input
                     id="phone"
                     name="phone"
                     className="border border-gray-400 p-6 rounded-4xl"
-                    placeholder="Enter your full name"
+                    placeholder="Enter your phone number"
                     value={formik.values.phone}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
