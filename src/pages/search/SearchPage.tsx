@@ -24,7 +24,7 @@ const SearchPage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const dispatch = useAppDispatch();
   const { list: productList, loading, totalCount } = useAppSelector((state) => state.product);
-  const { list: categoryList } = useAppSelector(state => state.categories);
+  const { list: categoryList } = useAppSelector((state) => state.categories);
 
   const [formState, setFormState] = useState<SearchFormState>(() => {
     return {
@@ -40,7 +40,7 @@ const SearchPage: React.FC = () => {
   const debouncedKeyword = useDebounce(formState.keyword, 700);
 
   const updateFormState = (field: keyof SearchFormState, value: string | number) => {
-    setFormState(prev => ({ ...prev, [field]: value }));
+    setFormState((prev) => ({ ...prev, [field]: value }));
   };
 
   const handlePageChange = (newPage: number) => {
@@ -63,13 +63,22 @@ const SearchPage: React.FC = () => {
         ...formState,
         keyword: debouncedKeyword,
         category: formState.category,
-        sortBy: formState.sortBy,
+        sortBy: formState?.sortBy || null,
         sortOrder: formState.sortOrder,
         limit: formState.limit,
         page: formState.page,
       })
     );
-  }, [debouncedKeyword, formState.category, formState.sortBy, formState.sortOrder, formState.page, formState.limit, dispatch, setSearchParams]);
+  }, [
+    debouncedKeyword,
+    formState.category,
+    formState.sortBy,
+    formState.sortOrder,
+    formState.page,
+    formState.limit,
+    dispatch,
+    setSearchParams,
+  ]);
 
   const totalPages = Math.ceil(totalCount / formState.limit);
 
@@ -93,9 +102,7 @@ const SearchPage: React.FC = () => {
             </SelectTrigger>
             <SelectContent className="bg-white border-none">
               {categoryList.map((category) => (
-                <SelectItem
-                  key={category.id}
-                  value={category.slug}>
+                <SelectItem key={category.id} value={category.slug}>
                   {category.name}
                 </SelectItem>
               ))}
@@ -105,13 +112,15 @@ const SearchPage: React.FC = () => {
 
         <h2 className="text-2xl font-semibold mt-6 text-gray-700 mb-10">Kết quả</h2>
         <div>
-          {loading.getListProduct ? <Skeleton className="h-8 w-[250px]" />
-            : productList.length === 0 ? (
-              <div>
-                <p className="section__subheader">Sorry, no result found!</p>
-                {/* <h4 className="text-lg font-normal">Other products</h4> */}
-              </div>
-            ) : <>
+          {loading.getListProduct ? (
+            <Skeleton className="h-8 w-[250px]" />
+          ) : productList.length === 0 ? (
+            <div>
+              <p className="section__subheader">Sorry, no result found!</p>
+              {/* <h4 className="text-lg font-normal">Other products</h4> */}
+            </div>
+          ) : (
+            <>
               <ProductCards productsData={productList} />
 
               <Pagination
@@ -122,8 +131,7 @@ const SearchPage: React.FC = () => {
                 onPageChange={handlePageChange}
               />
             </>
-
-          }
+          )}
         </div>
       </section>
     </div>
