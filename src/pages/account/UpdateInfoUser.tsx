@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useFormik } from "formik";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import DayOfBirth from "@/components/dayOfBirth";
+import DayOfBirth from "@/components/DayOfBirth";
 import { UpdateInfoUserSchema } from "./schema/updateInfoUser";
 
 interface UpdateUserInfoProps {
