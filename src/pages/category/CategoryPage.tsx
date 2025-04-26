@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Link, useParams, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { getCategory } from "@/redux/category/category.thunk";
 import ProductCards from "../shop/ProductDetails/ProductCards";
@@ -33,12 +33,13 @@ interface SearchFormState {
 }
 
 const CategoryPage: React.FC = () => {
-  const { categoryName } = useParams<{ categoryName?: string }>();
+  const { categoryName } = useParams<{ categoryName: string }>();
   const [searchParams, setSearchParams] = useSearchParams();
+  const navigate = useNavigate();
 
   const dispatch = useAppDispatch();
-  const { category, loading } = useAppSelector((state) => state.categories);
-  const { list, totalCount } = useAppSelector((state) => state.product);
+  const { category, loading: categoryLoading } = useAppSelector((state) => state.categories);
+  const { list, loading: productLoading, totalCount } = useAppSelector((state) => state.product);
 
   const [selectedSubs, setSelectedSubs] = useState<string[]>([]);
   const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
@@ -55,42 +56,41 @@ const CategoryPage: React.FC = () => {
     };
   });
 
-  const updateFormState = (field: keyof SearchFormState, value: string | number) => {
-    setFormState(prev => ({ ...prev, [field]: value }));
-  };
-
-  const handlePageChange = (newPage: number) => {
-    updateFormState("page", newPage);
-  };
-
   useEffect(() => {
     if (!categoryName) {
+      navigate("/404", { replace: true });
       return;
     }
-    dispatch(getCategory(categoryName));
-  }, [dispatch, categoryName]);
+    dispatch(getCategory({ id: categoryName }));
+  }, [dispatch, categoryName, navigate]);
 
   useEffect(() => {
-    if (!category) {
-      return;
-    }
-    const params = new URLSearchParams();
-    if (formState.sortBy) params.set("sortBy", formState.sortBy);
-    if (formState.sortOrder) params.set("sortOrder", formState.sortOrder);
-    if (formState.page) params.set("page", formState.page.toString());
-    if (formState.limit) params.set("limit", formState.limit.toString());
+    if (category) {
+      const params = new URLSearchParams();
+      if (formState.sortBy) params.set("sortBy", formState.sortBy);
+      if (formState.sortOrder) params.set("sortOrder", formState.sortOrder);
+      if (formState.page) params.set("page", formState.page.toString());
+      if (formState.limit) params.set("limit", formState.limit.toString());
 
-    setSearchParams(params);
-    dispatch(
-      getListProduct({
-        ...formState,
-        sortBy: formState.sortBy,
-        sortOrder: formState.sortOrder,
-        limit: formState.limit,
-        page: formState.page,
-      })
-    );
+      setSearchParams(params);
+      dispatch(
+        getListProduct({
+          ...formState,
+          sortBy: formState.sortBy,
+          sortOrder: formState.sortOrder,
+          limit: formState.limit,
+          page: formState.page,
+          category: category.id
+        })
+      );
+    }
   }, [formState, category, dispatch, setSearchParams]);
+
+
+  if (!category && !categoryLoading.getCategory) {
+    navigate("/404", { replace: true });
+    return
+  }
 
   const toggleSub = (sub: string) => {
     setSelectedSubs((prev) =>
@@ -104,6 +104,14 @@ const CategoryPage: React.FC = () => {
 
   const toggleColor = (color: string) => {
     setSelectedColors((prev) => (prev.includes(color) ? prev.filter((c) => c !== color) : [...prev, color]));
+  };
+
+  const updateFormState = (field: keyof SearchFormState, value: string | number) => {
+    setFormState(prev => ({ ...prev, [field]: value }));
+  };
+
+  const handlePageChange = (newPage: number) => {
+    updateFormState("page", newPage);
   };
 
   const totalPages = Math.ceil(totalCount / formState.limit);
@@ -200,12 +208,12 @@ const CategoryPage: React.FC = () => {
 
             <span className="link">
               <Link to={`/category/${category?.slug}`} className="text-gray-900">
-                {category?.name}
+                {category ? category.name : <Skeleton className="h-4 w-[250px]" />}
               </Link>
             </span>
           </div>
           <h1 className="uppercase lg:text-4xl md:text-3xl text-2xl font-bold text-gray-700 border-b border-gray-100 py-10">
-            {category?.name}
+            {category ? category.name : <Skeleton className="h-4 w-[250px]" />}
           </h1>
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-bold">{list.length} result</h2>
@@ -229,17 +237,18 @@ const CategoryPage: React.FC = () => {
           </div>
 
 
-          {loading.getCategory ?
-            <Skeleton className="h-4 w-[250px]" />
-            : <>
+          {productLoading.getListProduct ? <Skeleton className="h-4 w-[250px]" /> :
+            <>
               <ProductCards productsData={list} />
-              <Pagination
-                currentPage={formState.page}
-                totalPages={totalPages}
-                totalCount={totalCount}
-                limit={formState.limit}
-                onPageChange={handlePageChange}
-              />
+              {list.length &&
+                <Pagination
+                  currentPage={formState.page}
+                  totalPages={totalPages}
+                  totalCount={totalCount}
+                  limit={formState.limit}
+                  onPageChange={handlePageChange}
+                />
+              }
             </>
           }
 

@@ -1,5 +1,6 @@
 import { apiInstance } from "@/redux/api";
-import { CreateOrderResponse, GetOrderPayload, GetOrderResponse, GetOrdersResponse, NewOrderPayload } from "./order.type";
+import { CreateOrderResponse, GetListOrderPayload, GetListOrderResponse, GetOrderPayload, GetOrderResponse, NewOrderPayload } from "./order.type";
+import { filterObj } from "@/utils/object";
 
 export const createOrderService = async (payload: NewOrderPayload): Promise<CreateOrderResponse> => {
   return await apiInstance.post("/orders/create-order-by-customer", payload,
@@ -7,8 +8,9 @@ export const createOrderService = async (payload: NewOrderPayload): Promise<Crea
   );
 };
 
-export const getOrdersService = async (): Promise<GetOrdersResponse> => {
-  return await apiInstance.get("/orders/get-orders-by-customer", {
+export const getListOrderService = async (filters: GetListOrderPayload): Promise<GetListOrderResponse> => {
+  const filteredFilters: Record<string, string> = filterObj(filters);
+  return await apiInstance.get(`/orders/get-orders-by-customer?${new URLSearchParams(filteredFilters)}`, {
     withCredentials: true,
   });
 };

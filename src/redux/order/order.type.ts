@@ -1,6 +1,7 @@
-import { Nullable } from "@/types/common";
+import { Nullable, Optional } from "@/types/common";
 import {
   BaseResponse,
+  GetListParams,
   GetListResponseData,
 } from "@/types/response";
 import { Order } from "@/types/order";
@@ -11,11 +12,11 @@ import { Order } from "@/types/order";
 export interface OrderState {
   loading: {
     createOrder: boolean;
-    getOrders: boolean;
+    getListOrder: boolean;
     getOrder: boolean;
   };
   order: Nullable<Order>;
-  orders: Order[],
+  list: Order[],
   totalCount: number;
   error: Nullable<string>;
 }
@@ -46,8 +47,11 @@ export interface CreateOrderResponse extends BaseResponse<Order> { }
 /**
  * Get list order
 */
-
-export interface GetOrdersResponse extends GetListResponseData<Order> { }
+type OrderFieldsSort = Extract<"createdAt", Order>;
+export interface GetListOrderPayload extends GetListParams<Order> {
+  sortBy: Optional<Nullable<OrderFieldsSort>>;
+}
+export interface GetListOrderResponse extends GetListResponseData<Order> { }
 
 
 /**

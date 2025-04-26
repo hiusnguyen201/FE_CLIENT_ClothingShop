@@ -29,7 +29,7 @@ const InfoUserCheckout: React.FC<ShippingInfoProps> = ({ infoUserOrder }) => {
           <div>{infoUserOrder.phone}</div>
 
           <div className="font-medium">Payment method:</div>
-          <div>{infoUserOrder.paymentMethod}</div>
+          <div>{infoUserOrder.paymentMethod.toUpperCase()}</div>
 
           <div className="font-medium col-span-1 md:col-span-1">Delivery address:</div>
           <div className="md:col-span-1">{infoUserOrder.address}</div>

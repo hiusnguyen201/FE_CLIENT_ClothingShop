@@ -7,11 +7,3 @@ export interface Address {
   isDefault: boolean;
   customer: string;
 }
-
-export interface NewAddress {
-  address: string;
-  provinceCode: string;
-  districtCode: string;
-  wardCode: string;
-  isDefault: boolean;
-}

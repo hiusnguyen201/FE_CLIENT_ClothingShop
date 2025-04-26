@@ -9,6 +9,7 @@ import { getProduct } from "@/redux/product/product.thunk";
 import { formatPrice, getPriceRange, SelectedVariant } from "@/utils/product";
 import { colorMap } from "@/types/color";
 import { useAddToCart } from "@/utils/product";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const infoList = [
   { label: "MATERIAL", value: "92% Polyester 8% Spandex" },
@@ -60,7 +61,7 @@ const ProductDetail: React.FC = () => {
   }, [dispatch, id]);
 
   if (loading.getProduct) {
-    return <div>Loading...</div>;
+    return <Skeleton className="h-8 w-[250px]" />;
   }
 
   if (error) {

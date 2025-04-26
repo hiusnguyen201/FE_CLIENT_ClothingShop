@@ -9,6 +9,7 @@ import { useDebounce } from "@/hooks/use-debounce";
 import { SortByValue, SortOrderValue } from "@/types/response";
 import { getListProduct } from "@/redux/product/product.thunk";
 import Pagination from "@/components/Pagination";
+import { getValidSortBy, getValidSortOrder } from "@/utils/product";
 
 interface SearchFormState {
   page: number;
@@ -24,14 +25,6 @@ const SearchPage: React.FC = () => {
   const dispatch = useAppDispatch();
   const { list: productList, loading, totalCount } = useAppSelector((state) => state.product);
   const { list: categoryList } = useAppSelector(state => state.categories);
-
-  const getValidSortBy = (value: string | null): "name" | "createdAt" | undefined => {
-    return value === "name" || value === "createdAt" ? value : "createdAt";
-  };
-
-  const getValidSortOrder = (value: string | null): "asc" | "desc" | undefined => {
-    return value === "asc" || value === "desc" ? value : "desc";
-  };
 
   const [formState, setFormState] = useState<SearchFormState>(() => {
     return {

@@ -1,7 +1,8 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ThunkApiConfig } from "@/types/thunk-api";
-import { CreateOrderResponse, GetOrderPayload, GetOrderResponse, GetOrdersResponse, NewOrderPayload } from "./order.type";
-import { createOrderService, getOrderService, getOrdersService } from "./order.service";
+import { CreateOrderResponse, GetListOrderResponse, GetOrderPayload, GetOrderResponse, NewOrderPayload } from "./order.type";
+import { createOrderService, getListOrderService, getOrderService } from "./order.service";
+import { GetListCategoryPayload } from "../category/category.type";
 
 
 export const createOrder = createAsyncThunk<CreateOrderResponse, NewOrderPayload, ThunkApiConfig>(
@@ -17,11 +18,11 @@ export const createOrder = createAsyncThunk<CreateOrderResponse, NewOrderPayload
   }
 );
 
-export const getOrders = createAsyncThunk<GetOrdersResponse, void, ThunkApiConfig>(
+export const getListOrder = createAsyncThunk<GetListOrderResponse, GetListCategoryPayload, ThunkApiConfig>(
   "orders/get-orders-by-customer",
-  async (_, { rejectWithValue }) => {
+  async (filters, { rejectWithValue }) => {
     try {
-      const response: GetOrdersResponse = await getOrdersService();
+      const response: GetListOrderResponse = await getListOrderService(filters);
       return response;
     } catch (error: any) {
       const message: string = error.response?.data?.message || error.message || error.toString();

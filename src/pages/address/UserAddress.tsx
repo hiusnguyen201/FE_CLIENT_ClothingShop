@@ -4,8 +4,8 @@ import AddNewAddress from "@/pages/address/AddNewAddress";
 import { Badge } from "@/components/ui/badge";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { deleteAddress, getAddressList, setDefaultAddress } from "@/redux/address/address.thunk";
-import { toast } from "@/hooks/use-toast";
 import { showToast } from "@/utils/toast";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const UserAddress: React.FC = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
@@ -47,7 +47,7 @@ const UserAddress: React.FC = () => {
       </div>
 
       <h4 className="text-lg font-medium py-10 border-t border-gray-200">Address</h4>
-      {loading.getAddressList ? <div>Loading...</div> : addressList.length ? (
+      {loading.getAddressList ? <Skeleton className="h-8 w-[250px]" /> : addressList.length ? (
         <div className="space-y-6">
           {addressList.map((address) => (
             <div

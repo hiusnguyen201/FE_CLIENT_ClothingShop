@@ -1,34 +1,25 @@
 import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
-
-interface ProductOrderItem {
-  name: string;
-  image: string;
-  quantity: number;
-  originalPrice: number;
-  price: number;
-  variant: string;
-  total: number;
-}
+import { Order } from "@/types/order";
+import { formatPrice } from "@/utils/product";
 
 interface InfoOrderCheckoutProps {
-  orderId: string;
-  productOderItem: ProductOrderItem[];
+  order: Order;
 }
 
-const InfoOrderCheckout: React.FC<InfoOrderCheckoutProps> = ({ orderId, productOderItem }) => {
+const InfoOrderCheckout: React.FC<InfoOrderCheckoutProps> = ({ order }) => {
 
   return (
     <div>
       <Card className="w-full max-w-5xl mx-auto mt-6 border-none">
         <CardContent className="p-4">
           <h2 className="text-center text-2xl font-bold mb-4">
-            Order information <span className="text-gray-500">#{orderId}</span>
+            Order information <span className="text-gray-500">#{order.id}</span>
           </h2>
 
           {/* Header Table */}
-          <div className="grid grid-cols-6 bg-blue-600 text-white font-semibold py-2 px-3 rounded-t-md">
-            <div className="col-span-2">Product Name</div>
+          <div className="grid grid-cols-6 bg-blue-600 text-white font-semibold py-2 px-3 rounded-t-md text-center">
+            <div className="col-span-2">Product</div>
             <div>Quantity</div>
             <div>Listed price</div>
             <div>Variant</div>
@@ -36,45 +27,53 @@ const InfoOrderCheckout: React.FC<InfoOrderCheckoutProps> = ({ orderId, productO
           </div>
 
           {/* Product List */}
-          {productOderItem.map((product, index) => (
-            <div key={index} className="grid grid-cols-6 items-center bg-gray-100 px-3 py-4 border-b border-gray-200">
+          {order?.orderDetails?.map((detail) => (
+            <div key={detail.id} className="grid grid-cols-6 items-center justify-center bg-gray-100 px-3 py-4 border-b border-gray-200">
               <div className="col-span-2 flex items-center gap-3">
-                <div className="aspect-[3/4]">
-                  <img src={product.image} alt={product.name} className="object-cover rounded  min-w-30 h-35" />
+                <div className="w-16 h-16">
+                  <img src={detail.product.thumbnail} alt={detail.product.name} className="object-cover rounded " />
                 </div>
-                <span>{product.name}</span>
+                <div>{detail.product.name}</div>
               </div>
-              <div>{product.quantity}</div>
-              <div>
+              <div className="text-center">{detail.quantity}</div>
+              <div className="text-center">
                 <span className="line-through text-sm text-gray-400 block">
-                  {product.originalPrice.toLocaleString()}đ
+                  {formatPrice(detail.variant.price)}
                 </span>
-                <span className="text-base font-medium">{product.price.toLocaleString()}đ</span>
+                <span className="text-base font-medium">{formatPrice(detail.unitPrice)}</span>
               </div>
-              <div>{product.variant}</div>
-              <div>{(product.price * product.quantity).toLocaleString()}đ</div>
+              <div className="text-center">
+                {detail.variant.variantValues.map((item) =>
+                  <div key={item.id}>
+                    {item.option.name}: {item.optionValue.valueName}
+                  </div>
+                )}
+              </div>
+              <div className="text-center">
+                {formatPrice(detail.unitPrice * detail.quantity)}
+              </div>
             </div>
           ))}
 
           <div className="divide-y divide-gray-200 text-sm mt-2">
             <div className="flex justify-between py-2">
               <span>Total product value</span>
-              <span>{totalPrice.toLocaleString()}đ</span>
+              <span>{formatPrice(order.subTotal)}</span>
             </div>
-            <div className="flex justify-between py-2">
+            {/* <div className="flex justify-between py-2">
               <span>Total discount</span>
               <span className="text-red-500">-{totalDiscount.toLocaleString()}đ</span>
-            </div>
+            </div> */}
             <div className="flex justify-between py-2">
               <span>Shipping Fee</span>
-              <span>{shippingFee.toLocaleString()}đ</span>
+              <span>{formatPrice(order.shippingFee)}</span>
             </div>
           </div>
 
           {/* Total Payment */}
           <div className="bg-black text-white mt-4 px-4 py-3 rounded-b-md flex justify-between items-center text-lg font-bold">
             <span>Total payment</span>
-            <span>{totalPayment.toLocaleString()}đ</span>
+            <span>{formatPrice(order.total)}</span>
           </div>
         </CardContent>
       </Card>

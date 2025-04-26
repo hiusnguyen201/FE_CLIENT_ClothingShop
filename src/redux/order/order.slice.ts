@@ -1,15 +1,15 @@
 import { ActionReducerMapBuilder, createSlice, Draft, PayloadAction } from "@reduxjs/toolkit";
-import { CreateOrderResponse, GetOrderResponse, GetOrdersResponse, OrderState } from "./order.type";
-import { createOrder, getOrder, getOrders } from "./order.thunk";
+import { CreateOrderResponse, GetListOrderResponse, GetOrderResponse, OrderState } from "./order.type";
+import { createOrder, getListOrder, getOrder } from "./order.thunk";
 
 const initialState: OrderState = {
   loading: {
     createOrder: false,
-    getOrders: false,
+    getListOrder: false,
     getOrder: false,
   },
   order: null,
-  orders: [],
+  list: [],
   totalCount: 0,
   error: null,
 };
@@ -38,21 +38,21 @@ const orderSlice = createSlice({
         state.order = null;
       })
 
-      // Get orders Case
-      .addCase(getOrders.pending, (state: Draft<OrderState>) => {
-        state.loading.getOrders = true;
+      // Get list order Case
+      .addCase(getListOrder.pending, (state: Draft<OrderState>) => {
+        state.loading.getListOrder = true;
         state.error = null;
       })
-      .addCase(getOrders.fulfilled, (state: Draft<OrderState>, action: PayloadAction<GetOrdersResponse>) => {
-        state.loading.getOrders = false;
+      .addCase(getListOrder.fulfilled, (state: Draft<OrderState>, action: PayloadAction<GetListOrderResponse>) => {
+        state.loading.getListOrder = false;
         state.error = null;
-        state.orders = action.payload.data.list;
+        state.list = action.payload.data.list;
         state.totalCount = action.payload.data.totalCount;
       })
-      .addCase(getOrders.rejected, (state: Draft<OrderState>, action: PayloadAction<any>) => {
-        state.loading.getOrders = false;
+      .addCase(getListOrder.rejected, (state: Draft<OrderState>, action: PayloadAction<any>) => {
+        state.loading.getListOrder = false;
         state.error = action.payload as string;
-        state.orders = [];
+        state.list = [];
         state.totalCount = 0;
       })
 

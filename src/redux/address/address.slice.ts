@@ -1,13 +1,11 @@
 import { ActionReducerMapBuilder, createSlice, Draft, PayloadAction } from "@reduxjs/toolkit";
-import { AddAddressResponse, AddressState, GetAddressListResponse } from "./address.type";
+import { CreateAddressResponse, AddressState, GetAddressListResponse } from "./address.type";
 import { addAddress, getAddressList } from "./address.thunk";
 
 const initialState: AddressState = {
   loading: {
     addAddress: false,
     getAddressList: false,
-    // clearCart: false,
-    // removeItem: false,
   },
   address: null,
   addressList: [],
@@ -18,9 +16,7 @@ const initialState: AddressState = {
 const addressSlice = createSlice({
   name: "address",
   initialState,
-  reducers: {
-
-  },
+  reducers: {},
   extraReducers: (builder: ActionReducerMapBuilder<AddressState>) => {
     builder
       // Create address Case
@@ -28,7 +24,7 @@ const addressSlice = createSlice({
         state.loading.addAddress = true;
         state.error = null;
       })
-      .addCase(addAddress.fulfilled, (state: Draft<AddressState>, action: PayloadAction<AddAddressResponse>) => {
+      .addCase(addAddress.fulfilled, (state: Draft<AddressState>, action: PayloadAction<CreateAddressResponse>) => {
         state.loading.addAddress = false;
         state.error = null;
         state.address = action.payload.data;
@@ -39,7 +35,7 @@ const addressSlice = createSlice({
         state.address = null;
       })
 
-      // Get address Case
+      // Get list address
       .addCase(getAddressList.pending, (state: Draft<AddressState>) => {
         state.loading.getAddressList = true;
         state.error = null;

@@ -7,12 +7,13 @@ import { getListCategory } from "@/redux/category/category.thunk";
 import { getCart } from "@/redux/cart/cart.thunk";
 import { getAddressList } from "@/redux/address/address.thunk";
 import { getProvinces } from "@/redux/division/division.thunk";
+import { Skeleton } from "./ui/skeleton";
 
 
 const NavBar: React.FC = () => {
   const dispatch = useAppDispatch();
   const { list } = useAppSelector((state) => state.categories);
-  const { user } = useAppSelector((state) => state.account);
+  const { user, loading } = useAppSelector((state) => state.account);
   const { cart } = useAppSelector((state) => state.cart);
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
@@ -183,16 +184,18 @@ const NavBar: React.FC = () => {
               <i className="ri-search-line"></i>
             </Link>
           </span>
+          {loading.getProfile ? <Skeleton className="h-8 w-8" /> :
+            <span>
+              <button className="hover:text-red-500" onClick={handleCartOpenToggle}>
+                <i className="ri-shopping-bag-line"></i>
+                <sup className="text-sm inline-block px-1.5 text-white rounded-full bg-red-500 text-center">
+                  {cart.length}
+                </sup>
+              </button>
+            </span>
+          }
           <span>
-            <button className="hover:text-red-500" onClick={handleCartOpenToggle}>
-              <i className="ri-shopping-bag-line"></i>
-              <sup className="text-sm inline-block px-1.5 text-white rounded-full bg-red-500 text-center">
-                {cart.length}
-              </sup>
-            </button>
-          </span>
-          <span>
-            {user ? (
+            {loading.getProfile ? <Skeleton className="h-8 w-8" /> : user ? (
               <Link to="/account">
                 <img src="https://mcdn.coolmate.me/image/October2023/mceclip3_72.png" alt="" className="w-6 h-6" />
               </Link>
