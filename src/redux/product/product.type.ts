@@ -22,7 +22,7 @@ export interface ProductState {
 export interface GetProductPayload {
   id: string;
 }
-export interface GetProductResponse extends BaseResponse<Product> { }
+export interface GetProductResponse extends BaseResponse<Product> {}
 
 /**
  * Get list Product
@@ -30,6 +30,6 @@ export interface GetProductResponse extends BaseResponse<Product> { }
 type ProductFieldsSort = Extract<"name" | "createdAt", Product>;
 export interface GetListProductPayload extends GetListParams<Product> {
   category?: Optional<string>;
-  sortBy: Optional<Nullable<ProductFieldsSort>>;
+  sortBy?: Optional<Nullable<ProductFieldsSort>>;
 }
-export interface GetListProductResponse extends GetListResponseData<Product> { }
+export interface GetListProductResponse extends GetListResponseData<Product> {}

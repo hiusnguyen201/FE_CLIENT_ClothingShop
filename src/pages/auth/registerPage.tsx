@@ -1,52 +1,26 @@
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { FormikHelpers, useFormik } from "formik";
-import { AuthState, LoginPayload } from "@/redux/auth/auth.type";
-import { useDispatch } from "react-redux";
-import { useAuth } from "@/hooks/use-auth";
-import { toast } from "@/hooks/use-toast";
-import { AppDispatch, useAppSelector } from "@/redux/store";
-import { Loader } from "lucide-react";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { useFormik } from "formik";
+// import { Loader } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { loginSchema } from "./schema/loginSchema";
+import { registerSchema } from "@/pages/auth/schema/registerSchema";
 
-const LoginPage: React.FC = () => {
+const RegisterPage: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const togglePassword = () => {
     setShowPassword(!showPassword);
   };
-
-  const dispatch = useDispatch<AppDispatch>();
-  const navigate = useNavigate();
-  const { login } = useAuth();
-
-  <Link to={"/auth/register"}>
-    <Button variant="outline" className="w-full">
-      Register
-    </Button>
-  </Link>;
-
-  // const handleSubmit = async (values: LoginPayload, { resetForm }: FormikHelpers<LoginPayload>) => {
-  //   if (!login) return;
-  //   await login(values);
-  //   if (!isAuthenticated || !user) return;
-  //   resetForm({});
-  //   if (user.verifiedAt) {
-  //     toast({ title: "Login successful" });
-  //     await navigate("/");
-  //   } else {
-  //     await navigate("/verify-otp");
-  //   }
-  // };
   const formik = useFormik({
     initialValues: {
+      name: "",
+      phone: "",
       email: "",
       password: "",
     },
-    validationSchema: loginSchema,
+    validationSchema: registerSchema,
     onSubmit: (values) => {
       console.log("Form values:", values);
     },
@@ -56,10 +30,52 @@ const LoginPage: React.FC = () => {
     <div className="flex h-full items-center p-4 lg:p-8">
       <div className="mx-auto flex w-full flex-col justify-center space-y-4 sm:w-[350px]">
         <div className="flex flex-col space-y-2 text-center">
-          <h1 className="text-3xl font-semibold tracking-tight">Welcome back</h1>
-          <p className="text-md text-muted-foreground">Enter your email below to login your account</p>
+          <h1 className="text-3xl font-semibold tracking-tight">Create Account</h1>
+          <p className="text-md text-muted-foreground">Enter the information below to create your account</p>
         </div>
-        <form onSubmit={formik.handleSubmit}>
+        <form onSubmit={formik.handleSubmit} className="space-y-4">
+          <div className="w-full space-y-4">
+            {/* name */}
+            <div className="w-full">
+              <Label htmlFor="name" className="text-md text-gray-700 mb-1">
+                Name
+              </Label>
+              <Input
+                id="name"
+                name="name"
+                type="text"
+                className="border border-gray-400 p-3 rounded-md pr-12"
+                placeholder="Enter your name"
+                value={formik.values.name}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.name && formik.errors.name && (
+                <div className="text-red-500 text-sm mt-1">{formik.errors.name}</div>
+              )}
+            </div>
+          </div>
+          <div className="w-full space-y-6">
+            {/* phone */}
+            <div className="w-full">
+              <Label htmlFor="phone" className="text-md text-gray-700 mb-1">
+                Phone Number
+              </Label>
+              <Input
+                id="phone"
+                name="phone"
+                type="number"
+                className="border border-gray-400 p-3 rounded-md pr-12"
+                placeholder="Enter your phone number"
+                value={formik.values.phone}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+              />
+              {formik.touched.phone && formik.errors.phone && (
+                <div className="text-red-500 text-sm mt-1">{formik.errors.phone}</div>
+              )}
+            </div>
+          </div>
           <div className="w-full space-y-6">
             {/* email */}
             <div className="w-full">
@@ -81,6 +97,7 @@ const LoginPage: React.FC = () => {
               )}
             </div>
           </div>
+
           <div className="w-full space-y-4 mt-3">
             {/* Password */}
             <div className="relative w-full">
@@ -118,16 +135,17 @@ const LoginPage: React.FC = () => {
           </Link>
 
           <Button
-            className="inline-flex items-center cursor-pointer justify-center rounded-md text-md font-medium bg-slate-950 text-white shadow hover:bg-slate-800 hover:scale-105 duration-300 h-9 px-4 py-2 ml-auto w-full disabled:opacity-75"
+            className="inline-flex uppercase items-center cursor-pointer justify-center rounded-md text-sm font-medium bg-slate-950 text-white shadow hover:bg-slate-800 hover:scale-105 duration-300 h-9 px-4 py-2 ml-auto w-full disabled:opacity-75"
             type="submit"
           >
-            Login
+            {/* {<Loader className="w-6 h-6 animate-spin" />} */}
+            Sign up
           </Button>
         </form>
         <span className="px-8 text-center text-md text-muted-foreground opacity-75">
-          Don't have an account?&nbsp;
-          <Link to="/auth/register" className="text__underline hover:text-slate-950 ">
-            Sign up.
+          You already have an account ?&nbsp;
+          <Link to="/auth/login" className="text__underline hover:text-slate-950 ">
+            Login.
           </Link>
         </span>
         <div className="relative">
@@ -154,4 +172,4 @@ const LoginPage: React.FC = () => {
   );
 };
 
-export default LoginPage;
+export default RegisterPage;

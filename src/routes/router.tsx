@@ -5,13 +5,17 @@ import HomePage from "@/pages/home/HomePage";
 import SearchPage from "@/pages/search/SearchPage";
 import { createBrowserRouter } from "react-router-dom";
 import { VerifyOTPPage } from "@/pages/auth/VerifyOTPPage";
-import { RegisterPage } from "@/pages/auth/RegisterPage";
+import RegisterPage from "@/pages/auth/RegisterPage";
 import CategoryPage from "@/pages/category/CategoryPage";
 import SubCategoryPage from "@/pages/subCategory/SubCategoryPage";
 import CheckOutPage from "@/pages/checkout/CheckoutPage";
 import DetailProduct from "@/pages/shop/ProductDetails/DetailProduct";
 import GetOrders from "@/pages/orders/GetOrders";
-import { LoginPage } from "@/pages/auth/loginPage";
+import LoginPage from "@/pages/auth/LoginPage";
+import NotFoundPage from "@/components/NotFoundPage";
+import ForgotPasswordPage from "@/pages/auth/ForgotPassword";
+import ResetPasswordPage from "@/pages/auth/ResetPassword";
+import VerifyOtp from "@/pages/auth/VerifyOtp";
 
 const router = createBrowserRouter([
   {
@@ -62,7 +66,19 @@ const router = createBrowserRouter([
       },
       {
         path: "verify-otp",
-        element: <VerifyOTPPage />
+        element: <VerifyOTPPage />,
+      },
+      {
+        path: "forgot-password",
+        element: <ForgotPasswordPage />,
+      },
+      {
+        path: "reset-password",
+        element: <ResetPasswordPage />,
+      },
+      {
+        path: "verify-otp",
+        element: <VerifyOtp />,
       },
     ],
   },
@@ -74,6 +90,10 @@ const router = createBrowserRouter([
   {
     path: "/get-order/:id",
     element: <GetOrders />,
+  },
+  {
+    path: "*",
+    element: <NotFoundPage />,
   },
 ]);
 
