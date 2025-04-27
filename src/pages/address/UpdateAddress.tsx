@@ -6,21 +6,21 @@ import SelectAddressDropdown from "@/components/SelectAddressDropdown";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useFormik } from "formik";
-import { AddNewAddressSchema } from "./schema/selectAddressSchema";
+import { UpdateAddressSchema } from "./schema/updateAddressSchema";
 
-interface AddNewAddressProps {
+interface UpdateAddressProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-const AddNewAddress: FC<AddNewAddressProps> = ({ isOpen, onClose }) => {
+const UpdateAddress: FC<UpdateAddressProps> = ({ isOpen, onClose }) => {
   const formik = useFormik({
     initialValues: {
       fullName: "",
       phoneNumber: "",
       saveToAddressBook: false,
     },
-    validationSchema: AddNewAddressSchema,
+    validationSchema: UpdateAddressSchema,
     onSubmit: (values) => {
       console.log("Form values:", values);
     },
@@ -47,7 +47,7 @@ const AddNewAddress: FC<AddNewAddressProps> = ({ isOpen, onClose }) => {
               <X size={28} />
             </Button>
 
-            <h2 className="text-2xl font-bold mb-6 mt-2">Add new your address</h2>
+            <h2 className="text-2xl font-bold mb-6 mt-2">Update your address</h2>
 
             <form className="space-y-4" onSubmit={formik.handleSubmit}>
               <div className="flex w-full space-x-6">
@@ -100,7 +100,7 @@ const AddNewAddress: FC<AddNewAddressProps> = ({ isOpen, onClose }) => {
                   Cancel
                 </Button>
                 <Button type="submit" className="px-6 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700">
-                  Add
+                  Update
                 </Button>
               </div>
             </form>
@@ -111,4 +111,4 @@ const AddNewAddress: FC<AddNewAddressProps> = ({ isOpen, onClose }) => {
   );
 };
 
-export default AddNewAddress;
+export default UpdateAddress;

@@ -17,6 +17,8 @@ import ResetPasswordPage from "@/pages/auth/ResetPassword";
 import VerifyOtp from "@/pages/auth/VerifyOtp";
 import ShopPage from "@/pages/shop/ShopPage";
 import ShopBySlugName from "@/pages/shop/ShopBySlugName";
+import UserInfo from "@/pages/account/UserInfoPage";
+import ShowAddressPage from "@/pages/account/ShowAddressPage";
 
 const router = createBrowserRouter([
   {
@@ -83,10 +85,10 @@ const router = createBrowserRouter([
       },
     ],
   },
-
   {
     path: "/account",
     element: <AccountPage />,
+    children: [],
   },
   {
     path: "/get-order",

@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import AddNewAddress from "@/pages/address/AddNewAddress";
 import { Address } from "@/types/address";
 import { Badge } from "@/components/ui/badge";
+import UpdateAddress from "./UpdateAddress";
 
 interface AddressListProps {
   addresses: Address[];
@@ -13,6 +14,7 @@ interface AddressListProps {
 
 const UserAddress: React.FC = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
+  const [isOpenUpdateAddress, setIsOpenUpdateAddress] = useState<boolean>(false);
   const addressList: AddressListProps = {
     addresses: [
       {
@@ -78,7 +80,7 @@ const UserAddress: React.FC = () => {
                 <Button
                   variant="link"
                   className="hover:text-gray-700 text-blue-600"
-                  onClick={() => addressList.onUpdate(addr.id)}
+                  onClick={() => setIsOpenUpdateAddress(true)}
                 >
                   Update
                 </Button>
@@ -98,6 +100,7 @@ const UserAddress: React.FC = () => {
       )}
 
       <AddNewAddress isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
+      <UpdateAddress isOpen={isOpenUpdateAddress} onClose={() => setIsOpenUpdateAddress(false)} />
     </div>
   );
 };

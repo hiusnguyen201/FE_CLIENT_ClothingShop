@@ -17,8 +17,6 @@ const HomePage: React.FC = () => {
       <Categories categoriesData={categoriesData} />
       <HeroSection />
       <div className="section__container">
-        <h2 className="section__header">Trending Products</h2>
-        <p className="section__subheader ">Explore Clothing Shop in Vietnam</p>
         <TrendingProducts />
       </div>
       <DealsSection />

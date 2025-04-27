@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Categories from "@/components/Categories";
 import TrendingProducts from "./TrendingProduct";
 import SubCategories from "@/components/subCategories";
@@ -8,15 +8,6 @@ import categoriesData from "@/data/categories.json";
 import subCategoriesData from "@/data/subCategories.json";
 
 const ShopPage: React.FC = () => {
-  const { slugName } = useParams<{ slugName: string }>();
-
-  const formatSlug = (slugName: string) => {
-    return slugName
-      .split("-")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(" ");
-  };
-  const displaySlugName = slugName ? formatSlug(slugName) : "All Product";
   return (
     <>
       <div>
@@ -43,8 +34,7 @@ const ShopPage: React.FC = () => {
           <Categories categoriesData={categoriesData} />
         </div>
         <div>
-          <h1 className="text-gray-600 lg:text-3xl text-2xl  ml-5 uppercase">{displaySlugName}</h1>
-          <TrendingProducts slugName={slugName} />
+          <TrendingProducts />
         </div>
         <section className="section__container deals__container">
           <picture>

@@ -1,18 +1,27 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import ProductCards from "@/pages/shop/productDetails/ProductCards";
 import productsData from "@/data/product.json";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-interface props {
-  slugName?: string;
-}
+const TrendingProducts: React.FC = () => {
+  const { slugName } = useParams<{ slugName: string }>();
 
-const TrendingProducts: React.FC<props> = ({ slugName }) => {
+  const formatSlug = (slugName: string) => {
+    return slugName
+      .split("-")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  };
+
+  const displaySlugName = slugName ? formatSlug(slugName) : "All Product";
+
   const navigate = useNavigate();
   const [sortBy, setSortBy] = useState<string>("all");
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const itemsPerPage = 8; // Số sản phẩm trên mỗi trang
 
   const validSlugs = ["all", "newest", "best-selling"];
 
@@ -43,6 +52,18 @@ const TrendingProducts: React.FC<props> = ({ slugName }) => {
       return 0;
     });
 
+  // Phân trang
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentItems = sortedProducts.slice(indexOfFirstItem, indexOfLastItem);
+
+  const totalPages = Math.ceil(sortedProducts.length / itemsPerPage);
+
+  const handlePageChange = (page: number) => {
+    if (page < 1 || page > totalPages) return; // Kiểm tra trang hợp lệ
+    setCurrentPage(page);
+  };
+
   const buttonList = [
     { value: "all", label: "All Products" },
     { value: "newest", label: "New Product" },
@@ -52,7 +73,8 @@ const TrendingProducts: React.FC<props> = ({ slugName }) => {
   return (
     <div>
       <section className="section__container product__container">
-        <div className=" border-t border-gray-100 my-9"></div>
+        <h1 className="text-gray-600 lg:text-3xl text-2xl ml-5 uppercase section__header">{displaySlugName}</h1>
+        <div className="border-t border-gray-100 my-9"></div>
         <div className="flex justify-between">
           <div className="flex items-center">
             {buttonList.map((button) => (
@@ -77,11 +99,33 @@ const TrendingProducts: React.FC<props> = ({ slugName }) => {
           </Link>
         </div>
 
-        {sortedProducts && (
+        {/* Hiển thị sản phẩm */}
+        {currentItems && (
           <div className="mt-5">
-            <ProductCards productsData={sortedProducts.slice(0, 10)} />
+            <ProductCards productsData={currentItems} />
           </div>
         )}
+
+        {/* Phân trang */}
+        <div className="mt-5 flex justify-center space-x-4">
+          <Button
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+            className="py-2 px-4 rounded-full border bg-white text-gray-800 hover:bg-gray-100"
+          >
+            Previous
+          </Button>
+          <span className="text-lg text-gray-700">
+            Page {currentPage} of {totalPages}
+          </span>
+          <Button
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            className="py-2 px-4 rounded-full border bg-white text-gray-800 hover:bg-gray-100"
+          >
+            Next
+          </Button>
+        </div>
       </section>
     </div>
   );
