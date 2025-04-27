@@ -50,7 +50,7 @@ const OrderDetailPage: React.FC = () => {
   return (
     <div className="max-w-4xl px-4">
       <h2 className="lg:text-2xl text-xl font-semibold mb-2">
-        Thông tin đơn hàng <span className="text-blue-600">#{order.id}</span>
+        Information Order <span className="text-blue-600">#{order.id}</span>
       </h2>
       <div>
         <InfoUserCheckout infoUserOrder={infoUserOrder} />

@@ -2,6 +2,7 @@ import Banner from "@/pages/home/Banner";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import CartModal from "@/pages/cart/CartModal";
+import { Button } from "@/components/ui/button";
 
 import productsData from "@/data/product.json";
 import userData from "@/data/user.json";
@@ -43,59 +44,47 @@ const NavBar: React.FC = () => {
   const allSubCategories = [
     {
       name: "All Product",
-      path: "men",
+      path: "shop",
       subCategories: [
-        { name: "New Product", path: "new-product" },
-        { name: "Best Seller", path: "best-seller" },
+        { name: "New Product", path: "shop/newest" },
+        { name: "Best Seller", path: "shop/best-selling" },
       ],
     },
     {
       name: "Men's Shirt",
-      path: "men-shirt",
+      path: "category/men-clothes/shirt",
       subCategories: [
-        { name: "TankTop Shirt", path: "tanktop-shirt-men" },
-        { name: "T-Shirt ", path: "t-shirt-men" },
-        { name: "Sports Shirt", path: "sport-shirt-men" },
-        { name: "Polo Shirt", path: "polo-shirt-men" },
-        { name: "Shirt", path: "shirt-men" },
-        { name: "Long sleeve shirt", path: "long-sleeve-shirt-men" },
-        { name: "Jacket", path: "jacket-men" },
+        { name: "TankTop Shirt", path: "category/men-clothes/men-shirt-tanktop" },
+        { name: "T-Shirt ", path: "category/men-clothes/men-t-shirt" },
+        { name: "Polo Shirt", path: "category/men-clothes/men-polo-shirt" },
       ],
     },
     {
       name: "Men's Pants",
-      path: "men-pants",
+      path: "category/men-clothes/men-pants",
       subCategories: [
-        { name: "Short Pants", path: "short-pants-men" },
-        { name: "Jogger Pants ", path: "jogger-pants-men" },
-        { name: "Sports Pants", path: "sport-pants-men" },
-        { name: "Long Pants", path: "long-pants-men" },
-        { name: "Jean Pants", path: "jean-pants-men" },
-        { name: "Swimming Trunks", path: "swimming-trunks-men" },
+        { name: "Short Pants", path: "category/men-clothes/men-short-pants" },
+        { name: "Jogger Pants ", path: "category/men-clothes/men-jogger-pants" },
+        { name: "Sports Pants", path: "category/men-clothes/men-sports-pants" },
       ],
     },
     {
       name: "Men's Underwear",
-      path: "men-underwear",
+      path: "category/men-clothes/men-underwear",
       subCategories: [
-        { name: "Brief", path: "brief-men" },
-        { name: "Trunk", path: "trunk-men" },
-        { name: "Boxer Brief", path: "boxer-brief-men" },
-        { name: "Long Leg", path: "long-leg-men" },
-        { name: "Home Pants", path: "home-pants-men" },
+        { name: "Brief", path: "category/men-clothes/men-brief" },
+        { name: "Trunk", path: "category/men-clothes/men-trunk" },
+        { name: "Boxer Brief", path: "category/men-clothes/men-boxer-brief" },
+        { name: "Long Leg", path: "category/men-clothes/men-long-leg" },
+        { name: "Home Pants", path: "category/men-clothes/men-home-pants" },
       ],
-    },
-    {
-      name: "Accessory",
-      path: "men-accessory",
-      subCategories: [{ name: "All Accessories(socks, hats...)", path: "men-accessory" }],
     },
   ];
 
   const categoryAccordingToNeed = [
-    { name: "Men's Underwear", path: "men-underwear" },
-    { name: "Sports Pants", path: "sport-pants-men" },
-    { name: "Home Pants", path: "home-pants-men" },
+    { name: "Men's Underwear", path: "category/men-clothes/men-underwear" },
+    { name: "Sports Pants", path: "category/men-clothes/men-sports-pants" },
+    { name: "Home Pants", path: "category/men-clothes/men-home-pants" },
   ];
 
   return (
@@ -111,7 +100,7 @@ const NavBar: React.FC = () => {
             onMouseLeave={handleMouseLeave}
           >
             <li className="link uppercase">
-              <Link to="/category/men-clothes">Men</Link>
+              <Link to="/shop">Men</Link>
             </li>
             {isDropdownMenus && (
               <div className="flex justify-between fixed mt-3 p-4 w-full left-0 right-0 bg-white border  border-gray-200 rounded-lg shadow-lg z-50">
@@ -121,15 +110,12 @@ const NavBar: React.FC = () => {
                     {allSubCategories.map((category, index) => (
                       <div key={index}>
                         <ul>
-                          <Link
-                            to={`/categories/${category.path}`}
-                            className="categories__navbar hover:text-red-500 text-xl"
-                          >
+                          <Link to={`/${category.path}`} className="categories__navbar hover:text-red-500 text-xl">
                             {category.name} <i className="ri-arrow-right-long-line text-lg"></i>
                           </Link>
                           {category.subCategories?.map((subCategory, index) => (
                             <li key={index} className="py-3 text-stone-600 hover:text-red-500 text-sm">
-                              <Link to={`categories/${subCategory.path}`}>{subCategory.name}</Link>
+                              <Link to={`/${subCategory.path}`}>{subCategory.name}</Link>
                             </li>
                           ))}
                         </ul>
@@ -140,7 +126,7 @@ const NavBar: React.FC = () => {
                     <div className="p-6 text-stone-600 flex-[3] border-r border-gray-200">According To Need</div>
                     <div className="flex flex-[7]">
                       {categoryAccordingToNeed.map((c, index) => (
-                        <Link key={index} to={`/categories/${c.path}`} className="p-6 hover:text-red-500">
+                        <Link key={index} to={`/${c.path}`} className="p-6 hover:text-red-500">
                           {c.name}
                         </Link>
                       ))}
@@ -189,15 +175,15 @@ const NavBar: React.FC = () => {
               <i className="ri-search-line"></i>
             </Link>
           </span>
-          <span>
-            <button className="hover:text-red-500" onClick={handleCartOpenToggle}>
-              <i className="ri-shopping-bag-line"></i>
-              <sup className="text-sm inline-block px-1.5 text-white rounded-full bg-red-500 text-center">
+          <span className="relative">
+            <Button className="hover:text-red-500 shadow-none" onClick={handleCartOpenToggle}>
+              <i className="ri-shopping-bag-line text-lg"></i>
+              <sup className="text-sm inline-block absolute right-0 px-1.5 text-white rounded-full bg-red-500 text-center">
                 {productsData.length}
               </sup>
-            </button>
+            </Button>
           </span>
-          <span>
+          <span className="mr-2">
             {user ? (
               <Link to="/account">
                 <img src="https://mcdn.coolmate.me/image/October2023/mceclip3_72.png" alt="" className="w-6 h-6" />
@@ -224,11 +210,11 @@ const NavBar: React.FC = () => {
         {/* logo */}
         <div className="nav__logo flex justify-between">
           <Link to="/">
-            Shop<span>.</span>
+            Clothes Men<span>.</span>
           </Link>
-          <button>
+          <Button>
             <i className="ri-close-line text-2xl" onClick={toggleMobileMenu}></i>
-          </button>
+          </Button>
         </div>
         <div className="bg-white aspect-[16] w-full rounded-lg shadow-md mt-2">
           <h4 className="categories__navbar flex justify-center pt-3">Explore men's clothing</h4>
@@ -255,7 +241,9 @@ const NavBar: React.FC = () => {
                 >
                   {category.subCategories?.map((c, i) => (
                     <li key={i}>
-                      <Link to={`/sub_category/${c.path}`}>{c.name}</Link>
+                      <Link to={`/${c.path}`} onClick={toggleMobileMenu}>
+                        {c.name}
+                      </Link>
                     </li>
                   ))}
                 </ul>

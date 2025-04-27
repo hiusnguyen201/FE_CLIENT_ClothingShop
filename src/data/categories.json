@@ -1,0 +1,15 @@
+[
+  {
+    "id": "1",
+    "name": "Men Sport",
+    "category": "men-clothes",
+    "image": "https://media3.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/March2025/image-ao-thun-1_18.jpg"
+  },
+  {
+    "id": "2",
+    "name": "Men Shirt",
+    "category": "men-clothes",
+    "subCategory": "men-shirt",
+    "image": "https://media3.coolmate.me/cdn-cgi/image/quality=80,format=auto/uploads/March2025/image-ao-thun-1_18.jpg"
+  }
+]

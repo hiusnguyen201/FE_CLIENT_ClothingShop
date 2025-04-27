@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const EmptyProducts: React.FC = () => {
   return (
-    <div className="section__subheader empty_content">
+    <div className="section__subheader items-center">
       <img
         src="https://staticmania.cdn.prismic.io/staticmania/a8befbc0-90ae-4835-bf37-8cd1096f450f_Property+1%3DSearch_+Property+2%3DSm.svg"
         alt="404"

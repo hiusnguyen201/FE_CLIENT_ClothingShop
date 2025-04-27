@@ -1,15 +1,17 @@
 import { motion, useAnimation } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ProductBadge } from "@/components/productSlice/ProductBadge";
-import { ColorBadge } from "@/components/productSlice/ColorBadge";
 import { Product } from "@/types/products";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { useState } from "react";
 
 interface ProductCardItemProps {
   product: Product;
 }
 
 const ProductCardItem: React.FC<ProductCardItemProps> = ({ product }) => {
+  const [selectedColor, setSelectedColor] = useState(product.colors[0]);
   const controls = useAnimation();
 
   const handleHoverStart = () => {
@@ -26,6 +28,10 @@ const ProductCardItem: React.FC<ProductCardItemProps> = ({ product }) => {
       opacity: 0,
       transition: { duration: 0.3 },
     });
+  };
+
+  const handelAddToCart = (size: string) => {
+    console.log(size);
   };
 
   return (
@@ -46,10 +52,14 @@ const ProductCardItem: React.FC<ProductCardItemProps> = ({ product }) => {
           }}
           className="absolute p-3 mx-auto md:h-auto backdrop-blur-sm bottom-6 left-6 right-6 rounded md:block hidden"
         >
-          <p className="text-sx mb-2 text-center font-normal">Thêm vào giỏ hàng +</p>
+          <p className="text-sx mb-2 text-center font-normal">Add to cart +</p>
           <div className="flex flex-wrap gap-1">
             {(product.sizes || ["S", "M", "L", "XL", "2XL"]).map((size, i) => (
-              <Button key={i} className=" mt-2 hover:bg-gray-300 bg-white w-[40px] h-[38px]">
+              <Button
+                key={i}
+                className=" mt-2 hover:bg-gray-300 bg-white w-[40px] h-[38px]"
+                onClick={() => handelAddToCart(size)}
+              >
                 {size}
               </Button>
             ))}
@@ -58,9 +68,29 @@ const ProductCardItem: React.FC<ProductCardItemProps> = ({ product }) => {
       </motion.div>
 
       <div className="flex flex-col min-h-[94px]">
-        <div className="flex mb-2 items-center gap-1 sm:gap-2 flex-wrap mt-2">
-          {(product.colors || ["#000", "#ffffff", "#9FC5E8"]).map((color, i) => (
-            <ColorBadge key={i} color={color} active={i === 0} />
+        <div className="flex mb-2 items-center gap-1 sm:gap-2 flex-wrap mt-2 ">
+          {product.colors.map((color, i) => (
+            <Badge
+              key={i}
+              defaultValue={selectedColor}
+              variant={selectedColor === color ? "default" : "outline"}
+              style={{
+                // backgroundColor: color,
+                border: selectedColor === color ? "2px solid black " : "",
+                padding: "2px",
+              }}
+              className="w-12 h-7 rounded-2xl cursor-pointer"
+              onClick={() => setSelectedColor(color)}
+            >
+              <div
+                style={{
+                  backgroundColor: color,
+                  width: "80%",
+                  height: "80%",
+                  borderRadius: "10px",
+                }}
+              />
+            </Badge>
           ))}
         </div>
         <Link to="#">

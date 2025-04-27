@@ -6,6 +6,8 @@ interface Cards {
   image: string;
   description: string;
   title: string;
+  category: string;
+  subCategory: string;
 }
 
 const HeroSection: React.FC = () => {
@@ -16,20 +18,8 @@ const HeroSection: React.FC = () => {
         "https://media3.coolmate.me/cdn-cgi/image/width=1800,height=1200,quality=80,format=auto/uploads/March2025/Section_Banner_888x600.jpg",
       description: "Sale 40% or Freeship",
       title: "Women Shirt",
-    },
-    {
-      id: 2,
-      image:
-        "https://media3.coolmate.me/cdn-cgi/image/width=1800,height=1200,quality=80,format=auto/uploads/March2025/Section_Banner_888x600.jpg",
-      description: "Sale 40% or Freeship",
-      title: "Women Dresses",
-    },
-    {
-      id: 3,
-      image:
-        "https://media3.coolmate.me/cdn-cgi/image/width=1800,height=1200,quality=80,format=auto/uploads/March2025/Section_Banner_888x600.jpg",
-      description: "Sale 40% or Freeship",
-      title: "Women Dresses",
+      category: "men-clothes",
+      subCategory: "shirt-polo",
     },
   ];
   return (
@@ -40,8 +30,11 @@ const HeroSection: React.FC = () => {
           <div className="hero__content">
             <h4 className="text-white">{card.title}</h4>
             <p className="text-2xl">{card.description}</p>
-            <Link to={""} className="bg-white px-7 hover:bg-gray-100 rounded-xl py-4">
-              Mua ngay
+            <Link
+              to={`/category/${card.category}/${card.subCategory}`}
+              className="bg-white px-7 hover:bg-gray-100 rounded-xl py-4"
+            >
+              Buy now
             </Link>
           </div>
         </div>
