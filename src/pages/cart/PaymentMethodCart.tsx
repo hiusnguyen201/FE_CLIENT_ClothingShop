@@ -50,7 +50,7 @@ const PaymentMethodCart: React.FC<InformationOrderProps> = ({ formik }) => {
               formik.setFieldValue("method", method.method)
             }}
             className={`flex items-center gap-4 p-4 rounded-xl border cursor-pointer transition-all w-full h-17 ${selectedMethod === method.id
-              ? "border-blue-600 bg-blue-50 shadow-md"
+              ? "border-blue-600 bg-blue-50 shadow-md hover:bg-gray-50"
               : "border-gray-300 bg-white hover:bg-gray-50"
               }`}
           >

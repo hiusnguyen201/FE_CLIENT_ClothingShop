@@ -30,14 +30,13 @@ const AddNewAddress: FC<AddNewAddressProps> = ({ isOpen, onClose }) => {
     validationSchema: AddNewAddressSchema,
     onSubmit: async (values) => {
       try {
-        const res = await dispatch(addAddress(values)).unwrap();
+        await dispatch(addAddress(values)).unwrap();
         formik.resetForm();
         dispatch(getAddressList());
         onClose();
         showToast(true, "Add address successfully");
       } catch (error) {
-        showToast(false, "Error");
-        console.log(error);
+        if (error) showToast(false, "Error");
       }
     }
   });

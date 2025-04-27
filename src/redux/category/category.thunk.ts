@@ -1,11 +1,10 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { getCategoriesService, getCategoryService } from "@/redux/category/category.service";
-import { GetCategoryPayload, GetCategoryResponse, GetListCategoryResponse } from "@/redux/category/category.type";
+import { GetCategoryPayload, GetCategoryResponse, GetListCategoryPayload, GetListCategoryResponse } from "@/redux/category/category.type";
 import { ThunkApiConfig } from "@/types/thunk-api";
-import { GetListProductPayload } from "../product/product.type";
 
 
-export const getListCategory = createAsyncThunk<GetListCategoryResponse, GetListProductPayload, ThunkApiConfig>(
+export const getListCategory = createAsyncThunk<GetListCategoryResponse, GetListCategoryPayload, ThunkApiConfig>(
   "categories/get-categories-by-customer",
   async (filters, { rejectWithValue }) => {
     try {

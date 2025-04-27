@@ -4,7 +4,7 @@ import { filterObj } from "@/utils/object";
 
 export const getCategoriesService = async (filters: GetListCategoryPayload): Promise<GetListCategoryResponse> => {
   const filteredFilters: Record<string, string> = filterObj(filters);
-  return await apiInstance.get(`/categories/get-categories-by-customer?${filteredFilters}`);
+  return await apiInstance.get(`/categories/get-categories-by-customer?${new URLSearchParams(filteredFilters)}`);
 };
 
 export const getCategoryService = async (payload: GetCategoryPayload): Promise<GetCategoryResponse> => {

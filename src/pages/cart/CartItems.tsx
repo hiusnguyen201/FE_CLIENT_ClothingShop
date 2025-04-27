@@ -4,6 +4,7 @@ import { addCart, clearCart, getCart, removeItem } from "@/redux/cart/cart.thunk
 import { useAppDispatch } from "@/redux/store";
 import { Cart } from "@/types/cart";
 import { formatPrice } from "@/utils/product";
+import { showToast } from "@/utils/toast";
 import React, { useEffect } from "react";
 
 interface CartItemsProps {
@@ -28,20 +29,15 @@ const CartItems: React.FC<CartItemsProps> = ({ cartData }) => {
   // }
   // };
 
-  const updateQuantity = (productVariantId: string, quantity: number) => {
+  const updateQuantity = async (productVariantId: string, quantity: number) => {
     if (quantity < 1) {
       return;
     }
-    dispatch(addCart({ productVariantId, quantity })).then((res) => {
-      if (res.meta.requestStatus !== "fulfilled") {
-        toast({
-          title: res.payload?.toString() || "Failed to add to cart",
-          variant: "destructive"
-        })
-      } else {
-        dispatch(getCart());
-      }
-    });
+    try {
+      await dispatch(addCart({ productVariantId, quantity })).unwrap();
+    } catch (error) {
+      if (error) showToast(false, "Failed to add to cart")
+    }
   };
 
   const handleRemoveItem = (productVariantId: string) => {

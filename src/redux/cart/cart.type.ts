@@ -1,4 +1,4 @@
-import { Cart } from "@/types/cart";
+import { AddCart, Cart } from "@/types/cart";
 import { Nullable } from "@/types/common";
 import { BaseResponse } from "@/types/response";
 
@@ -29,7 +29,7 @@ export type AddCartPayload = {
   quantity: number;
 };
 
-export interface AddCartResponse extends BaseResponse<Cart> { }
+export interface AddCartResponse extends BaseResponse<AddCart> { }
 
 /**
  * Remove item

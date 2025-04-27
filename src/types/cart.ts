@@ -5,6 +5,12 @@ export interface Cart {
     quantity: number;
 };
 
+export interface AddCart {
+    productId: string;
+    productVariantId: string;
+    quantity: number;
+};
+
 export interface ProductVariant {
     _id: string;
     price: number;

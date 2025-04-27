@@ -13,6 +13,7 @@ import { toast } from "@/hooks/use-toast";
 import { createOrder } from "@/redux/order/order.thunk";
 import { useNavigate } from "react-router-dom";
 import { removeItem } from "@/redux/cart/cart.thunk";
+import { showToast } from "@/utils/toast";
 
 interface CartModalProps {
   isCartOpen: boolean;
@@ -62,7 +63,7 @@ const CartModal: React.FC<CartModalProps> = ({ isCartOpen, onClose, cartData }) 
       const province = provinces.find(province => province.ProvinceName === values.province);
 
       if (!province) {
-        toast({ title: "Invalid address", variant: "destructive" });
+        showToast(false, "Invalid province");
         return;
       }
       values.provinceCode = province.ProvinceID;
@@ -73,7 +74,7 @@ const CartModal: React.FC<CartModalProps> = ({ isCartOpen, onClose, cartData }) 
 
         const district = districts.find(d => d.DistrictName === values.district);
         if (!district) {
-          toast({ title: "Invalid district", variant: "destructive" });
+          showToast(false, "Invalid district");
           return;
         }
         values.districtCode = district.DistrictID;
@@ -83,7 +84,7 @@ const CartModal: React.FC<CartModalProps> = ({ isCartOpen, onClose, cartData }) 
 
         const ward = wards.find(d => d.WardName === values.ward);
         if (!ward) {
-          toast({ title: "Invalid ward", variant: "destructive" });
+          showToast(false, "Invalid ward");
           return;
         }
 
@@ -106,9 +107,11 @@ const CartModal: React.FC<CartModalProps> = ({ isCartOpen, onClose, cartData }) 
             }
           })
         })).unwrap();
+
         if (order.code === 200) {
           toast({ title: "Order successfully" })
-          navigate('/')
+          onClose();
+          navigate(`/get-order/${order.data.id}`);
         }
 
       } catch (error) {

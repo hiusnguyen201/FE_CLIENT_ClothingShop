@@ -91,6 +91,10 @@ const router = createBrowserRouter([
     path: "/get-order/:id",
     element: <GetOrders />,
   },
+  // {
+  //   path: "/checkout/:id",
+  //   element: <CheckOutPage />,
+  // },
   {
     path: "*",
     element: <NotFoundPage />,

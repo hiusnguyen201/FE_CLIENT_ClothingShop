@@ -64,7 +64,8 @@ const NavBar: React.FC = () => {
     dispatch(
       getListCategory({
         limit: 10,
-        sortBy: "createdAt"
+        sortBy: "createdAt",
+        page: 1
       })
     );
     dispatch(getCart());

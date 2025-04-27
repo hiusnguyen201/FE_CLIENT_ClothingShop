@@ -1,5 +1,5 @@
 import { ActionReducerMapBuilder, createSlice, Draft, PayloadAction } from "@reduxjs/toolkit";
-import { CartState, GetCartResponse } from "./cart.type";
+import { AddCartResponse, CartState, GetCartResponse } from "./cart.type";
 import { addCart, clearCart, getCart } from "./cart.thunk";
 
 const initialState: CartState = {
@@ -26,10 +26,14 @@ const cartSlice = createSlice({
         state.loading.addCart = true;
         state.error = null;
       })
-      .addCase(addCart.fulfilled, (state: Draft<CartState>) => {
+      .addCase(addCart.fulfilled, (state: Draft<CartState>, action: PayloadAction<AddCartResponse>) => {
         state.loading.addCart = false;
         state.error = null;
-        // state.cart = action.payload.data;
+        const { productVariantId, quantity } = action.payload.data;
+        const item = state.cart.find((cartItem) => cartItem.productVariant._id === productVariantId);
+        if (item) {
+          item.quantity = quantity;
+        }
       })
       .addCase(addCart.rejected, (state: Draft<CartState>, action: PayloadAction<any>) => {
         state.loading.addCart = false;

@@ -4,7 +4,7 @@ import InfoUserCheckout from "../checkout/InfoUserCheckout";
 import InfoOrderCheckout from "../checkout/InfoOrderCheckout";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { getOrder } from "@/redux/order/order.thunk";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatDateVN } from "@/utils/product";
 
@@ -76,6 +76,24 @@ const OrderDetailPage: React.FC = () => {
 
       {order.trackingNumber && <div>
         Tracking number: {order.trackingNumber}
+      </div>
+      }
+
+      {order.payment?.status === "pending" && <div>
+        {order.payment.paymentUrl && <Button>
+          <Link to={order.payment.paymentUrl}>Click here to pay with {order.payment.paymentMethod}</Link>
+        </Button>
+        }
+        {order.payment.qrCodeUrl &&
+          <div className="flex flex-col items-center">
+            <p className="mb-2">Scan QR to pay</p>
+            <img
+              className="max-w-full h-auto w-48 md:w-64 lg:w-80"
+              src={order.payment.qrCodeUrl}
+              alt="QR Code"
+            />
+          </div>
+        }
       </div>
       }
 
