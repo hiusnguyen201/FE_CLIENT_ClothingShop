@@ -10,9 +10,12 @@ import {
 export interface DivisionState {
   loading: {
     getProvinces: boolean;
+    getDistricts: boolean;
+    getWards: boolean;
   };
   provinces: Nullable<Province[]>;
-  // districts: Nullable<District[]>;
+  districts: Nullable<District[]>;
+  wards: Nullable<Ward[]>;
   totalCount: number;
   error: Nullable<string>;
 }
@@ -28,7 +31,7 @@ export interface GetProvincesResponse extends GetListResponseData<Province> { }
  * Get districts payload
  */
 export type GetDistrictsPayload = {
-  provinceCode: number;
+  provinceCode: string;
 };
 /**
  * Get districts 
@@ -39,7 +42,7 @@ export interface GetDistrictsResponse extends GetListResponseData<District> { }
  * Get wards payload
  */
 export type GetWardsPayload = {
-  districtCode: number;
+  districtCode: string;
 };
 /**
  * Get wards 

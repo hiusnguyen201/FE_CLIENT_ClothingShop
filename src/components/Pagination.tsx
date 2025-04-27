@@ -20,7 +20,7 @@ const Pagination: React.FC<PaginationProps> = ({
             <div className="flex flex-1 justify-between">
                 <p className="text-sm text-gray-500 text-center lg:block">
                     Showing {Math.min((currentPage - 1) * limit + 1, totalCount)}-
-                    {Math.min(currentPage * limit, totalCount)} of {totalCount} products
+                    {Math.min(currentPage * limit, totalCount)} of {totalCount} items
                 </p>
             </div>
             <div className="lg:items-center bg-white">

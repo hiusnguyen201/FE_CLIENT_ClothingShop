@@ -15,6 +15,7 @@ import { getListProduct } from "@/redux/product/product.thunk";
 import { SortByValue, SortOrderValue } from "@/types/response";
 import { getValidSortBy, getValidSortOrder } from "@/utils/product";
 import { Skeleton } from "@/components/ui/skeleton";
+import { clearListProduct } from "@/redux/product/product.slice";
 
 const subCategories = ["Jean", "Shirt", "Trousers"];
 const sizes = ["S", "M", "L", "XL"];
@@ -216,7 +217,10 @@ const CategoryPage: React.FC = () => {
             {category ? category.name : <Skeleton className="h-4 w-[250px]" />}
           </h1>
           <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold">{list.length} result</h2>
+            <h2 className="text-xl font-bold flex gap-2">
+              {productLoading.getListProduct || categoryLoading.getCategory ?
+                <Skeleton className="h-8 w-8" /> : list.length} result
+            </h2>
             {/* Top sort bar */}
             <div className="flex justify-start mb-4 mt-5">
               <div className="flex items-center gap-2 ">
@@ -237,17 +241,17 @@ const CategoryPage: React.FC = () => {
           </div>
 
 
-          {productLoading.getListProduct ? <Skeleton className="h-4 w-[250px]" /> :
+          {productLoading.getListProduct || categoryLoading.getCategory ? <Skeleton className="h-4 w-[250px]" /> :
             <>
               <ProductCards productsData={list} />
-              {list.length &&
+              {list.length ?
                 <Pagination
                   currentPage={formState.page}
                   totalPages={totalPages}
                   totalCount={totalCount}
                   limit={formState.limit}
                   onPageChange={handlePageChange}
-                />
+                /> : null
               }
             </>
           }

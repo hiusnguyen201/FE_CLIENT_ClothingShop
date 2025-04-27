@@ -1,27 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Input } from "@/components/ui/input";
-import axios from "axios";
 import { Label } from "@/components/ui/label";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
 import { FormikProps } from "formik";
-
-const GHN_TOKEN = import.meta.env.VITE_GHN_TOKEN;
-const GHN_API = import.meta.env.VITE_GHN_API;
-
-interface Province {
-  ProvinceID: number;
-  ProvinceName: string;
-}
-
-interface District {
-  DistrictID: number;
-  DistrictName: string;
-}
-
-interface Ward {
-  WardCode: string;
-  WardName: string;
-}
+import { useAppDispatch, useAppSelector } from "@/redux/store";
+import { getDistricts, getProvinces, getWards } from "@/redux/division/division.thunk";
 
 interface FormValues {
   address: string;
@@ -36,41 +19,27 @@ interface SelectAddressDropdownProps {
 }
 
 const SelectAddressDropdown: React.FC<SelectAddressDropdownProps> = ({ formik }) => {
-  const [provinces, setProvinces] = useState<Province[]>([]);
-  const [districts, setDistricts] = useState<District[]>([]);
-  const [wards, setWards] = useState<Ward[]>([]);
-
-  const [selectedProvince, setSelectedProvince] = useState<string>("");
-  const [selectedDistrict, setSelectedDistrict] = useState<string>("");
-
+  const dispatch = useAppDispatch();
+  const { provinces, districts, wards } = useAppSelector((state) => state.division);
 
   // Fetch Provinces
   useEffect(() => {
-    axios
-      .get(`${GHN_API}/province`, {
-        headers: { Token: GHN_TOKEN },
-      })
-      .then((res) => setProvinces(res.data.data))
-      .catch(console.error);
-  }, []);
+    dispatch(getProvinces());
+  }, [dispatch]);
 
   // Fetch Districts when Province changes
   useEffect(() => {
-    if (!selectedProvince) return;
-    axios
-      .post(`${GHN_API}/district`, { province_id: Number(selectedProvince) }, { headers: { Token: GHN_TOKEN } })
-      .then((res) => setDistricts(res.data.data))
-      .catch(console.error);
-  }, [selectedProvince]);
+    const provinceCode = formik.values.provinceCode;
+    if (!provinceCode) return;
+    dispatch(getDistricts({ provinceCode }))
+  }, [dispatch, formik.values.provinceCode]);
 
   // Fetch Wards when District changes
   useEffect(() => {
-    if (!selectedDistrict) return;
-    axios
-      .post(`${GHN_API}/ward`, { district_id: Number(selectedDistrict) }, { headers: { Token: GHN_TOKEN } })
-      .then((res) => setWards(res.data.data))
-      .catch(console.error);
-  }, [selectedDistrict]);
+    const districtCode = formik.values.districtCode;
+    if (!districtCode) return;
+    dispatch(getWards({ districtCode }))
+  }, [dispatch, formik.values.districtCode]);
 
   return (
     <form className="space-y-4 w-full" onSubmit={formik.handleSubmit}>
@@ -98,11 +67,7 @@ const SelectAddressDropdown: React.FC<SelectAddressDropdownProps> = ({ formik })
             <Label className="block font-medium text-md mb-1">Tỉnh / Thành phố</Label>
             <Select
               onValueChange={(value) => {
-                setSelectedProvince(value);
-                setSelectedDistrict("");
-                // setSelectedWard("");
-                setDistricts([]);
-                setWards([]);
+                formik.setFieldValue("provinceCode", value)
               }}
             >
               <SelectTrigger className="w-full p-6 border border-gray-400 px-3 rounded-4xl flex items-center min-w-50">
@@ -126,9 +91,7 @@ const SelectAddressDropdown: React.FC<SelectAddressDropdownProps> = ({ formik })
             <Label className="block font-medium text-md mb-1">Quận / Huyện</Label>
             <Select
               onValueChange={(value) => {
-                setSelectedDistrict(value);
-                // setSelectedWard("");
-                setWards([]);
+                formik.setFieldValue("districtCode", value)
               }}
             >
               <SelectTrigger className="w-full p-6 border border-gray-400 px-3 rounded-4xl flex items-center min-w-50">
@@ -159,7 +122,7 @@ const SelectAddressDropdown: React.FC<SelectAddressDropdownProps> = ({ formik })
             <SelectValue placeholder="-- Chọn phường / xã --" />
           </SelectTrigger>
           <SelectContent className="z-[9999] bg-white shadow-xl rounded-xl border border-gray-300">
-            {wards.map((w) => (
+            {wards?.map((w) => (
               <SelectItem key={w?.WardCode} value={String(w?.WardCode)}>
                 {w?.WardName}
               </SelectItem>
