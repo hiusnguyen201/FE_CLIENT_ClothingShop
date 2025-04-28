@@ -1,12 +1,12 @@
 import { VerifyOTPForm } from "@/components/form/auth/VerifyOTPForm";
 import { Link, Navigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
-// import { useAuth } from "@/hooks/use-auth";
-import { useAppSelector } from "@/redux/store";
+import { useAuth } from "@/hooks/use-auth";
+// import { useAppSelector } from "@/redux/store";
 
 export function VerifyOTPPage() {
-  // const { user } = useAuth();
-  const { user } = useAppSelector((state) => state.auth);
+  const { user } = useAuth();
+  // const { user } = useAppSelector((state) => state.auth);
 
 
   if (!user) {

@@ -7,9 +7,9 @@ import { InputFormikField } from "@/components/formik-fields";
 import { toast } from "@/hooks/use-toast";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { AuthState, LoginPayload } from "@/redux/auth/auth.type";
-// import { useAuth } from "@/hooks/use-auth";
+import { useAuth } from "@/hooks/use-auth";
 import { useTimer } from "@/hooks/use-timer";
-import { login, sendOtpViaEmail } from "@/redux/auth/auth.thunk";
+import { sendOtpViaEmail } from "@/redux/auth/auth.thunk";
 
 const initialValues: LoginPayload = {
   email: "",
@@ -23,14 +23,14 @@ const loginSchema = Yup.object().shape({
 
 export function LoginForm({ className }: { className?: string }) {
   const navigate = useNavigate();
-  // const { login } = useAuth();
+  const { login } = useAuth();
   const { setEndTime, getRemainingSeconds } = useTimer();
   const dispatch = useAppDispatch();
   const { loading } = useAppSelector<AuthState>((selector) => selector.auth);
   const handleSubmit = async (values: LoginPayload) => {
     try {
-      dispatch(login(values));
-      // await login?.(values);
+      // dispatch(login(values));
+      await login?.(values);
       formik.resetForm();
 
       if (!getRemainingSeconds()) {
