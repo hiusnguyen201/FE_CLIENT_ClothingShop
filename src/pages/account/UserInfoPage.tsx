@@ -3,15 +3,18 @@ import { User, USER_STATUS } from "@/types/user";
 import React, { useState } from "react";
 import UpdateUserInfo from "@/pages/account/UpdateInfoUser";
 import UpdateAccountUser from "@/pages/account/UpdateAccountUser";
+import { useAppSelector } from "@/redux/store";
 
 const UserInfo: React.FC = () => {
+  const { user } = useAppSelector((state) => state.account);
+
   const userInformation: User = {
-    id: "",
-    name: "User Name",
-    phone: "0986655273",
-    gender: "male",
-    email: "abc@gmail.com",
-    status: USER_STATUS.ACTIVE,
+    id: user?.id ?? "",
+    name: user?.name ?? "",
+    phone: user?.phone ?? "",
+    gender: user?.gender ?? "",
+    email: user?.email ?? "",
+    status: user?.status ?? USER_STATUS.ACTIVE,
   };
 
   const [isOpenUpdateInfo, setIsOpenUpdateInfo] = useState<boolean>(false);

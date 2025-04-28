@@ -5,19 +5,19 @@ import HomePage from "@/pages/home/HomePage";
 import SearchPage from "@/pages/search/SearchPage";
 import { createBrowserRouter } from "react-router-dom";
 import { VerifyOTPPage } from "@/pages/auth/VerifyOTPPage";
-// import RegisterPage from "@/pages/auth/RegisterPage";
+import { RegisterPage } from "@/pages/auth/registerPage";
 import CategoryPage from "@/pages/category/CategoryPage";
 // import SubCategoryPage from "@/pages/subCategory/SubCategoryPage";
 // import CheckOutPage from "@/pages/checkout/CheckoutPage";
 import DetailProduct from "@/pages/shop/ProductDetails/DetailProduct";
 import GetOrders from "@/pages/orders/GetOrders";
-import LoginPage from "@/pages/auth/LoginPage";
+import LoginPage from "@/pages/auth/loginPage";
 import NotFoundPage from "@/components/NotFoundPage";
 import ForgotPasswordPage from "@/pages/auth/ForgotPassword";
 import ResetPasswordPage from "@/pages/auth/ResetPassword";
 import VerifyOtp from "@/pages/auth/VerifyOtp";
 // import ShopPage from "@/pages/shop/ShopPage";
-import ShopBySlugName from "@/pages/shop/ShopBySlugName";
+// import ShopBySlugName from "@/pages/shop/ShopBySlugName";
 
 const router = createBrowserRouter([
   {
@@ -56,10 +56,10 @@ const router = createBrowserRouter([
       //   path: "/shop",
       //   element: <ShopPage />,
       // },
-      {
-        path: "/shop/:slugName",
-        element: <ShopBySlugName />,
-      },
+      // {
+      //   path: "/shop/:slugName",
+      //   element: <ShopBySlugName />,
+      // },
     ],
   },
   {
@@ -70,10 +70,10 @@ const router = createBrowserRouter([
         path: "login",
         element: <LoginPage />,
       },
-      // {
-      //   path: "register",
-      //   element: <RegisterPage />,
-      // },
+      {
+        path: "register",
+        element: <RegisterPage />,
+      },
       {
         path: "verify-otp",
         element: <VerifyOTPPage />,

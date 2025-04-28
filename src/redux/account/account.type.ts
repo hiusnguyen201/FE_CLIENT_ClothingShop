@@ -1,4 +1,5 @@
 import { Nullable } from "@/types/common";
+import { Gender } from "@/types/constant";
 import { BaseResponse } from "@/types/response";
 import { User } from "@/types/user";
 
@@ -8,6 +9,7 @@ import { User } from "@/types/user";
 export interface AccountState {
   loading: {
     getProfile: boolean;
+    updateProfile: boolean;
   };
   user: Nullable<User>;
   error: Nullable<string>;
@@ -16,4 +18,26 @@ export interface AccountState {
 /**
  * Get Profile
  */
-export interface GetProfileResponse extends BaseResponse<User> {}
+export interface GetProfileResponse extends BaseResponse<User> { }
+
+/**
+ * Upadte Profile
+ */
+export type UpdateProfilePayload = {
+  name: string,
+  phone: string,
+  gender: Gender
+}
+
+export interface UpdateProfileResponse extends BaseResponse<User> { }
+
+/**
+ * Change password
+ */
+export type ChangePasswordPayload = {
+  password: string,
+  newPassword: string,
+  confirmNewPassword: string
+}
+
+export interface ChangePasswordResponse extends BaseResponse<User> { }

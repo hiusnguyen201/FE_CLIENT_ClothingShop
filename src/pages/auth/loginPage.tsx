@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FormikHelpers, useFormik } from "formik";
-import { AuthState, LoginPayload } from "@/redux/auth/auth.type";
-import { useDispatch } from "react-redux";
+import { LoginPayload } from "@/redux/auth/auth.type";
+// import { useDispatch } from "react-redux";
 import { useAuth } from "@/hooks/use-auth";
 import { toast } from "@/hooks/use-toast";
-import { AppDispatch, useAppSelector } from "@/redux/store";
-import { Loader } from "lucide-react";
+// import { AppDispatch, useAppSelector } from "@/redux/store";
+// import { Loader } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -19,7 +19,7 @@ const LoginPage: React.FC = () => {
     setShowPassword(!showPassword);
   };
 
-  const dispatch = useDispatch<AppDispatch>();
+  // const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const { login } = useAuth();
 

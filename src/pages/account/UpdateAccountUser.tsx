@@ -6,6 +6,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useFormik } from "formik";
 import { UpdateAccountUserSchema } from "@/pages/account/schema/updateAccount.schema";
+import { useAppDispatch } from "@/redux/store";
+import { changePassword } from "@/redux/account/account.thunk";
+import { showToast } from "@/utils/toast";
 
 interface UpdateAccountUserProps {
   isOpenUpdateAccount: boolean;
@@ -13,6 +16,8 @@ interface UpdateAccountUserProps {
 }
 
 const UpdateAccountUser: FC<UpdateAccountUserProps> = ({ isOpenUpdateAccount, onClose }) => {
+  const dispatch = useAppDispatch();
+
   const [showPassword, setShowPassword] = useState({
     current: false,
     new: false,
@@ -30,8 +35,18 @@ const UpdateAccountUser: FC<UpdateAccountUserProps> = ({ isOpenUpdateAccount, on
       confirmPassword: "",
     },
     validationSchema: UpdateAccountUserSchema,
-    onSubmit: (values) => {
-      console.log("Form values:", values);
+    onSubmit: async (values) => {
+      try {
+        await dispatch(changePassword({
+          password: values.currentPassword,
+          newPassword: values.newPassword,
+          confirmNewPassword: values.confirmPassword
+        })).unwrap();
+        showToast(true, "Password changed");
+        onClose();
+      } catch (error) {
+        if (error) showToast(false, "Error");
+      }
     },
   });
 

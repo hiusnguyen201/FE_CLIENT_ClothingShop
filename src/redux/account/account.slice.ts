@@ -1,10 +1,11 @@
 import { ActionReducerMapBuilder, createSlice, Draft, PayloadAction } from "@reduxjs/toolkit";
-import { AccountState, GetProfileResponse } from "@/redux/account/account.type";
-import { getProfile } from "@/redux/account/account.thunk";
+import { AccountState, GetProfileResponse, UpdateProfileResponse } from "@/redux/account/account.type";
+import { getProfile, updateProfile } from "@/redux/account/account.thunk";
 
 const initialState: AccountState = {
   loading: {
     getProfile: false,
+    updateProfile: false
   },
   user: null,
   error: null,
@@ -28,6 +29,21 @@ const accountSlice = createSlice({
       })
       .addCase(getProfile.rejected, (state: Draft<AccountState>, action: PayloadAction<any>) => {
         state.loading.getProfile = false;
+        state.error = action.payload as string;
+        state.user = null;
+      })
+      // Update Profile Case
+      .addCase(updateProfile.pending, (state: Draft<AccountState>) => {
+        state.loading.updateProfile = true;
+        state.error = null;
+      })
+      .addCase(updateProfile.fulfilled, (state: Draft<AccountState>, action: PayloadAction<UpdateProfileResponse>) => {
+        state.loading.updateProfile = false;
+        state.error = null;
+        state.user = action.payload.data;
+      })
+      .addCase(updateProfile.rejected, (state: Draft<AccountState>, action: PayloadAction<any>) => {
+        state.loading.updateProfile = false;
         state.error = action.payload as string;
         state.user = null;
       });

@@ -8,6 +8,10 @@ import { useFormik } from "formik";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { UpdateInfoUserSchema } from "./schema/updateInfoUser";
 import BirthdaySelect from "@/components/DayOfBirth";
+import { updateProfile } from "@/redux/account/account.thunk";
+import { useAppDispatch } from "@/redux/store";
+import { Gender } from "@/types/constant";
+import { showToast } from "@/utils/toast";
 
 interface UpdateUserInfoProps {
   isOpenUpdateInfo: boolean;
@@ -15,6 +19,8 @@ interface UpdateUserInfoProps {
 }
 
 const UpdateInfoUser: FC<UpdateUserInfoProps> = ({ isOpenUpdateInfo, onClose }) => {
+  const dispatch = useAppDispatch();
+
   const formik = useFormik({
     initialValues: {
       fullName: "",
@@ -27,9 +33,19 @@ const UpdateInfoUser: FC<UpdateUserInfoProps> = ({ isOpenUpdateInfo, onClose }) 
       },
     },
     validationSchema: UpdateInfoUserSchema,
-    onSubmit: (values) => {
-      console.log("Form values:", values);
-    },
+    onSubmit: async (values) => {
+      try {
+        await dispatch(updateProfile({
+          name: values.fullName,
+          gender: values.gender as Gender,
+          phone: values.phone
+        })).unwrap();
+        showToast(true, "Updated");
+        onClose();
+      } catch (error) {
+        if (error) showToast(false, "Error");
+      }
+    }
   });
 
   return (
@@ -59,8 +75,8 @@ const UpdateInfoUser: FC<UpdateUserInfoProps> = ({ isOpenUpdateInfo, onClose }) 
 
             <h2 className="text-2xl font-bold mb-6 mt-5">Change your information account</h2>
 
-            <form className="space-y-4" onSubmit={formik.handleSubmit}>
-              <div className="flex-row w-full space-x-6 space-y-4">
+            <form className="" onSubmit={formik.handleSubmit}>
+              <div className="flex flex-col w-full gap-4">
                 <div className="w-full">
                   <Label htmlFor="fullName" className="text-md text-gray-700 mb-1">
                     Full Name
@@ -79,12 +95,12 @@ const UpdateInfoUser: FC<UpdateUserInfoProps> = ({ isOpenUpdateInfo, onClose }) 
                   )}
                 </div>
 
-                <div className="w-full space-y-4">
+                <div className="w-full">
                   <Label>Day of birth</Label>
                   <BirthdaySelect name="birthday" formik={formik} />
                 </div>
 
-                <div className="space-y-4">
+                <div className="">
                   <Label>Gender</Label>
                   <RadioGroup
                     defaultValue={formik.values.gender}
@@ -119,13 +135,13 @@ const UpdateInfoUser: FC<UpdateUserInfoProps> = ({ isOpenUpdateInfo, onClose }) 
                     <div className="text-red-500 text-sm mt-1">{formik.errors.phone}</div>
                   )}
                 </div>
+                <Button
+                  className="inline-flex items-center cursor-pointer justify-center rounded-md text-md font-medium bg-slate-950 text-white shadow hover:bg-slate-800 hover:scale-105 duration-300 h-9 px-4 py-2 ml-auto w-full disabled:opacity-75"
+                  type="submit"
+                >
+                  Submit
+                </Button>
               </div>
-              <Button
-                className="inline-flex items-center cursor-pointer justify-center rounded-md text-md font-medium bg-slate-950 text-white shadow hover:bg-slate-800 hover:scale-105 duration-300 h-9 px-4 py-2 ml-auto w-full disabled:opacity-75"
-                type="submit"
-              >
-                ok
-              </Button>
             </form>
           </motion.div>
         </>

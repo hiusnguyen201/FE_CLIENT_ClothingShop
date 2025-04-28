@@ -10,7 +10,6 @@ import { getProvinces } from "@/redux/division/division.thunk";
 import { Skeleton } from "./ui/skeleton";
 import { Button } from "@/components/ui/button";
 
-
 const NavBar: React.FC = () => {
   const dispatch = useAppDispatch();
   const { list } = useAppSelector((state) => state.categories);
@@ -65,7 +64,7 @@ const NavBar: React.FC = () => {
     dispatch(
       getListCategory({
         limit: 10,
-        sortBy: "createdAt",
+        sortBy: "name",
         page: 1
       })
     );
@@ -188,7 +187,7 @@ const NavBar: React.FC = () => {
           </span>
           {loading.getProfile ? <Skeleton className="h-8 w-8" /> :
             <span className="relative">
-              <Button variant={"outline"} className="hover:text-red-500 shadow-none border-none" onClick={handleCartOpenToggle}>
+              <Button variant={"ghost"} className="hover:text-red-500 shadow-none border-none" onClick={handleCartOpenToggle}>
                 <i className="ri-shopping-bag-line"></i>
                 <sup className="text-sm inline-block absolute right-0  px-1.5 text-white rounded-full bg-red-500 text-center">
                   {cart.length}
