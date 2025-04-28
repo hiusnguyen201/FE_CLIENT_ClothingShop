@@ -1,6 +1,7 @@
 import { LoginForm } from "@/components/form/auth/LoginForm";
 import { GoogleIcon } from "@/components/icons";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 export function LoginPage() {
   return (
@@ -19,6 +20,12 @@ export function LoginPage() {
           <GoogleIcon />
           Login with Google
         </Button>
+
+        <Link to={"/auth/register"}>
+          <Button variant="outline" className="w-full">
+            Register
+          </Button>
+        </Link>
       </div>
     </div>
   );
