@@ -8,7 +8,7 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "start": "serve -s build",
+    "start": "vite preview --port $PORT",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
