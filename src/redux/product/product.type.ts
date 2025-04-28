@@ -28,8 +28,8 @@ export interface GetProductResponse extends BaseResponse<Product> { }
  * Get list Product
  */
 type ProductFieldsSort = Extract<"name" | "createdAt", Product>;
-export interface GetListProductPayload extends GetListParams<Product> {
+export interface GetListProductPayload extends GetListParams<ProductFieldsSort> {
   category?: Optional<string>;
-  sortBy?: Optional<Nullable<ProductFieldsSort>>;
+  // sortBy?: Optional<Nullable<ProductFieldsSort>>;
 }
 export interface GetListProductResponse extends GetListResponseData<Product> { }

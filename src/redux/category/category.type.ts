@@ -1,5 +1,5 @@
 import { Category } from "@/types/category";
-import { Nullable, Optional } from "@/types/common";
+import { Nullable } from "@/types/common";
 import { BaseResponse, GetListParams, GetListResponseData } from "@/types/response";
 
 /**
@@ -20,8 +20,8 @@ export interface CategoriesState {
  * Get list category
  */
 type CategoryFieldsSort = Extract<"name" | "createdAt", Category>;
-export interface GetListCategoryPayload extends GetListParams<Category> {
-  sortBy: Optional<Nullable<CategoryFieldsSort>>;
+export interface GetListCategoryPayload extends GetListParams<CategoryFieldsSort> {
+  // sortBy: Optional<Nullable<CategoryFieldsSort>>;
 }
 
 export interface GetListCategoryResponse extends GetListResponseData<Category> { }

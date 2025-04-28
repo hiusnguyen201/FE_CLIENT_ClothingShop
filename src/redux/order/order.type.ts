@@ -1,4 +1,4 @@
-import { Nullable, Optional } from "@/types/common";
+import { Nullable } from "@/types/common";
 import {
   BaseResponse,
   GetListParams,
@@ -48,8 +48,8 @@ export interface CreateOrderResponse extends BaseResponse<Order> { }
  * Get list order
 */
 type OrderFieldsSort = Extract<"createdAt", Order>;
-export interface GetListOrderPayload extends GetListParams<Order> {
-  sortBy: Optional<Nullable<OrderFieldsSort>>;
+export interface GetListOrderPayload extends GetListParams<OrderFieldsSort> {
+  // sortBy?: Optional<Nullable<OrderFieldsSort>>;
 }
 export interface GetListOrderResponse extends GetListResponseData<Order> { }
 
