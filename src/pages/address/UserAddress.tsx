@@ -6,9 +6,11 @@ import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { deleteAddress, getAddressList, setDefaultAddress } from "@/redux/address/address.thunk";
 import { showToast } from "@/utils/toast";
 import { Skeleton } from "@/components/ui/skeleton";
+import UpdateAddress from "./UpdateAddress";
 
 const UserAddress: React.FC = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false);
+  const [isOpenUpdateAddress, setIsOpenUpdateAddress] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
   const { addressList, loading } = useAppSelector((state) => state.address);
@@ -82,7 +84,7 @@ const UserAddress: React.FC = () => {
                 {/* <Button
                   variant="link"
                   className="hover:text-gray-700 text-blue-600"
-                // onClick={() => addressList.onUpdate(addr.id)}
+                  onClick={() => setIsOpenUpdateAddress(true)}
                 >
                   Update
                 </Button> */}
@@ -102,6 +104,7 @@ const UserAddress: React.FC = () => {
       )}
 
       <AddNewAddress isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
+      <UpdateAddress isOpen={isOpenUpdateAddress} onClose={() => setIsOpenUpdateAddress(false)} />
     </div>
   );
 };

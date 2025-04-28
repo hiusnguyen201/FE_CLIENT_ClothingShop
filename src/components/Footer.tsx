@@ -11,7 +11,7 @@ const Footer: React.FC = () => {
           <Link to="/">Account CoolClub</Link>
           <Link to="/">Offers & Privileges</Link>
           <h4 className="uppercase">Documents - Recruitment</h4>
-          <Link to="/">Tuyển dụng</Link>
+          <Link to="/">Recruitment</Link>
           <Link to="/">Register copyright</Link>
         </div>
         <div className="footer__col">
@@ -21,7 +21,7 @@ const Footer: React.FC = () => {
           <Link to="/">Delivery policy</Link>
         </div>
         <div className="footer__col">
-          <h4 className="uppercase">Chăm sóc khách hàng</h4>
+          <h4 className="uppercase">Customer care</h4>
           <Link to="/">100% Satisfaction Shopping Experience</Link>
           <Link to="/">FAQs</Link>
           <h4 className="uppercase">Knowledge of dressing well</h4>
@@ -35,7 +35,7 @@ const Footer: React.FC = () => {
             <span>
               <i className="ri-map-pin-line"></i>
             </span>
-            123, Cầu giấy, Hà Nội, Việt Nam
+            123, Cau Giay, Ha Noi, Viet Nam
           </p>
           <p>
             <span>

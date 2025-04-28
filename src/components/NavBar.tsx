@@ -8,6 +8,7 @@ import { getCart } from "@/redux/cart/cart.thunk";
 import { getAddressList } from "@/redux/address/address.thunk";
 import { getProvinces } from "@/redux/division/division.thunk";
 import { Skeleton } from "./ui/skeleton";
+import { Button } from "@/components/ui/button";
 
 
 const NavBar: React.FC = () => {
@@ -89,9 +90,9 @@ const NavBar: React.FC = () => {
   allSubCategories.unshift(newCategory);
 
   const categoryAccordingToNeed = [
-    { name: "Men's Underwear", path: "men-underwear" },
-    { name: "Sports Pants", path: "sport-pants-men" },
-    { name: "Home Pants", path: "home-pants-men" },
+    { name: "Men's Underwear", path: "category/men-clothes/men-underwear" },
+    { name: "Sports Pants", path: "category/men-clothes/men-sports-pants" },
+    { name: "Home Pants", path: "category/men-clothes/men-home-pants" },
   ];
 
   return (
@@ -107,7 +108,7 @@ const NavBar: React.FC = () => {
             onMouseLeave={handleMouseLeave}
           >
             <li className="link uppercase">
-              <Link to="#">Men</Link>
+              <Link to="/shop">Men</Link>
             </li>
             {isDropdownMenus && (
               <div className="flex justify-between fixed mt-3 p-4 w-full left-0 right-0 bg-white border  border-gray-200 rounded-lg shadow-lg z-50">
@@ -136,7 +137,7 @@ const NavBar: React.FC = () => {
                     <div className="p-6 text-stone-600 flex-[3] border-r border-gray-200">According To Need</div>
                     <div className="flex flex-[7]">
                       {categoryAccordingToNeed.map((c, index) => (
-                        <Link key={index} to={`/categories/${c.path}`} className="p-6 hover:text-red-500">
+                        <Link key={index} to={`/${c.path}`} className="p-6 hover:text-red-500">
                           {c.name}
                         </Link>
                       ))}
@@ -186,16 +187,16 @@ const NavBar: React.FC = () => {
             </Link>
           </span>
           {loading.getProfile ? <Skeleton className="h-8 w-8" /> :
-            <span>
-              <button className="hover:text-red-500" onClick={handleCartOpenToggle}>
+            <span className="relative">
+              <Button className="hover:text-red-500 shadow-none" onClick={handleCartOpenToggle}>
                 <i className="ri-shopping-bag-line"></i>
-                <sup className="text-sm inline-block px-1.5 text-white rounded-full bg-red-500 text-center">
+                <sup className="text-sm inline-block absolute right-0  px-1.5 text-white rounded-full bg-red-500 text-center">
                   {cart.length}
                 </sup>
-              </button>
+              </Button>
             </span>
           }
-          <span>
+          <span className="mr-2">
             {loading.getProfile ? <Skeleton className="h-8 w-8" /> : user ? (
               <Link to="/account">
                 <img src="https://mcdn.coolmate.me/image/October2023/mceclip3_72.png" alt="" className="w-6 h-6" />
@@ -211,23 +212,23 @@ const NavBar: React.FC = () => {
               <i className="ri-menu-line text-2xl"></i>
             </button>
           </div>
-        </div>
-      </nav>
+        </div >
+      </nav >
 
       {/* display mobile */}
-      <div
+      < div
         className={`lg:hidden fixed top-0 left-0 w-full h-full z-50 bg-slate-200 p-4 overflow-y-auto transform transition-transform duration-300 ease-in-out
        ${isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"}`}
       >
         {/* logo */}
-        <div className="nav__logo flex justify-between">
+        < div className="nav__logo flex justify-between" >
           <Link to="/">
-            Shop<span>.</span>
+            Clothes Men<span>.</span>
           </Link>
-          <button>
+          <Button>
             <i className="ri-close-line text-2xl" onClick={toggleMobileMenu}></i>
-          </button>
-        </div>
+          </Button>
+        </div >
         <div className="bg-white aspect-[16] w-full rounded-lg shadow-md mt-2">
           <h4 className="categories__navbar flex justify-center pt-3">Explore men's clothing</h4>
           <Banner />
@@ -251,7 +252,9 @@ const NavBar: React.FC = () => {
                 >
                   {category.subCategories?.map((c, i) => (
                     <li key={i}>
-                      <Link to={`/sub_category/${c.path}`}>{c.name}</Link>
+                      <Link to={`/${c.path}`} onClick={toggleMobileMenu}>
+                        {c.name}
+                      </Link>
                     </li>
                   ))}
                 </ul>
@@ -287,9 +290,9 @@ const NavBar: React.FC = () => {
             </li>
           </ul>
         </div>
-      </div>
+      </div >
       {isCartOpen && user && <CartModal cartData={cart} isCartOpen={isCartOpen} onClose={handleCartOpenToggle} />}
-    </header>
+    </header >
   );
 };
 

@@ -12,6 +12,7 @@ import ProductCards from "@/pages/shop/productDetails/ProductCards";
 
 import productsData from "@/data/product.json";
 import SubCategories from "@/pages/subCategory/FilterCategories";
+import EmptyProducts from "@/components/EmptyProducts";
 
 const subSubCategories = [
   {
@@ -113,135 +114,139 @@ const SubCategoryPage: React.FC = () => {
           <i className="ri-equalizer-2-line"></i>
         </Button>
       </div>
+      {sortedProducts.length >= 1 ? (
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mx-5">
+          {/* Sidebar Filter as Dropdown Accordion */}
+          <aside className={cn("space-y-6 md:block", showMobileFilter ? "block" : "hidden", "md:col-span-1 ")}>
+            <Accordion
+              type="multiple"
+              className="w-full space-y-4 divide-y divide-gray-200"
+              defaultValue={["subSubCategory"]}
+            >
+              {/* sub subcategory */}
+              <AccordionItem value="subSubCategory">
+                <AccordionTrigger className="bg-white text-gray-500 mx-5">Product group</AccordionTrigger>
+                <AccordionContent className="px-4">
+                  <div className="space-y-2">
+                    {subSubCategories.map((sub, i) => (
+                      <div key={i} className="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                        <Checkbox
+                          checked={selectedSubSubs.includes(sub.subSubCategory.toLowerCase())}
+                          onCheckedChange={() => toggleSubSub(sub.subSubCategory)}
+                          id={`sub-${i}`}
+                        />
+                        <Label htmlFor={`sub-${i}`}>{sub.name.toUpperCase()}</Label>
+                      </div>
+                    ))}
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mx-5">
-        {/* Sidebar Filter as Dropdown Accordion */}
-        <aside className={cn("space-y-6 md:block", showMobileFilter ? "block" : "hidden", "md:col-span-1 ")}>
-          <Accordion
-            type="multiple"
-            className="w-full space-y-4 divide-y divide-gray-200"
-            defaultValue={["subSubCategory"]}
-          >
-            {/* sub subcategory */}
-            <AccordionItem value="subSubCategory">
-              <AccordionTrigger className="bg-white text-gray-500 mx-5">Product group</AccordionTrigger>
-              <AccordionContent className="px-4">
-                <div className="space-y-2">
-                  {subSubCategories.map((sub, i) => (
-                    <div key={i} className="flex items-center gap-2 text-sm text-gray-600 mb-2">
-                      <Checkbox
-                        checked={selectedSubSubs.includes(sub.subSubCategory.toLowerCase())}
-                        onCheckedChange={() => toggleSubSub(sub.subSubCategory)}
-                        id={`sub-${i}`}
-                      />
-                      <Label htmlFor={`sub-${i}`}>{sub.name.toUpperCase()}</Label>
-                    </div>
-                  ))}
+              {/* size */}
+              <AccordionItem value="size">
+                <AccordionTrigger className="bg-white text-gray-500 mx-5">Sizes</AccordionTrigger>
+                <AccordionContent className="px-4">
+                  <div className="space-y-2">
+                    {sizes.map((size, i) => (
+                      <div key={i} className="flex items-center gap-2 text-sm text-gray-600">
+                        <Checkbox
+                          checked={selectedSizes.includes(size)}
+                          onCheckedChange={() => toggleSize(size)}
+                          id={`size-${i}`}
+                        />
+                        <Label htmlFor={`size-${i}`}>{size}</Label>
+                      </div>
+                    ))}
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+
+              {/* color */}
+              <AccordionItem value="color">
+                <AccordionTrigger className="bg-white text-gray-500 px-5">Colors</AccordionTrigger>
+                <AccordionContent className="py-1">
+                  <div className="grid grid-cols-4 gap-3">
+                    {colorOptions.map(({ label, value, gradient }, i) => (
+                      <div key={i} className="flex flex-col items-center text-center gap-1">
+                        <Badge
+                          onClick={() => toggleColor(value)}
+                          className={cn(
+                            "w-7 h-7 rounded-full cursor-pointer border border-gray-300",
+                            selectedColors.includes(value) ? "ring-2 ring-black" : ""
+                          )}
+                          style={{
+                            background: gradient ? "linear-gradient(45deg, red, yellow, green, blue)" : value,
+                          }}
+                        />
+                        <span className="text-xs text-gray-700">{label}</span>
+                      </div>
+                    ))}
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </aside>
+
+          {/* Main Product Grid */}
+
+          <section className="md:col-span-3 lg:mr-5">
+            <div className="space-x-2">
+              <span className="link opacity-70">
+                <Link to="/">Home</Link>
+                <i className="ri-arrow-right-s-line"></i>
+              </span>
+              <span className="link opacity-70">
+                <Link to={`/category/${categoryName}`}>Men Clothes</Link>
+                <i className="ri-arrow-right-s-line"></i>
+              </span>
+              <span className="link">
+                <Link to={`/category/${categoryName}`} className="text-gray-900">
+                  {filteredProducts.length} {subCategoryName}
+                </Link>
+              </span>
+            </div>
+            <h1 className="uppercase lg:text-4xl md:text-3xl text-2xl font-bold text-gray-700 border-b border-gray-100 py-10">
+              {subCategoryName}
+            </h1>
+            <div className="w-full overflow-x-auto flex h-72">
+              {subSubCategories.map((ss, i) => (
+                <SubCategories
+                  key={i}
+                  name={ss.name}
+                  image={ss.image}
+                  subSubCategory={ss.subSubCategory}
+                  category={categoryName}
+                  toggleSubSub={toggleSubSub}
+                />
+              ))}
+            </div>
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-bold">{filter.length} result</h2>
+              {/* Top sort bar */}
+              <div className="flex justify-start mb-4 mt-5">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-medium border-gray-100">Sort By</span>
+                  <Select value={sortBy} onValueChange={setSortBy}>
+                    <SelectTrigger className="w-[180px] ">
+                      <SelectValue placeholder="Sắp xếp theo" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-white border-gray-100">
+                      <SelectItem value="newest">Newest </SelectItem>
+                      <SelectItem value="best-selling">Best Selling</SelectItem>
+                      <SelectItem value="price-asc">Price Asc</SelectItem>
+                      <SelectItem value="price-desc">Price Desc</SelectItem>
+                      <SelectItem value="discount-desc">%Discount Desc</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
-              </AccordionContent>
-            </AccordionItem>
-
-            {/* size */}
-            <AccordionItem value="size">
-              <AccordionTrigger className="bg-white text-gray-500 mx-5">Sizes</AccordionTrigger>
-              <AccordionContent className="px-4">
-                <div className="space-y-2">
-                  {sizes.map((size, i) => (
-                    <div key={i} className="flex items-center gap-2 text-sm text-gray-600">
-                      <Checkbox
-                        checked={selectedSizes.includes(size)}
-                        onCheckedChange={() => toggleSize(size)}
-                        id={`size-${i}`}
-                      />
-                      <Label htmlFor={`size-${i}`}>{size}</Label>
-                    </div>
-                  ))}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-
-            {/* color */}
-            <AccordionItem value="color">
-              <AccordionTrigger className="bg-white text-gray-500 px-5">Colors</AccordionTrigger>
-              <AccordionContent className="py-1">
-                <div className="grid grid-cols-4 gap-3">
-                  {colorOptions.map(({ label, value, gradient }, i) => (
-                    <div key={i} className="flex flex-col items-center text-center gap-1">
-                      <Badge
-                        onClick={() => toggleColor(value)}
-                        className={cn(
-                          "w-7 h-7 rounded-full cursor-pointer border border-gray-300",
-                          selectedColors.includes(value) ? "ring-2 ring-black" : ""
-                        )}
-                        style={{
-                          background: gradient ? "linear-gradient(45deg, red, yellow, green, blue)" : value,
-                        }}
-                      />
-                      <span className="text-xs text-gray-700">{label}</span>
-                    </div>
-                  ))}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-        </aside>
-
-        {/* Main Product Grid */}
-        <section className="md:col-span-3 lg:mr-5">
-          <div className="space-x-2">
-            <span className="link opacity-70">
-              <Link to="/">Home</Link>
-              <i className="ri-arrow-right-s-line"></i>
-            </span>
-            <span className="link opacity-70">
-              <Link to={`/category/${categoryName}`}>Men Clothes</Link>
-              <i className="ri-arrow-right-s-line"></i>
-            </span>
-            <span className="link">
-              <Link to={`/category/${categoryName}`} className="text-gray-900">
-                {filteredProducts.length} {subCategoryName}
-              </Link>
-            </span>
-          </div>
-          <h1 className="uppercase lg:text-4xl md:text-3xl text-2xl font-bold text-gray-700 border-b border-gray-100 py-10">
-            Men {subCategoryName}
-          </h1>
-          <div className="w-full overflow-x-auto flex h-72">
-            {subSubCategories.map((ss, i) => (
-              <SubCategories
-                key={i}
-                name={ss.name}
-                image={ss.image}
-                subSubCategory={ss.subSubCategory}
-                category={categoryName}
-                toggleSubSub={toggleSubSub}
-              />
-            ))}
-          </div>
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold">{filter.length} result</h2>
-            {/* Top sort bar */}
-            <div className="flex justify-start mb-4 mt-5">
-              <div className="flex items-center gap-2">
-                <span className="text-sm font-medium border-gray-100">Sort By</span>
-                <Select value={sortBy} onValueChange={setSortBy}>
-                  <SelectTrigger className="w-[180px] ">
-                    <SelectValue placeholder="Sắp xếp theo" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white border-gray-100">
-                    <SelectItem value="newest">Newest </SelectItem>
-                    <SelectItem value="best-selling">Best Selling</SelectItem>
-                    <SelectItem value="price-asc">Price Asc</SelectItem>
-                    <SelectItem value="price-desc">Price Desc</SelectItem>
-                    <SelectItem value="discount-desc">%Discount Desc</SelectItem>
-                  </SelectContent>
-                </Select>
               </div>
             </div>
-          </div>
-          <ProductCards productsData={sortedProducts} />
-        </section>
-      </div>
+            <ProductCards productsData={sortedProducts} />
+          </section>
+        </div>
+      ) : (
+        <EmptyProducts />
+      )}
     </div>
   );
 };

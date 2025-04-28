@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useFormik } from "formik";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import DayOfBirth from "@/components/DayOfBirth";
+import BirthdaySelect from "@/components/dayOfBirth";
 import { UpdateInfoUserSchema } from "./schema/updateInfoUser";
 
 interface UpdateUserInfoProps {
@@ -81,7 +81,7 @@ const UpdateInfoUser: FC<UpdateUserInfoProps> = ({ isOpenUpdateInfo, onClose }) 
 
                 <div className="w-full space-y-4">
                   <Label>Day of birth</Label>
-                  <DayOfBirth name="birthday" formik={formik} />
+                  <BirthdaySelect name="birthday" formik={formik} />
                 </div>
 
                 <div className="space-y-4">

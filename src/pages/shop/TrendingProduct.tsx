@@ -23,8 +23,8 @@ const TrendingProducts: React.FC = () => {
   return (
     <Suspense fallback={<Skeleton />}>
       <section className="section__container product__container">
-        <h2 className="section__header">Trending Products</h2>
-        <p className="section__subheader ">Explore Clothing Shop in Vietnam</p>
+        <h1 className="text-gray-600 lg:text-3xl text-2xl ml-5 uppercase section__header">{displaySlugName}</h1>
+        <div className="border-t border-gray-100 my-9"></div>
         <div className="flex justify-between">
           <div className="flex">
             <Button className="text-white bg-gray-900 text-sm lg:text-lg py-2 px-2 md:px-5 md:py-5 rounded-3xl">

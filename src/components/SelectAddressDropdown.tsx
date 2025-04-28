@@ -64,14 +64,14 @@ const SelectAddressDropdown: React.FC<SelectAddressDropdownProps> = ({ formik })
         {/* Province */}
         <div className="grid grid-cols-2 gap-4 w-full">
           <div className="relative overflow-visible z-50">
-            <Label className="block font-medium text-md mb-1">Tỉnh / Thành phố</Label>
+            <Label className="block font-medium text-md mb-1">Provinces</Label>
             <Select
               onValueChange={(value) => {
                 formik.setFieldValue("provinceCode", value)
               }}
             >
               <SelectTrigger className="w-full p-6 border border-gray-400 px-3 rounded-4xl flex items-center min-w-50">
-                <SelectValue placeholder="-- Chọn tỉnh / thành phố --" />
+                <SelectValue placeholder="-- Select Provinces --" />
               </SelectTrigger>
               <SelectContent className="z-[9999] bg-white shadow-xl rounded-xl border border-gray-300 ">
                 {provinces?.map((p) => (
@@ -88,14 +88,14 @@ const SelectAddressDropdown: React.FC<SelectAddressDropdownProps> = ({ formik })
 
           {/* District */}
           <div className="relative overflow-visible z-40">
-            <Label className="block font-medium text-md mb-1">Quận / Huyện</Label>
+            <Label className="block font-medium text-md mb-1">Districts</Label>
             <Select
               onValueChange={(value) => {
                 formik.setFieldValue("districtCode", value)
               }}
             >
               <SelectTrigger className="w-full p-6 border border-gray-400 px-3 rounded-4xl flex items-center min-w-50">
-                <SelectValue placeholder="-- Chọn quận / huyện --" />
+                <SelectValue placeholder="-- Select Districts --" />
               </SelectTrigger>
               <SelectContent className="z-[9999] bg-white shadow-xl rounded-xl border border-gray-300">
                 {districts?.map((d) => (
@@ -113,13 +113,10 @@ const SelectAddressDropdown: React.FC<SelectAddressDropdownProps> = ({ formik })
       </div>
       {/* Ward */}
       <div className="relative overflow-visible z-30">
-        <Label className="block font-medium text-md mb-1">Phường / Xã</Label>
-        <Select onValueChange={(value) => {
-          // setSelectedWard(value);
-          formik.setFieldValue("wardCode", value)
-        }}>
+        <Label className="block font-medium text-md mb-1">Wards</Label>
+        <Select onValueChange={(value) => formik.setFieldValue("wardCode", value)}>
           <SelectTrigger className="w-full p-6 border border-gray-400 px-3 rounded-4xl flex items-center min-w-50">
-            <SelectValue placeholder="-- Chọn phường / xã --" />
+            <SelectValue placeholder="-- Select Wards --" />
           </SelectTrigger>
           <SelectContent className="z-[9999] bg-white shadow-xl rounded-xl border border-gray-300">
             {wards?.map((w) => (

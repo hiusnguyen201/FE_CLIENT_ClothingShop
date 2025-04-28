@@ -25,7 +25,7 @@ const highlights = [
   {
     title: "Fabric material",
     description: "Soft and elastic material, comfortable to wear",
-    image: "https://mcdn.coolmate.me//image/March2025/quan-nam-travel-short-7-inch-thumb-3.jpg", // Thay ảnh bằng ảnh tương ứng
+    image: "https://mcdn.coolmate.me//image/March2025/quan-nam-travel-short-7-inch-thumb-3.jpg",
   },
   {
     title: "Logo",
@@ -250,7 +250,7 @@ const ProductDetail: React.FC = () => {
               {highlights.map((item, idx) => (
                 <Card key={idx} className="overflow-hidden rounded-2xl border-none">
                   <div>
-                    <img src={item.image} alt={item.title} className=" object-cover" />
+                    <img src={item.image} alt={item.title} className="object-cover" />
                   </div>
                   <CardContent className="p-4">
                     <h3 className="font-semibold text-base mb-1">{item.title}</h3>

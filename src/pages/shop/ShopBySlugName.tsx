@@ -1,42 +1,18 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import Categories from "@/components/Categories";
+import { Link, useParams } from "react-router-dom";
 import TrendingProducts from "./TrendingProduct";
 import SubCategories from "@/components/subCategories";
 
-import categoriesData from "@/data/categories.json";
 import subCategoriesData from "@/data/subCategories.json";
 
-const ShopPage: React.FC = () => {
+const ShopBySlugName: React.FC = () => {
   return (
     <>
-      <div>
-        <section className="section__container deals__container">
-          <Link to={`/category/men-clothes`}>
-            <picture>
-              {/* Ảnh cho màn hình nhỏ (dưới md) */}
-              <source
-                media="(max-width: 767px)"
-                srcSet="https://media3.coolmate.me/cdn-cgi/image/width=1426,height=2100,quality=90,format=auto/uploads/April2025/Hero_Banner_-_Mobile_3za75x260.jpg"
-              />
-              {/* Ảnh mặc định cho màn hình lớn */}
-              <img
-                src="https://media3.coolmate.me/cdn-cgi/image/width=1920,quality=90,format=auto/uploads/April2025/Hero_Banner_-_Deskatopza.jpg"
-                alt="deals image"
-                className="object-cover rounded-lg h-full mb-2 w-full"
-              />
-            </picture>
-          </Link>
-        </section>
-
-        {/* category */}
-        <div>
-          <Categories categoriesData={categoriesData} />
-        </div>
+      <div className="section__container ">
         <div>
           <TrendingProducts />
         </div>
-        <section className="section__container deals__container">
+        <section className="deals__container">
           <picture>
             {/* Ảnh cho màn hình nhỏ (dưới md) */}
             <source
@@ -63,10 +39,10 @@ const ShopPage: React.FC = () => {
 
         {/* subcategory */}
         <div>
-          <h2 className="section__header">DAILY PRODUCTS</h2>
+          <h2 className="section__header pt-5">DAILY PRODUCTS</h2>
           <SubCategories subCategoriesData={subCategoriesData} />
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 p-4 section__container">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 p-4 ">
           <Link to={`/category/men-clothes`} className="hover:scale-105 cursor-pointer transition-transform">
             <img
               src="https://media3.coolmate.me/cdn-cgi/image/width=1069,height=1575,quality=80,format=auto/uploads/April2025/mceclip1_51.png"
@@ -85,4 +61,4 @@ const ShopPage: React.FC = () => {
   );
 };
 
-export default ShopPage;
+export default ShopBySlugName;

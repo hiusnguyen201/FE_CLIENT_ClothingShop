@@ -63,7 +63,7 @@ const AddNewAddress: FC<AddNewAddressProps> = ({ isOpen, onClose }) => {
               <X size={28} />
             </Button>
 
-            <h2 className="text-2xl font-bold mb-6 mt-2">Địa chỉ của tôi</h2>
+            <h2 className="text-2xl font-bold mb-6 mt-2">Add new your address</h2>
 
             <form className="space-y-4" onSubmit={formik.handleSubmit}>
               <SelectAddressDropdown formik={formik} />
