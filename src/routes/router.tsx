@@ -10,12 +10,12 @@ import CategoryPage from "@/pages/category/CategoryPage";
 // import CheckOutPage from "@/pages/checkout/CheckoutPage";
 import DetailProduct from "@/pages/shop/ProductDetails/DetailProduct";
 import GetOrders from "@/pages/orders/GetOrders";
-import LoginPage from "@/pages/auth/loginPage";
 import NotFoundPage from "@/components/NotFoundPage";
 import ForgotPasswordPage from "@/pages/auth/ForgotPassword";
 import ResetPasswordPage from "@/pages/auth/ResetPassword";
 import VerifyOtp from "@/pages/auth/VerifyOtp";
 import { RegisterPage } from "@/pages/auth/RegisterPage";
+import { LoginPage } from "@/pages/auth/loginPage";
 // import ShopPage from "@/pages/shop/ShopPage";
 // import ShopBySlugName from "@/pages/shop/ShopBySlugName";
 

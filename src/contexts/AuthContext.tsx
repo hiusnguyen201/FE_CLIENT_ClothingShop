@@ -133,8 +133,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const loginAction = async (values: LoginPayload): Promise<LoginResponse> => {
     try {
       const response: LoginResponse = await appDispatch(login(values)).unwrap();
-      const { customer, isAuthenticated } = response.data;
-      dispatch({ type: "LOGIN", payload: { ...state, user: customer, isAuthenticated } });
+      const { user, isAuthenticated } = response.data;
+      dispatch({ type: "LOGIN", payload: { ...state, user: user, isAuthenticated } });
       return response;
     } catch (e: any) {
       const message = e?.response?.data?.message || e.message || e.toString();
@@ -146,8 +146,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const verifyOtpAction = async (values: VerifyOtpPayload): Promise<VerifyOtpResponse> => {
     try {
       const response: VerifyOtpResponse = await appDispatch(verifyOtp(values)).unwrap();
-      const { customer, isAuthenticated } = response.data;
-      dispatch({ type: "VERIFY_OTP", payload: { ...state, user: customer, isAuthenticated } });
+      const { user, isAuthenticated } = response.data;
+      dispatch({ type: "VERIFY_OTP", payload: { ...state, user: user, isAuthenticated } });
       return response;
     } catch (e: any) {
       const message = e?.response?.data?.message || e.message || e.toString();
