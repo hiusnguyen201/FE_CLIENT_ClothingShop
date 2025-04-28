@@ -58,11 +58,9 @@ const CategoryPage: React.FC = () => {
   });
 
   useEffect(() => {
-    if (!categoryName) {
-      navigate("/404", { replace: true });
-      return;
+    if (categoryName) {
+      dispatch(getCategory({ id: categoryName }));
     }
-    dispatch(getCategory({ id: categoryName }));
   }, [dispatch, categoryName, navigate]);
 
   useEffect(() => {
