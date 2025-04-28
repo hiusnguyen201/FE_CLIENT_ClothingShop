@@ -5,7 +5,7 @@ import HomePage from "@/pages/home/HomePage";
 import SearchPage from "@/pages/search/SearchPage";
 import { createBrowserRouter } from "react-router-dom";
 import { VerifyOTPPage } from "@/pages/auth/VerifyOTPPage";
-import RegisterPage from "@/pages/auth/RegisterPage";
+// import RegisterPage from "@/pages/auth/RegisterPage";
 import CategoryPage from "@/pages/category/CategoryPage";
 import SubCategoryPage from "@/pages/subCategory/SubCategoryPage";
 import CheckOutPage from "@/pages/checkout/CheckoutPage";
@@ -72,10 +72,10 @@ const router = createBrowserRouter([
         path: "login",
         element: <LoginPage />,
       },
-      {
-        path: "register",
-        element: <RegisterPage />,
-      },
+      // {
+      //   path: "register",
+      //   element: <RegisterPage />,
+      // },
       {
         path: "verify-otp",
         element: <VerifyOTPPage />,

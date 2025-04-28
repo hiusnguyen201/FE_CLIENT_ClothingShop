@@ -43,6 +43,7 @@ const productSlice = createSlice({
       .addCase(getListProduct.pending, (state: Draft<ProductState>) => {
         state.loading.getListProduct = true;
         state.error = null;
+        state.list = [];
       })
       .addCase(getListProduct.fulfilled, (state: Draft<ProductState>, action: PayloadAction<GetListProductResponse>) => {
         state.loading.getListProduct = false;

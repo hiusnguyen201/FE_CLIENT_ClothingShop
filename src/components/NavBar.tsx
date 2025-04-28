@@ -188,7 +188,7 @@ const NavBar: React.FC = () => {
           </span>
           {loading.getProfile ? <Skeleton className="h-8 w-8" /> :
             <span className="relative">
-              <Button className="hover:text-red-500 shadow-none" onClick={handleCartOpenToggle}>
+              <Button variant={"outline"} className="hover:text-red-500 shadow-none border-none" onClick={handleCartOpenToggle}>
                 <i className="ri-shopping-bag-line"></i>
                 <sup className="text-sm inline-block absolute right-0  px-1.5 text-white rounded-full bg-red-500 text-center">
                   {cart.length}

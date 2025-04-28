@@ -8,13 +8,12 @@ import TrendingProducts from "@/pages/shop/TrendingProduct";
 import Blogs from "@/pages/blogs/Blogs";
 
 import blogsData from "@/data/blogs.json";
-import categoriesData from "@/data/categories.json";
 
 const HomePage: React.FC = () => {
   return (
     <div>
       <Banner />
-      <Categories categoriesData={categoriesData} />
+      <Categories />
       <HeroSection />
       <div className="section__container">
         <TrendingProducts />

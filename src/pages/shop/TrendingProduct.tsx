@@ -1,9 +1,8 @@
-import React, { Suspense, useEffect } from "react";
+import React, { useEffect } from "react";
 import ProductCards from "@/pages/shop/ProductDetails/ProductCards";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
-import { Skeleton } from "@/components/ui/skeleton";
 import { getListProduct } from "@/redux/product/product.thunk";
 
 const TrendingProducts: React.FC = () => {
@@ -14,16 +13,17 @@ const TrendingProducts: React.FC = () => {
     dispatch(
       getListProduct({
         limit: 10,
-        sortBy: "createdAt"
+        sortBy: "createdAt",
+        page: 1
       })
     );
   }, [dispatch]);
 
 
   return (
-    <Suspense fallback={<Skeleton />}>
+    <div>
       <section className="section__container product__container">
-        <h1 className="text-gray-600 lg:text-3xl text-2xl ml-5 uppercase section__header">{displaySlugName}</h1>
+        <h1 className="text-gray-600 lg:text-3xl text-2xl ml-5 uppercase section__header">{"All Products"}</h1>
         <div className="border-t border-gray-100 my-9"></div>
         <div className="flex justify-between">
           <div className="flex">
@@ -46,7 +46,7 @@ const TrendingProducts: React.FC = () => {
             </div>
           )}
       </section>
-    </Suspense >
+    </div >
   );
 };
 
