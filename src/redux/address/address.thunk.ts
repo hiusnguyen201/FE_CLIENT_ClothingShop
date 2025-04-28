@@ -43,11 +43,11 @@ export const setDefaultAddress = createAsyncThunk<SetDefaultOrDeleteAddressRespo
   }
 );
 
-export const deleteAddress = createAsyncThunk<SetDefaultOrDeleteAddressResponse, string, ThunkApiConfig>(
+export const deleteAddress = createAsyncThunk<SetDefaultOrDeleteAddressResponse, SetDefaultOrDeletePayload, ThunkApiConfig>(
   "shipping-address/remove-shipping-address-by-id",
-  async (addressId, { rejectWithValue }) => {
+  async (payload, { rejectWithValue }) => {
     try {
-      const response: SetDefaultOrDeleteAddressResponse = await deleteAddressService(addressId);
+      const response: SetDefaultOrDeleteAddressResponse = await deleteAddressService(payload);
       return response;
     } catch (error: any) {
       const message: string = error.response?.data?.message || error.message || error.toString();

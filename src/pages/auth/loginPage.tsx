@@ -29,18 +29,18 @@ const LoginPage: React.FC = () => {
     </Button>
   </Link>;
 
-  // const handleSubmit = async (values: LoginPayload, { resetForm }: FormikHelpers<LoginPayload>) => {
-  //   if (!login) return;
-  //   await login(values);
-  //   if (!isAuthenticated || !user) return;
-  //   resetForm({});
-  //   if (user.verifiedAt) {
-  //     toast({ title: "Login successful" });
-  //     await navigate("/");
-  //   } else {
-  //     await navigate("/verify-otp");
-  //   }
-  // };
+  const handleSubmit = async (values: LoginPayload, { resetForm }: FormikHelpers<LoginPayload>) => {
+    if (!login) return;
+    await login(values);
+    // if (!isAuthenticated || !user) return;
+    resetForm({});
+    toast({ title: "Login successful" });
+    await navigate("/");
+    // if (user.verifiedAt) {
+    // } else {
+    //   await navigate("/verify-otp");
+    // }
+  };
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -48,7 +48,7 @@ const LoginPage: React.FC = () => {
     },
     validationSchema: loginSchema,
     onSubmit: (values) => {
-      console.log("Form values:", values);
+      handleSubmit(values, formik);
     },
   });
 

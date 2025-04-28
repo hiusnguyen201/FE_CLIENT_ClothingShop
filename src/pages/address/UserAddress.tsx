@@ -19,21 +19,21 @@ const UserAddress: React.FC = () => {
 
   const handleSetDefaultAddress = async (addressId: string) => {
     try {
-      const res = await dispatch(setDefaultAddress(addressId)).unwrap();
+      await dispatch(setDefaultAddress({ id: addressId })).unwrap();
       showToast(true, "Set default address successfully");
       dispatch(getAddressList());
     } catch (error) {
-      showToast(false, "Error");
+      if (error) showToast(false, "Error");
     }
   };
 
   const handleDeleteAddress = async (addressId: string) => {
     try {
-      await dispatch(deleteAddress(addressId)).unwrap();
+      await dispatch(deleteAddress({ id: addressId })).unwrap();
       showToast(true, "Delete address successfully");
       dispatch(getAddressList());
     } catch (error) {
-      showToast(false, "Error");
+      if (error) showToast(false, "Error");
     }
   };
 
