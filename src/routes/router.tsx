@@ -15,6 +15,7 @@ import NotFoundPage from "@/components/NotFoundPage";
 import ForgotPasswordPage from "@/pages/auth/ForgotPassword";
 import ResetPasswordPage from "@/pages/auth/ResetPassword";
 import VerifyOtp from "@/pages/auth/VerifyOtp";
+import { RegisterPage } from "@/pages/auth/RegisterPage";
 // import ShopPage from "@/pages/shop/ShopPage";
 // import ShopBySlugName from "@/pages/shop/ShopBySlugName";
 
@@ -69,10 +70,10 @@ const router = createBrowserRouter([
         path: "login",
         element: <LoginPage />,
       },
-      // {
-      //   path: "register",
-      //   element: <RegisterPage />,
-      // },
+      {
+        path: "register",
+        element: <RegisterPage />,
+      },
       {
         path: "verify-otp",
         element: <VerifyOTPPage />,
