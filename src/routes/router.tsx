@@ -5,7 +5,7 @@ import HomePage from "@/pages/home/HomePage";
 import SearchPage from "@/pages/search/SearchPage";
 import { createBrowserRouter } from "react-router-dom";
 import { VerifyOTPPage } from "@/pages/auth/VerifyOTPPage";
-import { RegisterPage } from "@/pages/auth/registerPage";
+import { RegisterPage } from "@/pages/auth/RegisterPage";
 import CategoryPage from "@/pages/category/CategoryPage";
 // import SubCategoryPage from "@/pages/subCategory/SubCategoryPage";
 // import CheckOutPage from "@/pages/checkout/CheckoutPage";
