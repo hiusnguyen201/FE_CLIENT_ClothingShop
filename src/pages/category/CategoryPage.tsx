@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { getCategory } from "@/redux/category/category.thunk";
-import ProductCards from "../shop/ProductDetails/ProductCards";
+import ProductCards from "@/pages/shop/ProductDetails/ProductCards";
 import Pagination from "@/components/Pagination";
 import { getListProduct } from "@/redux/product/product.thunk";
 import { SortByValue, SortOrderValue } from "@/types/response";

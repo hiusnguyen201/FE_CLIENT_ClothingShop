@@ -7,8 +7,8 @@ import { createBrowserRouter } from "react-router-dom";
 import { VerifyOTPPage } from "@/pages/auth/VerifyOTPPage";
 // import RegisterPage from "@/pages/auth/RegisterPage";
 import CategoryPage from "@/pages/category/CategoryPage";
-import SubCategoryPage from "@/pages/subCategory/SubCategoryPage";
-import CheckOutPage from "@/pages/checkout/CheckoutPage";
+// import SubCategoryPage from "@/pages/subCategory/SubCategoryPage";
+// import CheckOutPage from "@/pages/checkout/CheckoutPage";
 import DetailProduct from "@/pages/shop/ProductDetails/DetailProduct";
 import GetOrders from "@/pages/orders/GetOrders";
 import LoginPage from "@/pages/auth/LoginPage";
@@ -16,10 +16,8 @@ import NotFoundPage from "@/components/NotFoundPage";
 import ForgotPasswordPage from "@/pages/auth/ForgotPassword";
 import ResetPasswordPage from "@/pages/auth/ResetPassword";
 import VerifyOtp from "@/pages/auth/VerifyOtp";
-import ShopPage from "@/pages/shop/ShopPage";
+// import ShopPage from "@/pages/shop/ShopPage";
 import ShopBySlugName from "@/pages/shop/ShopBySlugName";
-import UserInfo from "@/pages/account/UserInfoPage";
-import ShowAddressPage from "@/pages/account/ShowAddressPage";
 
 const router = createBrowserRouter([
   {
@@ -34,10 +32,10 @@ const router = createBrowserRouter([
         path: "/category/:categoryName",
         element: <CategoryPage />,
       },
-      {
-        path: "/category/:categoryName/:subCategoryName",
-        element: <SubCategoryPage />,
-      },
+      // {
+      //   path: "/category/:categoryName/:subCategoryName",
+      //   element: <SubCategoryPage />,
+      // },
       {
         path: "/search",
         element: <SearchPage />,
@@ -46,18 +44,18 @@ const router = createBrowserRouter([
       //   path: "/shop",
       //   element: <ShopPage />,
       // },
-      {
-        path: "/checkout",
-        element: <CheckOutPage />,
-      },
+      // {
+      //   path: "/checkout",
+      //   element: <CheckOutPage />,
+      // },
       {
         path: "/product/:id",
         element: <DetailProduct />,
       },
-      {
-        path: "/shop",
-        element: <ShopPage />,
-      },
+      // {
+      //   path: "/shop",
+      //   element: <ShopPage />,
+      // },
       {
         path: "/shop/:slugName",
         element: <ShopBySlugName />,

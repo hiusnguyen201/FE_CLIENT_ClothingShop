@@ -6,7 +6,7 @@ import UpdateAccountUser from "@/pages/account/UpdateAccountUser";
 
 const UserInfo: React.FC = () => {
   const userInformation: User = {
-    id: null,
+    id: "",
     name: "User Name",
     phone: "0986655273",
     gender: "male",

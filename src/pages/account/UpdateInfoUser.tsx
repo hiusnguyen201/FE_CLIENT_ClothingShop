@@ -6,8 +6,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useFormik } from "formik";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import BirthdaySelect from "@/components/dayOfBirth";
 import { UpdateInfoUserSchema } from "./schema/updateInfoUser";
+import BirthdaySelect from "@/components/DayOfBirth";
 
 interface UpdateUserInfoProps {
   isOpenUpdateInfo: boolean;

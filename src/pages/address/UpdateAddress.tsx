@@ -16,9 +16,11 @@ interface UpdateAddressProps {
 const UpdateAddress: FC<UpdateAddressProps> = ({ isOpen, onClose }) => {
   const formik = useFormik({
     initialValues: {
-      fullName: "",
-      phoneNumber: "",
-      saveToAddressBook: false,
+      address: "",
+      provinceCode: "",
+      districtCode: "",
+      wardCode: "",
+      isDefault: false,
     },
     validationSchema: UpdateAddressSchema,
     onSubmit: (values) => {
@@ -50,45 +52,7 @@ const UpdateAddress: FC<UpdateAddressProps> = ({ isOpen, onClose }) => {
             <h2 className="text-2xl font-bold mb-6 mt-2">Update your address</h2>
 
             <form className="space-y-4" onSubmit={formik.handleSubmit}>
-              <div className="flex w-full space-x-6">
-                <div className="w-1/2 lg:w-2/3">
-                  <Label htmlFor="fullName" className="text-md text-gray-700 mb-1">
-                    Full Name
-                  </Label>
-                  <Input
-                    id="fullName"
-                    name="fullName"
-                    className="border border-gray-400 p-6 rounded-4xl"
-                    placeholder="Enter your full name"
-                    value={formik.values.fullName}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                  />
-                  {formik.touched.fullName && formik.errors.fullName && (
-                    <div className="text-red-500 text-sm mt-1">{formik.errors.fullName}</div>
-                  )}
-                </div>
-
-                <div className="w-1/2 lg:w-1/3">
-                  <Label htmlFor="phoneNumber" className="text-md text-gray-700 mb-1">
-                    Phone number
-                  </Label>
-                  <Input
-                    id="phoneNumber"
-                    name="phoneNumber"
-                    className="border border-gray-400 p-6 rounded-4xl"
-                    placeholder="Enter your phone number"
-                    value={formik.values.phoneNumber}
-                    onChange={formik.handleChange}
-                    onBlur={formik.handleBlur}
-                  />
-                  {formik.touched.phoneNumber && formik.errors.phoneNumber && (
-                    <div className="text-red-500 text-sm mt-1">{formik.errors.phoneNumber}</div>
-                  )}
-                </div>
-              </div>
-
-              <SelectAddressDropdown />
+              <SelectAddressDropdown formik={formik} />
               <div className="flex items-center space-x-2">
                 <Input type="checkbox" id="default" className="w-4 h-4" />
                 <Label htmlFor="default" className="text-sm font-medium">
