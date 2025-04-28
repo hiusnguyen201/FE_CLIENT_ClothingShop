@@ -281,9 +281,11 @@ const NavBar: React.FC = () => {
             <li className="mt-2">
               <Link to={""}>About Shop</Link>
             </li>
-            <li className="mt-2">
-              <Link to={""}>Login</Link>
-            </li>
+            {!user &&
+              <li className="mt-2">
+                <Link to={"/auth/login"}>Login</Link>
+              </li>
+            }
             <li className="mt-2">
               <Link to={""}>Blog</Link>
             </li>

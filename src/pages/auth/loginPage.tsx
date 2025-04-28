@@ -47,8 +47,8 @@ const LoginPage: React.FC = () => {
       password: "",
     },
     validationSchema: loginSchema,
-    onSubmit: (values) => {
-      handleSubmit(values, formik);
+    onSubmit: async (values) => {
+      await handleSubmit(values, formik);
     },
   });
 
