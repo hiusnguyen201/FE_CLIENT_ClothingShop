@@ -2,49 +2,25 @@ import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { ProductVariant } from "@/types/product";
 import { getProduct } from "@/redux/product/product.thunk";
 import { formatPrice, getPriceRange, SelectedVariant } from "@/utils/product";
 import { colorMap } from "@/types/color";
 import { useAddToCart } from "@/utils/product";
-import { Skeleton } from "@/components/ui/skeleton";
-
-const infoList = [
-  { label: "MATERIAL", value: "92% Polyester 8% Spandex" },
-  { label: "STYLE", value: "Regular\nLength 7 inches" },
-  {
-    label: "FIT",
-    value: "Daily activities, beach travel, sports",
-  },
-  { label: "FEATURES", value: "Convenient side pockets" },
-];
-
-const highlights = [
-  {
-    title: "Fabric material",
-    description: "Soft and elastic material, comfortable to wear",
-    image: "https://mcdn.coolmate.me//image/March2025/quan-nam-travel-short-7-inch-thumb-3.jpg",
-  },
-  {
-    title: "Logo",
-    description: "Silicone logo material – flexible, durable, does not peel or fade over time",
-    image: "https://mcdn.coolmate.me//image/March2025/quan-nam-travel-short-7-inch-thumb-3.jpg",
-  },
-  {
-    title: "Style",
-    description: "Dynamic, comfortable design, ideal for everyday activities and travel",
-    image: "https://mcdn.coolmate.me//image/March2025/quan-nam-travel-short-7-inch-thumb-3.jpg",
-  },
-];
+import { LoadingCenter } from "@/components/LoadingCenter";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
+import { MinusIcon, PlusIcon } from "lucide-react";
 
 const ProductDetail: React.FC = () => {
   const { handleAddToCart } = useAddToCart();
   const { id } = useParams<{ id: string }>();
 
   const dispatch = useAppDispatch();
-  const { product, loading, error } = useAppSelector((state) => state.product);
+  const { product, loading } = useAppSelector((state) => state.product);
+
+  const [quantity, setQuantity] = useState(1);
 
   const [selectedVariant, setSelectedVariant] = useState<SelectedVariant>({
     sizeId: product?.productOptions.find(opt => opt.option.name === "Size")?.optionValues[0]?.id || null,
@@ -52,20 +28,12 @@ const ProductDetail: React.FC = () => {
   });
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-    if (!id) {
-      return
-    }
+    if (!id) return
     dispatch(getProduct({ id }));
-
-  }, [dispatch, id]);
+  }, [id]);
 
   if (loading.getProduct) {
-    return <Skeleton className="h-8 w-[250px]" />;
-  }
-
-  if (error) {
-    return <div>Error: {error}</div>;
+    return <LoadingCenter />;
   }
 
   if (!product) {
@@ -100,68 +68,87 @@ const ProductDetail: React.FC = () => {
   const sizeOption = product.productOptions.find(opt => opt.option.name === "Size");
 
   const selectedVariantData = findVariant();
+
+  const updateQuantity = (action: "increase" | "decrease") => {
+    const max = selectedVariantData?.quantity ?? 1;
+    const min = 1;
+
+    setQuantity((prev) => {
+      if (action === "increase") {
+        return prev < max ? prev + 1 : prev;
+      }
+      if (action === "decrease") {
+        return prev > min ? prev - 1 : prev;
+      }
+      return prev;
+    });
+  };
+
+
   return (
-    <div className="mt-10">
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:mx-10 mx-5">
+    <div className="px-4 md:px-8 lg:px-16 xl:px-32 2xl:px-64">
+
+      <Breadcrumb className="p-0 my-4 md:mx-16 md:px-16">
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/">Home</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbLink href={`/category/${product?.category?.name}`}>{product?.category?.name}</BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator />
+          <BreadcrumbItem>
+            <BreadcrumbPage>
+              <BreadcrumbLink href={`/category/${product?.subCategory?.name}`}>{product?.subCategory?.name}</BreadcrumbLink>
+            </BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+
+      <div className="flex flex-col md:flex-row gap-6">
         {/* Left - Images */}
-        <div className="flex gap-4 relative ml-10">
-          <div className="flex flex-col gap-2 absolute w-15 top-5 left-5 lg:static">
+        <div className="flex gap-4 w-full">
+
+          {/* <div className="flex flex-col gap-2 absolute w-15 top-5 left-5 lg:static">
             <img
               src={product.thumbnail}
               className={`w-16 h-20 rounded object-cover cursor-pointer transition-opacity duration-200"`}
             />
+          </div> */}
+
+          <div className="w-full">
+            <img src={product.thumbnail} className="rounded-xl" />
           </div>
-          <div className="flex-1">
-            <img src={product.thumbnail} className="rounded-xl w-full max-w-[500px] aspect-[3/4] object-cover" />
-          </div>
+
         </div>
 
         {/* Right - Product Info */}
-        <div className="flex flex-col gap-4">
-          <div className="space-x-2 ">
-            <span className="link opacity-70">
-              <Link to="/">Home</Link>
-              <i className="ri-arrow-right-s-line"></i>
-            </span>
-            <span className="link opacity-70">
-              <Link to={`/category/${product.category.slug}`}>{product.category.name}</Link>
-              <i className="ri-arrow-right-s-line"></i>
-            </span>
-            {product.subCategory &&
-              <span className="link opacity-70">
-                <Link to={`/category/${product.subCategory.slug}`}>{product.subCategory.name}</Link>
-                <i className="ri-arrow-right-s-line"></i>
-              </span>
-            }
-            <span className="link">
-              <span className="text-gray-900">
-                {product.name}
-              </span>
-            </span>
-          </div>
+        <div className="flex flex-col gap-4 w-full">
+
           <h1 className="text-2xl font-bold">{product.name}</h1>
 
-          <div className="flex items-center gap-4">
-            <span className="text-2xl font-bold">
-              {selectedVariantData ? formatPrice(selectedVariantData.price) :
-                minPrice !== null && maxPrice !== null
-                  ? minPrice === maxPrice
-                    ? `${formatPrice(minPrice)}`
-                    : `${formatPrice(minPrice)} - ${formatPrice(maxPrice)}`
-                  : formatPrice(0)}</span>
+          <div className="text-2xl font-bold">
+            {selectedVariantData ? formatPrice(selectedVariantData.price) :
+              minPrice !== null && maxPrice !== null
+                ? minPrice === maxPrice
+                  ? `${formatPrice(minPrice)}`
+                  : `${formatPrice(minPrice)} - ${formatPrice(maxPrice)}`
+                : formatPrice(0)}
           </div>
-          <div className="flex items-center gap-3">
+
+          <div className="">
             <span className="text-sm text-orange-500 bg-orange-100 px-3 py-1 rounded-full">Freeship</span>
           </div>
 
           {/* Color Selection */}
           <div>
-            <p className="mb-2 font-medium">
-              Color: <span className="font-semibold">
-                {colorOption && selectedVariant.colorId
-                  ? colorOption.optionValues.find(value => value.id === selectedVariant.colorId)?.valueName
-                  : null}
-              </span>
+            <p className="font-medium">
+              Color:
+              {colorOption && selectedVariant.colorId
+                ? colorOption.optionValues.find(value => value.id === selectedVariant.colorId)?.valueName
+                : null
+              }
             </p>
 
             <div className="flex gap-2">
@@ -178,8 +165,8 @@ const ProductDetail: React.FC = () => {
                       key={value.id}
                       defaultValue={colorOption.optionValues[0].id}
                       variant={"none"}
-                      className={`w-8 h-8 rounded-4xl cursor-pointer border-2
-                        ${selectedVariant.colorId === value.id && "ring-2 ring-offset-2"}
+                      className={`w-12 h-7 rounded-full cursor-pointer
+                        ${selectedVariant.colorId === value.id && "ring-2 ring-offset-1"}
                         `}
                       style={{
                         backgroundColor: colorMap[value.valueName],
@@ -189,7 +176,7 @@ const ProductDetail: React.FC = () => {
                   );
                 })
               ) : (
-                <p>No colors available</p>
+                null
               )}
             </div>
 
@@ -197,8 +184,8 @@ const ProductDetail: React.FC = () => {
 
           {/* Size Selection */}
           <div>
-            <p className="mb-2 font-medium">Size: </p>
-            <div className="flex flex-wrap gap-2">
+            <p className="font-medium">Size:</p>
+            <div className="flex gap-2">
               {sizeOption && (
                 sizeOption.optionValues.map((value) => {
                   const isAvailable = product.productVariants.some(variant =>
@@ -209,8 +196,7 @@ const ProductDetail: React.FC = () => {
                   return (
                     <Button
                       key={value.id}
-                      // variant={selectedVariant.sizeId === value.id ? "outline" : null}
-                      className={`w-[48px] h-[44px] font-semibold text-black bg-gray-300 hover:text-white
+                      className={`w-20 h-18 font-semibold text-black bg-gray-300 hover:text-white
                         ${selectedVariant.sizeId === value.id && "text-white bg-black"}
                         `}
                       onClick={() => handleSelectOption("size", value.id)}
@@ -225,43 +211,52 @@ const ProductDetail: React.FC = () => {
           </div>
 
           {/* Add to Cart Button */}
-          <Button
-            onClick={() => handleAddToCart(selectedVariantData)}
-            disabled={!selectedVariantData || selectedVariantData.quantity === 0}
-            className="mt-6 bg-gray-900 text-white w-full py-6 text-lg rounded-xl hover:bg-gray-800"
-          >{!selectedVariantData ? "Add to cart" : selectedVariantData && selectedVariantData?.quantity > 0 ?
-            "Add to cart" : "Out of stock"}
-          </Button>
+          <div className="relative">
+
+            <div className="absolute flex items-center border rounded-full bg-gray-300 z-10">
+              <Button
+                variant={"ghost"}
+                onClick={() => setQuantity(quantity - 1)}
+                className="hover:bg-transparent"
+              >
+                <MinusIcon />
+              </Button>
+              <span>
+                {quantity}
+              </span>
+              <Button
+                variant={"ghost"}
+                onClick={() => setQuantity(quantity + 1)}
+                className="hover:bg-transparent"
+              >
+                <PlusIcon />
+              </Button>
+            </div>
+
+            <div className="ml-1">
+              <Button
+                onClick={() => handleAddToCart(selectedVariantData)}
+                disabled={!selectedVariantData || selectedVariantData.quantity === 0}
+                className="w-full rounded-full hover:bg-gray-300 hover:text-black"
+              >{!selectedVariantData ? "Add to cart" : selectedVariantData && selectedVariantData?.quantity > 0 ?
+                "Add to cart" : "Out of stock"}
+              </Button>
+            </div>
+          </div>
+
         </div>
       </div>
-      <div className="grid grid-cols-1 lg:mx-10 mx-5 gap-10 mt-10">
+
+      <div className="my-4">
         {/* Product info list */}
         <Card className="w-full">
-          <h1 className="lg:text-4xl md:text-3xl text-2xl text-gray-700 text-center font-bold">Product description</h1>
-          <CardContent className="p-6 space-y-4 text-sm text-gray-700">
-            {infoList.map((info, idx) => (
-              <div key={idx} className="flex justify-between border-b border-gray-200 pb-2">
-                <span className="text-gray-500">{info.label}</span>
-                <span className="text-right whitespace-pre-line">{info.value}</span>
-              </div>
-            ))}
-            <div className="pt-2 italic font-medium text-gray-800 text-sm">* Proudly Made In Vietnam</div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-10">
-              {highlights.map((item, idx) => (
-                <Card key={idx} className="overflow-hidden rounded-2xl border-none">
-                  <div>
-                    <img src={item.image} alt={item.title} className="object-cover" />
-                  </div>
-                  <CardContent className="p-4">
-                    <h3 className="font-semibold text-base mb-1">{item.title}</h3>
-                    <p className="text-sm text-gray-600">{item.description}</p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+          <h1 className="text-2xl text-center font-bold">Product description</h1>
+          <CardContent className="p-6">
+            {product.description}
           </CardContent>
         </Card>
       </div>
+
     </div>
   );
 };

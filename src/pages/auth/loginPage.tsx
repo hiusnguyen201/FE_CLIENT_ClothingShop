@@ -26,6 +26,13 @@ export function LoginPage() {
             Register
           </Button>
         </Link>
+
+        <p className="flex items-center text-sm">
+          <span className="text-muted-foreground">Forgot password? Click&nbsp;</span>
+          <Link to="/auth/forgot-password">
+            here
+          </Link>
+        </p>
       </div>
     </div>
   );

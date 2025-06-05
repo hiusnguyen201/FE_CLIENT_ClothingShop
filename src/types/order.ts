@@ -1,3 +1,4 @@
+import { Nullable } from "./common";
 import { Product } from "./product";
 import { User } from "./user";
 
@@ -76,4 +77,26 @@ export interface VariantValue {
     id: string;
     valueName: string;
   };
+}
+
+export interface AddressCheckout {
+  address: string;
+  provinceName: string;
+  districtName: string;
+  wardName: string;
+}
+
+export interface CartCheckout {
+  productVariant: string;
+  quantity: number;
+}
+
+export interface CheckoutData {
+  fullName: string;
+  email: string;
+  paymentMethod: string;
+  phoneNumber: string;
+  note: Nullable<string>;
+  address: AddressCheckout;
+  cart: CartCheckout[];
 }

@@ -40,7 +40,7 @@ export const getPriceRange = (variants: ProductVariant[]): PriceRange => {
 export const useAddToCart = () => {
     const dispatch = useAppDispatch();
 
-    const handleAddToCart = async (selectedVariantData: ProductVariant | null) => {
+    const handleAddToCart = async (selectedVariantData: ProductVariant) => {
         if (selectedVariantData && selectedVariantData.quantity > 0) {
             try {
                 await dispatch(addCart({ productVariantId: selectedVariantData.id, quantity: 1 })).unwrap();

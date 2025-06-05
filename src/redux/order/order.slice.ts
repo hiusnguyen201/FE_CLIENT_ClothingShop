@@ -1,6 +1,7 @@
 import { ActionReducerMapBuilder, createSlice, Draft, PayloadAction } from "@reduxjs/toolkit";
 import { CreateOrderResponse, GetListOrderResponse, GetOrderResponse, OrderState } from "./order.type";
 import { createOrder, getListOrder, getOrder } from "./order.thunk";
+import { CheckoutData } from "@/types/order";
 
 const initialState: OrderState = {
   loading: {
@@ -10,6 +11,7 @@ const initialState: OrderState = {
   },
   order: null,
   list: [],
+  checkoutData: null,
   totalCount: 0,
   error: null,
 };
@@ -18,7 +20,9 @@ const orderSlice = createSlice({
   name: "order",
   initialState,
   reducers: {
-
+    setCheckoutData: (state, action: PayloadAction<CheckoutData>) => {
+      state.checkoutData = action.payload;
+    }
   },
   extraReducers: (builder: ActionReducerMapBuilder<OrderState>) => {
     builder
@@ -74,4 +78,5 @@ const orderSlice = createSlice({
   },
 });
 
+export const { setCheckoutData } = orderSlice.actions;
 export default orderSlice.reducer;

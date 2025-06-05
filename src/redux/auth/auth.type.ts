@@ -13,6 +13,7 @@ export interface AuthState {
     register: boolean;
     sendOtpViaEmail: boolean;
     verifyOtp: boolean;
+    forgotPassword: boolean,
   };
   user: Nullable<User>;
   isAuthenticated: boolean;
@@ -72,3 +73,12 @@ export interface RegisterResponseData {
   user: User;
 }
 export interface RegisterResponse extends BaseResponse<RegisterResponseData> { }
+
+/**
+ * Forgot password
+ */
+export type ForgotPasswordPayload = {
+  email: string;
+  callbackUrl: string;
+};
+export interface ForgotPasswordResponse extends BaseResponse<null> { }

@@ -4,12 +4,12 @@ import { useSearchParams } from "react-router-dom";
 import ProductCards from "@/pages/shop/ProductDetails/ProductCards";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Skeleton } from "@/components/ui/skeleton";
 import { useDebounce } from "@/hooks/use-debounce";
 import { SortByValue, SortOrderValue } from "@/types/response";
 import { getListProduct } from "@/redux/product/product.thunk";
 import Pagination from "@/components/Pagination";
 import { getValidSortBy, getValidSortOrder } from "@/utils/product";
+import { LoadingCenter } from "@/components/LoadingCenter";
 
 interface SearchFormState {
   page: number;
@@ -110,10 +110,9 @@ const SearchPage: React.FC = () => {
           </Select>
         </div>
 
-        <h2 className="text-2xl font-semibold mt-6 text-gray-700 mb-10">Kết quả</h2>
         <div>
           {loading.getListProduct ? (
-            <Skeleton className="h-8 w-[250px]" />
+            <LoadingCenter />
           ) : productList.length === 0 ? (
             <div>
               <p className="section__subheader">Sorry, no result found!</p>

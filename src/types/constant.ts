@@ -18,3 +18,24 @@ export const GENDER = {
 } as const;
 
 export type Gender = typeof GENDER[keyof typeof GENDER];
+
+export const PAYMENT_METHODS = [
+  {
+    id: "1",
+    label: "Cash on Delivery",
+    img: "https://mcdn.coolmate.me/image/October2024/mceclip2_42.png",
+    method: "cash on delivery",
+  },
+  {
+    id: "2",
+    label: "MoMo Wallet",
+    img: "https://mcdn.coolmate.me/image/October2024/mceclip1_171.png",
+    method: "momo"
+  },
+];
+
+export type PaymentMethod = {
+  label: string;
+  img: string;
+  method: string;
+};

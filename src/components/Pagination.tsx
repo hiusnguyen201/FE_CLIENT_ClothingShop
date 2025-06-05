@@ -16,7 +16,7 @@ const Pagination: React.FC<PaginationProps> = ({
     onPageChange,
 }) => {
     return (
-        <div className="flex items-center justify-between bg-white px-4 mt-2 sm:px-6">
+        <div className="flex items-center justify-betwee">
             <div className="flex flex-1 justify-between">
                 <p className="text-sm text-gray-500 text-center lg:block">
                     Showing {Math.min((currentPage - 1) * limit + 1, totalCount)}-

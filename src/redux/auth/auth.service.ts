@@ -1,5 +1,7 @@
 import { apiInstance } from "@/redux/api";
 import {
+  ForgotPasswordPayload,
+  ForgotPasswordResponse,
   LoginPayload,
   LoginResponse,
   LogoutResponse,
@@ -29,4 +31,8 @@ export const sendOtpViaEmailService = async (payload: SendOtpViaEmailPayload): P
 
 export const verifyOtpService = async (payload: VerifyOtpPayload): Promise<VerifyOtpResponse> => {
   return await apiInstance.post("/auth/verify-otp", payload);
+};
+
+export const forgotPasswordService = async (payload: ForgotPasswordPayload): Promise<ForgotPasswordResponse> => {
+  return await apiInstance.post("/auth/forgot-password", payload);
 };

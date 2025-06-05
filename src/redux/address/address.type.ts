@@ -12,6 +12,9 @@ export interface AddressState {
   loading: {
     addAddress: boolean;
     getAddressList: boolean,
+    setDefaultAddress: boolean,
+    updateAddress: boolean,
+    deleteAddress: boolean,
   };
   address: Nullable<Address>;
   addressList: Address[];
@@ -32,6 +35,19 @@ export interface CreateAddressPayload {
 }
 export interface CreateAddressResponse extends BaseResponse<Address> { }
 
+/**
+ * Update address
+ */
+
+export interface UpdateAddressPayload {
+  addressId: string;
+  address: string;
+  provinceCode: string;
+  districtCode: string;
+  wardCode: string;
+  isDefault: boolean;
+}
+export interface UpdateAddressResponse extends BaseResponse<Address> { }
 
 /**
  * Get address list

@@ -10,6 +10,7 @@ export interface AccountState {
   loading: {
     getProfile: boolean;
     updateProfile: boolean;
+    changePassword: boolean;
   };
   user: Nullable<User>;
   error: Nullable<string>;

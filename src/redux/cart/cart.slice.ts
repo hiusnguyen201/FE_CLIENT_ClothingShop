@@ -42,16 +42,16 @@ const cartSlice = createSlice({
 
       // Get Cart Case
       .addCase(getCart.pending, (state: Draft<CartState>) => {
-        state.loading.addCart = true;
+        state.loading.getCart = true;
         state.error = null;
       })
       .addCase(getCart.fulfilled, (state: Draft<CartState>, action: PayloadAction<GetCartResponse>) => {
-        state.loading.addCart = false;
+        state.loading.getCart = false;
         state.error = null;
         state.cart = action.payload.data;
       })
       .addCase(getCart.rejected, (state: Draft<CartState>, action: PayloadAction<any>) => {
-        state.loading.addCart = false;
+        state.loading.getCart = false;
         state.error = action.payload as string;
         state.cart = [];
       })

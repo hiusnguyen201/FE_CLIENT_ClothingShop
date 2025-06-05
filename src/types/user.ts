@@ -12,7 +12,7 @@ export type User = {
   email: string;
   phone: string;
   gender?: string;
-  status: USER_STATUS;
+  status?: USER_STATUS;
   verifiedAt?: Nullable<Date>;
   createdAt?: Date;
   updatedAt?: Date;

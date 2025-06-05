@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const Footer: React.FC = () => {
   return (
-    <div>
+    <div className="mt-10">
       <hr className="opacity-7" />
       <footer className="section__container footer__container">
         <div className="footer__col">

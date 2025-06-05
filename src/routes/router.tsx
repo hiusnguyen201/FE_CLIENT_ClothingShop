@@ -6,18 +6,16 @@ import SearchPage from "@/pages/search/SearchPage";
 import { createBrowserRouter } from "react-router-dom";
 import { VerifyOTPPage } from "@/pages/auth/VerifyOTPPage";
 import CategoryPage from "@/pages/category/CategoryPage";
-// import SubCategoryPage from "@/pages/subCategory/SubCategoryPage";
-// import CheckOutPage from "@/pages/checkout/CheckoutPage";
 import DetailProduct from "@/pages/shop/ProductDetails/DetailProduct";
-import GetOrders from "@/pages/orders/GetOrders";
 import NotFoundPage from "@/components/NotFoundPage";
-import ForgotPasswordPage from "@/pages/auth/ForgotPassword";
+import ForgotPasswordPage from "@/pages/auth/ForgotPasswordPage";
 import ResetPasswordPage from "@/pages/auth/ResetPassword";
 import VerifyOtp from "@/pages/auth/VerifyOtp";
 import { RegisterPage } from "@/pages/auth/RegisterPage";
 import { LoginPage } from "@/pages/auth/loginPage";
-// import ShopPage from "@/pages/shop/ShopPage";
-// import ShopBySlugName from "@/pages/shop/ShopBySlugName";
+import OrderDetailPage from "@/pages/orders/OrderDetailPage";
+import CartPage from "@/pages/cart/CartPage";
+import CheckOutPage from "@/pages/checkout/CheckoutPage";
 
 const router = createBrowserRouter([
   {
@@ -29,37 +27,34 @@ const router = createBrowserRouter([
         element: <HomePage />,
       },
       {
-        path: "/category/:categoryName",
+        path: "/category/:slug",
         element: <CategoryPage />,
       },
-      // {
-      //   path: "/category/:categoryName/:subCategoryName",
-      //   element: <SubCategoryPage />,
-      // },
       {
         path: "/search",
         element: <SearchPage />,
       },
-      // {
-      //   path: "/shop",
-      //   element: <ShopPage />,
-      // },
-      // {
-      //   path: "/checkout",
-      //   element: <CheckOutPage />,
-      // },
       {
         path: "/product/:id",
         element: <DetailProduct />,
       },
-      // {
-      //   path: "/shop",
-      //   element: <ShopPage />,
-      // },
-      // {
-      //   path: "/shop/:slugName",
-      //   element: <ShopBySlugName />,
-      // },
+      {
+        path: "/get-order/:id",
+        element: <OrderDetailPage />,
+      },
+      {
+        path: "/account",
+        element: <AccountPage />,
+        children: [],
+      },
+      {
+        path: "/cart",
+        element: <CartPage />,
+      },
+      {
+        path: "/checkout",
+        element: <CheckOutPage />,
+      },
     ],
   },
   {
@@ -92,20 +87,6 @@ const router = createBrowserRouter([
       },
     ],
   },
-
-  {
-    path: "/account",
-    element: <AccountPage />,
-    children: [],
-  },
-  {
-    path: "/get-order/:id",
-    element: <GetOrders />,
-  },
-  // {
-  //   path: "/checkout/:id",
-  //   element: <CheckOutPage />,
-  // },
   {
     path: "*",
     element: <NotFoundPage />,

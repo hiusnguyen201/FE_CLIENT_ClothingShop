@@ -3,12 +3,12 @@ import { useFormik, FormikProps } from "formik";
 import { cn } from "@/lib/utils";
 import { LoadingButton } from "@/components/LoadingButton";
 import { InputFormikField } from "@/components/formik-fields";
-import { toast } from "@/hooks/use-toast";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { AuthState, RegisterPayload } from "@/redux/auth/auth.type";
 import { GENDER, REGEX_PATTERNS } from "@/types/constant";
 import { register } from "@/redux/auth/auth.thunk";
 import { SelectFormikField } from "@/components/formik-fields/SelectFormikField";
+import { showToast } from "@/utils/toast";
 
 const initialValues: RegisterPayload = {
   name: "",
@@ -37,9 +37,9 @@ export function RegisterForm({ className }: { className?: string }) {
   const handleSubmit = async (values: RegisterPayload) => {
     try {
       await dispatch(register(values)).unwrap();
-      toast({ title: "Registration successful!" });
+      showToast(true, 'Registration successful!');
     } catch (err: any) {
-      toast({ variant: "destructive", title: err.message });
+      showToast(false, err || "Somthing went wrong");
     }
   };
 

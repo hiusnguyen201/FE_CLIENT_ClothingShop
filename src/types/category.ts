@@ -2,7 +2,7 @@ import { Nullable } from "./common";
 
 export type Category = {
   id: string;
-  image: string | undefined;
+  image: Nullable<string>;
   name: string;
   slug: string;
   level: number;

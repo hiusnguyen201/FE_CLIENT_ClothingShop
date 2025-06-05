@@ -1,4 +1,3 @@
-import { motion, useAnimation } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ColorBadge } from "@/components/productSlice/ColorBadge";
 import { Button } from "@/components/ui/button";
@@ -14,23 +13,7 @@ interface ProductCardItemProps {
 const ProductCardItem: React.FC<ProductCardItemProps> = ({ product }) => {
   const { handleAddToCart } = useAddToCart();
 
-  const controls = useAnimation();
-
-  const handleHoverStart = () => {
-    controls.start({
-      y: 0,
-      opacity: 1,
-      transition: { duration: 0.3 },
-    });
-  };
-
-  const handleHoverEnd = () => {
-    controls.start({
-      y: 12,
-      opacity: 0,
-      transition: { duration: 0.3 },
-    });
-  };
+  const [isHovered, setIsHovered] = useState(false);
 
   const [selectedVariant, setSelectedVariant] = useState<SelectedVariant>({
     sizeId: null,
@@ -66,58 +49,73 @@ const ProductCardItem: React.FC<ProductCardItemProps> = ({ product }) => {
   const { minPrice, maxPrice } = getPriceRange(product.productVariants);
 
   return (
-    <div className="product__card">
-      <motion.div className="relative" onHoverStart={handleHoverStart} onHoverEnd={handleHoverEnd}>
-        <Link className="relative block" to={`/product/${product.slug}`}>
-          <img src={product.thumbnail} alt="" className="object-cover rounded-lg h-full mb-2 w-full aspect-[3/4]" />
+    <div>
+      <div
+        className="relative"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        <Link to={`/product/${product.slug}`}>
+          <img
+            src={product.thumbnail}
+            alt={product.name}
+            className="object-cover rounded-lg mb-2 aspect-[3/4]"
+          />
         </Link>
-        <motion.div
-          animate={controls}
-          initial={{ y: 12, opacity: 0 }}
-          style={{
-            background: "linear-gradient(0deg, rgba(0, 0, 0, .1), rgba(0, 0, 0, .1)), hsla(0, 0%, 100%, .4)",
-          }}
-          className="absolute p-3 mx-auto md:h-auto backdrop-blur-sm bottom-6 left-6 right-6 rounded md:block hidden"
-        >
-          <div className="flex justify-center my-4">
-            <Button
-              onClick={() => handleAddToCart(selectedVariantData)}
-              disabled={!selectedVariantData || selectedVariantData.quantity < 1}
-              className="text-white rounded-md cursor-pointer"
-            >{!selectedVariantData ? "Add to cart" : selectedVariantData && selectedVariantData?.quantity > 0 ?
-              "Add to cart" : "Out of stock"}
-            </Button>
+
+        {isHovered && (
+          <div
+            style={{
+              background:
+                "linear-gradient(0deg, rgba(0, 0, 0, .1), rgba(0, 0, 0, .1)), hsla(0, 0%, 100%, .4)",
+            }}
+            className="absolute p-4 bottom-6 left-6 right-6 rounded-lg backdrop-blur-sm"
+          >
+            <div className="flex justify-center mb-2">
+              <Button
+                onClick={() => handleAddToCart(selectedVariantData)}
+                disabled={!selectedVariantData || selectedVariantData.quantity < 1}
+              >
+                {!selectedVariantData
+                  ? "Add to cart"
+                  : selectedVariantData.quantity > 0
+                    ? "Add to cart"
+                    : "Out of stock"}
+              </Button>
+            </div>
+
+            <div className="flex flex-wrap gap-1">
+              {sizeOption &&
+                sizeOption.optionValues.map((value) => {
+                  const isAvailable = product.productVariants.some(
+                    (variant) =>
+                      variant.variantValues.some(
+                        (val) =>
+                          val.option.name === "Size" &&
+                          val.optionValue.id === value.id
+                      ) && variant.quantity > 0
+                  );
+                  return (
+                    <Button
+                      key={value.id}
+                      className={`w-[48px] h-[44px] ${selectedVariant.sizeId === value.id &&
+                        "bg-gray"
+                        }`}
+                      onClick={() => handleSelectOption("size", value.id)}
+                      disabled={!isAvailable}
+                    >
+                      {value.valueName}
+                    </Button>
+                  );
+                })}
+            </div>
           </div>
+        )}
+      </div>
 
+      <div className="flex flex-col gap-2">
 
-          <div className="flex flex-wrap gap-1">
-            {sizeOption && (
-              sizeOption.optionValues.map((value) => {
-                const isAvailable = product.productVariants.some(variant =>
-                  variant.variantValues.some(
-                    val => val.option.name === "Size" && val.optionValue.id === value.id
-                  ) && variant.quantity > 0
-                );
-                return (
-                  <Button
-                    key={value.id}
-                    // variant={selectedVariant.sizeId === value.id ? "outline" : null}
-                    className={`w-[48px] h-[44px] font-semibold text-black bg-gray-300 hover:text-white
-                    ${selectedVariant.sizeId === value.id && "text-white bg-black"}`}
-                    onClick={() => handleSelectOption("size", value.id)}
-                    disabled={!isAvailable}
-                  >
-                    {value.valueName}
-                  </Button>
-                );
-              })
-            )}
-          </div>
-        </motion.div>
-      </motion.div>
-
-      <div className="flex flex-col min-h-[94px]">
-        <div className="flex mb-2 items-center gap-1 sm:gap-2 flex-wrap mt-2">
+        <div className="flex flex-wrap gap-2">
           {colorOption && (
             colorOption.optionValues.map((value) => {
               const isAvailable = product.productVariants.some(variant =>
@@ -138,20 +136,26 @@ const ProductCardItem: React.FC<ProductCardItemProps> = ({ product }) => {
             })
           )}
         </div>
-        <Link to={`/shop/${product.slug}`}>
-          <h4 className="line-clamp-2 mb-1">{product.name}</h4>
+
+        <Link
+          className="line-clamp-2"
+          to={`/shop/${product.slug}`}
+        >
+          {product.name}
         </Link>
-        <div className="flex items-center gap-2">
+
+        <div>
           {
             selectedVariantData ? formatPrice(selectedVariantData.price) :
               minPrice !== null && maxPrice !== null
                 ? minPrice === maxPrice
                   ? `${formatPrice(minPrice)}`
                   : `${formatPrice(minPrice)} - ${formatPrice(maxPrice)}`
-                : formatPrice(0)
+                : null
           }
-        </div >
-      </div >
+        </div>
+
+      </div>
     </div >
   );
 };

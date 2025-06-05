@@ -1,13 +1,13 @@
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import React, { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { getListOrder } from "@/redux/order/order.thunk";
 import { formatDateVN, formatPrice, getValidSortBy, getValidSortOrder } from "@/utils/product";
-import { Skeleton } from "@/components/ui/skeleton";
 import Pagination from "@/components/Pagination";
 import { SortByValue, SortOrderValue } from "@/types/response";
+import { Separator } from "@/components/ui/separator";
+import { LoadingCenter } from "@/components/LoadingCenter";
 
 interface SearchFormState {
   page: number;
@@ -50,10 +50,6 @@ const HistoryOrderPage: React.FC = () => {
     );
   }, [formState, dispatch, setSearchParams]);
 
-  if (loading.getListOrder) {
-    return <Skeleton className="h-4 w-[250px]" />
-  }
-
   const updateFormState = (field: keyof SearchFormState, value: string | number) => {
     setFormState(prev => ({ ...prev, [field]: value }));
   };
@@ -65,63 +61,68 @@ const HistoryOrderPage: React.FC = () => {
   const totalPages = Math.ceil(totalCount / formState.limit);
 
   return (
-    <div>
-      <div className="flex justify-between lg:items-center mb-10 flex-col lg:flex-row md:flex-row">
-        <h2 className="text-2xl font-medium">History Order</h2>
-        <Button className="lg:w-50 lg:h-12 h-10 mt-3">
-          Policy payment within 60 days
-        </Button>
-      </div>
+    <>
+      <h2 className="text-2xl font-medium text-center md:text-left mb-2">History Order</h2>
 
-      <div className="space-y-6">
-        {list.length ?
-          <div>
+      {loading.getListOrder ?
+        <LoadingCenter />
+        : list.length ?
+          <div className="flex flex-col gap-4">
             {list.map((order) =>
-              <div key={order.id} className="rounded-lg overflow-hidden">
-                <Link to={`/get-order/${order.id}`}>
-                  <div className="bg-blue-500 text-white px-4 py-2 flex items-center justify-between">
-                    <div>
-                      <span className="font-semibold">#{order.code}</span>
-                      <span className="ml-3 text-sm">{formatDateVN(order.orderDate)}</span>
-                    </div>
-                    {order.orderStatusHistory.find(order => order.status === "confirmed") && (
-                      <Badge variant="secondary" className="text-blue-600 bg-white text-sm capitalize">
-                        Confirmed
-                      </Badge>
-                    )}
-                  </div>
+              <div
+                key={order.id}
+                className="border rounded-lg bg-slate-100">
 
-                  <div className="bg-gray-100 divide-y divide-gray-300">
-                    {order.orderDetails.map((item) => (
-                      <div key={item.id} className="flex items-center gap-4 px-4 py-3">
-                        <div className="w-16 h-16">
+                <div className="bg-blue-500 text-white py-2 px-4 flex items-center justify-between rounded-t-lg">
+                  <p>
+                    <span className="font-semibold">#{order.code}</span>
+                    <span className="m-2 text-sm">{formatDateVN(order.orderDate)}</span>
+                  </p>
+                  <p className="uppercase">
+                    {order.orderStatusHistory[0].status}
+                  </p>
+                </div>
+
+                <Link
+                  to={`/get-order/${order.id}`}
+                  className="flex flex-col py-2 px-4 gap-2">
+                  {order.orderDetails.map((item) => (
+                    <div key={item.id}>
+                      <div
+                        className="flex items-center justify-between gap-4">
+
+                        <div className="flex gap-4">
                           <img
                             src={item.product.thumbnail}
                             alt={item.product.name}
-                            className="object-cover rounded w-full h-full" />
-                        </div>
-                        <div className="flex-1">
-                          <div className="font-medium">{item.product.name}</div>
-                          <div className="text-sm text-muted-foreground">
-                            {item.variant.variantValues.map((item) => `${item.option.name}: ${item.optionValue.valueName}`).join(" / ")}
-                          </div>
-                          <div className="text-sm text-muted-foreground">x{item.quantity}</div>
-                        </div>
-                        <div className="font-medium whitespace-nowrap">{formatPrice(item.totalPrice)}</div>
-                      </div>
-                    ))}
-                  </div>
+                            className="object-cover rounded w-20 h-20" />
 
-                  <div className="flex justify-between items-center px-2 py-3 bg-gray-100 border-t border-gray-300">
-                    <div className="flex gap-2">
-                      <Button className="cursor-pointer border">Cần hỗ trợ</Button>
-                      <Button className="cursor-pointer border">Mua lại</Button>
+                          <div className="flex flex-col">
+                            <div className="font-medium">{item.product.name}</div>
+                            <div className="text-sm text-muted-foreground">
+                              {item.variant.variantValues.map((item) => `${item.option.name}: ${item.optionValue.valueName}`).join(" / ")}
+                            </div>
+                            <div className="text-sm text-muted-foreground">x{item.quantity}</div>
+                          </div>
+
+                        </div>
+
+                        <div className="font-medium">{formatPrice(item.totalPrice)}</div>
+
+                      </div>
+                      <Separator orientation="horizontal" />
                     </div>
-                    <div className="text-right text-base font-medium">{formatPrice(order.total)}</div>
-                  </div>
+                  ))}
                 </Link>
+
+                <div className="flex justify-between items-center py-2 px-4">
+                  <Button className="">Cần hỗ trợ</Button>
+                  <div className="font-medium">Total: {formatPrice(order.total)}</div>
+                </div>
+
               </div>
             )}
+
             <Pagination
               currentPage={formState.page}
               totalPages={totalPages}
@@ -129,17 +130,15 @@ const HistoryOrderPage: React.FC = () => {
               limit={formState.limit}
               onPageChange={handlePageChange}
             />
-          </div> :
-          <div className="text-center py-10 text-muted-foreground">
-            <p>Bạn chưa có đơn hàng nào tại</p>
-            <Link to="/" className="text__underline hover:text-blue-500 text-gray-900 text-md">
-              Shop
-            </Link>
           </div>
-        }
-      </div>
-    </div>
-  );
-};
+
+          : <div className="text-center py-10 text-muted-foreground">
+            Order is empty
+          </div>
+      }
+
+    </>
+  )
+}
 
 export default HistoryOrderPage;

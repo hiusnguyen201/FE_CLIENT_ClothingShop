@@ -1,30 +1,38 @@
 import { Cart } from "@/types/cart";
 import { calculateTotalPrice, formatPrice } from "@/utils/product";
-import React from "react";
+import clsx from "clsx";
+import React, { Fragment } from "react";
 
-interface CartItemsProps {
+interface OrderSummaryProps {
   cartData: Cart[];
 }
 
-const OrderSummary: React.FC<CartItemsProps> = ({ cartData }) => {
+const OrderSummary: React.FC<OrderSummaryProps> = ({ cartData }) => {
   const totalPrice = calculateTotalPrice(cartData);
   const discount = 0;
   const freeDelivery = 0;
   const grandTotal = totalPrice - discount + freeDelivery;
 
+  const summaryData = [
+    { label: "Total Price", value: totalPrice },
+    { label: "Discount", value: discount },
+    { label: "Free Delivery", value: freeDelivery },
+    { label: "Grand Total", value: grandTotal, highlight: true },
+  ];
+
   return (
-    <div>
-      <div className="bg-primary-light mt-5 rounded text-base">
-        <div className="px-6 py-4 space-y-5 text-lg text-gray-900">
-          <h2 className=" mt-2 text-2xl ">Total order amount</h2>
-          {/* <p className=" py-5 border-t border-gray-200">Selected Items: {productsDataSelected.selectedItemsName}</p> */}
-          <p>Total Price: {formatPrice(totalPrice)}</p>
-          <p>Discount : {formatPrice(discount)}</p>
-          <p className="">Free Deliver : {formatPrice(freeDelivery)}</p>
-          <h3 className="font-bold border-t border-gray-200 py-5">
-            Grand Total: {formatPrice(grandTotal)}
-          </h3>
-        </div>
+    <div className="py-4">
+      <div className="grid grid-cols-2 gap-y-2 text-sm font-medium">
+        {summaryData.map(({ label, value, highlight }, i) => (
+          <Fragment key={i}>
+            <div className={clsx(highlight && "font-bold border-t py-2")}>
+              {label}
+            </div>
+            <div className={clsx("text-right", highlight && "font-bold border-t py-2")}>
+              {formatPrice(value)}
+            </div>
+          </Fragment>
+        ))}
       </div>
     </div>
   );

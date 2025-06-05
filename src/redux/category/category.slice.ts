@@ -19,6 +19,7 @@ const categoriesSlice = createSlice({
   reducers: {},
   extraReducers: (builder: ActionReducerMapBuilder<CategoriesState>) => {
     builder
+
       // Get list category
       .addCase(getListCategory.pending, (state: Draft<CategoriesState>) => {
         state.loading.getListCategory = true;
@@ -36,6 +37,7 @@ const categoriesSlice = createSlice({
         state.list = [];
         state.totalCount = 0;
       })
+
       // Get category
       .addCase(getCategory.pending, (state: Draft<CategoriesState>) => {
         state.loading.getCategory = true;

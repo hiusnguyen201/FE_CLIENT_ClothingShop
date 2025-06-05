@@ -4,7 +4,7 @@ import {
   GetListParams,
   GetListResponseData,
 } from "@/types/response";
-import { Order } from "@/types/order";
+import { CheckoutData, Order } from "@/types/order";
 
 /**
  * State
@@ -17,6 +17,7 @@ export interface OrderState {
   };
   order: Nullable<Order>;
   list: Order[],
+  checkoutData: Nullable<CheckoutData>;
   totalCount: number;
   error: Nullable<string>;
 }
@@ -30,8 +31,8 @@ export interface NewOrderPayload {
   customerName: string;
   customerEmail: string;
   customerPhone: string;
-  provinceCode: number;
-  districtCode: number;
+  provinceCode: string;
+  districtCode: string;
   wardCode: string;
   address: string;
   productVariants: {

@@ -18,6 +18,7 @@ export interface ProductVariant {
         _id: string;
         name: string;
         thumbnail: string;
+        slug: string;
     };
     quantity: number;
     sku: string;

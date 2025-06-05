@@ -1,7 +1,21 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ThunkApiConfig } from "@/types/thunk-api";
-import { CreateAddressResponse, CreateAddressPayload, GetAddressListResponse, SetDefaultOrDeleteAddressResponse, SetDefaultOrDeletePayload } from "./address.type";
-import { addAddressService, deleteAddressService, getAddressListService, setDefaultAddressService } from "./address.service";
+import {
+  CreateAddressResponse,
+  CreateAddressPayload,
+  GetAddressListResponse,
+  SetDefaultOrDeleteAddressResponse,
+  SetDefaultOrDeletePayload,
+  UpdateAddressResponse,
+  UpdateAddressPayload
+} from "./address.type";
+import {
+  addAddressService,
+  deleteAddressService,
+  getAddressListService,
+  setDefaultAddressService,
+  updateAddressService
+} from "./address.service";
 
 
 export const addAddress = createAsyncThunk<CreateAddressResponse, CreateAddressPayload, ThunkApiConfig>(
@@ -35,6 +49,19 @@ export const setDefaultAddress = createAsyncThunk<SetDefaultOrDeleteAddressRespo
   async (payload, { rejectWithValue }) => {
     try {
       const response: SetDefaultOrDeleteAddressResponse = await setDefaultAddressService(payload);
+      return response;
+    } catch (error: any) {
+      const message: string = error.response?.data?.message || error.message || error.toString();
+      return rejectWithValue(message);
+    }
+  }
+);
+
+export const updateAddress = createAsyncThunk<UpdateAddressResponse, UpdateAddressPayload, ThunkApiConfig>(
+  "shipping-address/update-shipping-address-by-id",
+  async (payload, { rejectWithValue }) => {
+    try {
+      const response: UpdateAddressResponse = await updateAddressService(payload);
       return response;
     } catch (error: any) {
       const message: string = error.response?.data?.message || error.message || error.toString();

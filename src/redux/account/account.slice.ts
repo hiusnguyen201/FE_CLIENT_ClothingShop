@@ -1,11 +1,12 @@
 import { ActionReducerMapBuilder, createSlice, Draft, PayloadAction } from "@reduxjs/toolkit";
 import { AccountState, GetProfileResponse, UpdateProfileResponse } from "@/redux/account/account.type";
-import { getProfile, updateProfile } from "@/redux/account/account.thunk";
+import { changePassword, getProfile, updateProfile } from "@/redux/account/account.thunk";
 
 const initialState: AccountState = {
   loading: {
     getProfile: false,
-    updateProfile: false
+    updateProfile: false,
+    changePassword: false,
   },
   user: null,
   error: null,
@@ -32,6 +33,7 @@ const accountSlice = createSlice({
         state.error = action.payload as string;
         state.user = null;
       })
+
       // Update Profile Case
       .addCase(updateProfile.pending, (state: Draft<AccountState>) => {
         state.loading.updateProfile = true;
@@ -45,7 +47,20 @@ const accountSlice = createSlice({
       .addCase(updateProfile.rejected, (state: Draft<AccountState>, action: PayloadAction<any>) => {
         state.loading.updateProfile = false;
         state.error = action.payload as string;
-        state.user = null;
+      })
+
+      // Change password
+      .addCase(changePassword.pending, (state: Draft<AccountState>) => {
+        state.loading.changePassword = true;
+        state.error = null;
+      })
+      .addCase(changePassword.fulfilled, (state: Draft<AccountState>) => {
+        state.loading.changePassword = false;
+        state.error = null;
+      })
+      .addCase(changePassword.rejected, (state: Draft<AccountState>, action: PayloadAction<any>) => {
+        state.loading.changePassword = false;
+        state.error = action.payload as string;
       });
   },
 });

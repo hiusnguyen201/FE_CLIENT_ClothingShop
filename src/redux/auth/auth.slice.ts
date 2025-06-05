@@ -1,6 +1,6 @@
 import { ActionReducerMapBuilder, createSlice, Draft, PayloadAction } from "@reduxjs/toolkit";
 import { AuthState, LoginResponse, RegisterResponse, SendOtpViaEmailResponse, VerifyOtpResponse } from "@/redux/auth/auth.type";
-import { login, register, logout, sendOtpViaEmail, verifyOtp } from "@/redux/auth/auth.thunk";
+import { login, register, logout, sendOtpViaEmail, verifyOtp, forgotPassword } from "@/redux/auth/auth.thunk";
 
 const initialState: AuthState = {
   user: null,
@@ -11,6 +11,7 @@ const initialState: AuthState = {
     register: false,
     sendOtpViaEmail: false,
     verifyOtp: false,
+    forgotPassword: false,
   },
   error: null,
 };
@@ -110,6 +111,21 @@ const authSlice = createSlice({
       })
       .addCase(verifyOtp.rejected, (state: Draft<AuthState>, action: PayloadAction<any>) => {
         state.loading.verifyOtp = false;
+        state.error = action.payload as string;
+      });
+
+    // Forgot password
+    builder
+      .addCase(forgotPassword.pending, (state: Draft<AuthState>) => {
+        state.loading.forgotPassword = true;
+        state.error = null;
+      })
+      .addCase(forgotPassword.fulfilled, (state: Draft<AuthState>) => {
+        state.loading.forgotPassword = false;
+        state.error = null;
+      })
+      .addCase(forgotPassword.rejected, (state: Draft<AuthState>, action: PayloadAction<any>) => {
+        state.loading.forgotPassword = false;
         state.error = action.payload as string;
       });
   },

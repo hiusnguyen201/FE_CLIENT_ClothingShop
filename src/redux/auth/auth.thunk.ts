@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { loginService, logoutService, registerService, sendOtpViaEmailService, verifyOtpService } from "@/redux/auth/auth.service";
+import { forgotPasswordService, loginService, logoutService, registerService, sendOtpViaEmailService, verifyOtpService } from "@/redux/auth/auth.service";
 import { ThunkApiConfig } from "@/types/thunk-api";
 import {
   LoginResponse,
@@ -11,6 +11,8 @@ import {
   VerifyOtpPayload,
   RegisterResponse,
   RegisterPayload,
+  ForgotPasswordResponse,
+  ForgotPasswordPayload,
 } from "@/redux/auth/auth.type";
 
 export const logout = createAsyncThunk<LogoutResponse, void, ThunkApiConfig>(
@@ -70,6 +72,19 @@ export const verifyOtp = createAsyncThunk<VerifyOtpResponse, VerifyOtpPayload, T
   async (payload, { rejectWithValue }) => {
     try {
       const response: VerifyOtpResponse = await verifyOtpService(payload);
+      return response;
+    } catch (error: any) {
+      const message: string = error.response?.data?.message || error.message || error.toString();
+      return rejectWithValue(message);
+    }
+  }
+);
+
+export const forgotPassword = createAsyncThunk<ForgotPasswordResponse, ForgotPasswordPayload, ThunkApiConfig>(
+  "auth/forgot-password",
+  async (payload, { rejectWithValue }) => {
+    try {
+      const response: ForgotPasswordResponse = await forgotPasswordService(payload);
       return response;
     } catch (error: any) {
       const message: string = error.response?.data?.message || error.message || error.toString();

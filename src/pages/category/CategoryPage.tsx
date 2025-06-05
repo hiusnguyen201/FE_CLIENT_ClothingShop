@@ -1,12 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Checkbox } from "@/components/ui/checkbox";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { getCategory } from "@/redux/category/category.thunk";
 import ProductCards from "@/pages/shop/ProductDetails/ProductCards";
@@ -14,17 +8,18 @@ import Pagination from "@/components/Pagination";
 import { getListProduct } from "@/redux/product/product.thunk";
 import { SortByValue, SortOrderValue } from "@/types/response";
 import { getValidSortBy, getValidSortOrder } from "@/utils/product";
-import { Skeleton } from "@/components/ui/skeleton";
 import EmptyProducts from "@/components/EmptyProducts";
+import { LoadingCenter } from "@/components/LoadingCenter";
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
 
-const subCategories = ["Jean", "Shirt", "Trousers"];
-const sizes = ["S", "M", "L", "XL"];
-const colorOptions = [
-  { label: "Phối màu", value: "#ff0000", gradient: true },
-  { label: "Đen", value: "#000" },
-  { label: "Xám", value: "#808080" },
-  { label: "Trắng", value: "#fff" },
-];
+// const subCategories = ["Jean", "Shirt", "Trousers"];
+// const sizes = ["S", "M", "L", "XL"];
+// const colorOptions = [
+//   { label: "Phối màu", value: "#ff0000", gradient: true },
+//   { label: "Đen", value: "#000" },
+//   { label: "Xám", value: "#808080" },
+//   { label: "Trắng", value: "#fff" },
+// ];
 
 interface SearchFormState {
   page: number;
@@ -34,7 +29,7 @@ interface SearchFormState {
 }
 
 const CategoryPage: React.FC = () => {
-  const { categoryName } = useParams<{ categoryName: string }>();
+  const { slug } = useParams<{ slug: string }>();
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
 
@@ -42,11 +37,11 @@ const CategoryPage: React.FC = () => {
   const { category, loading: categoryLoading } = useAppSelector((state) => state.categories);
   const { list, loading: productLoading, totalCount } = useAppSelector((state) => state.product);
 
-  const [selectedSubs, setSelectedSubs] = useState<string[]>([]);
-  const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
-  const [selectedColors, setSelectedColors] = useState<string[]>([]);
+  // const [selectedSubs, setSelectedSubs] = useState<string[]>([]);
+  // const [selectedSizes, setSelectedSizes] = useState<string[]>([]);
+  // const [selectedColors, setSelectedColors] = useState<string[]>([]);
   const [sortBy, setSortBy] = useState<string>("newest");
-  const [showMobileFilter, setShowMobileFilter] = useState(false);
+  // const [showMobileFilter, setShowMobileFilter] = useState(false);
 
   const [formState, setFormState] = useState<SearchFormState>(() => {
     return {
@@ -54,36 +49,30 @@ const CategoryPage: React.FC = () => {
       limit: Number(searchParams.get("limit")) || 10,
       sortBy: getValidSortBy(searchParams.get("sortBy")),
       sortOrder: getValidSortOrder(searchParams.get("sortOrder")),
-    };
+    }
   });
 
   useEffect(() => {
-    if (categoryName) {
-      dispatch(getCategory({ id: categoryName }));
-    }
-  }, [dispatch, categoryName, navigate]);
+    if (!slug) return;
+    dispatch(getCategory({ id: slug }));
+  }, [slug]);
 
   useEffect(() => {
-    if (category) {
-      const params = new URLSearchParams();
-      if (formState.sortBy) params.set("sortBy", formState.sortBy);
-      if (formState.sortOrder) params.set("sortOrder", formState.sortOrder);
-      if (formState.page) params.set("page", formState.page.toString());
-      if (formState.limit) params.set("limit", formState.limit.toString());
+    if (!category?.id) return;
 
-      setSearchParams(params);
-      dispatch(
-        getListProduct({
-          ...formState,
-          sortBy: formState.sortBy,
-          sortOrder: formState.sortOrder,
-          limit: formState.limit,
-          page: formState.page,
-          category: category.id
-        })
-      );
-    }
-  }, [formState, category, dispatch, setSearchParams]);
+    const params = new URLSearchParams();
+    if (formState.sortBy) params.set("sortBy", formState.sortBy);
+    if (formState.sortOrder) params.set("sortOrder", formState.sortOrder);
+    if (formState.page) params.set("page", formState.page.toString());
+    if (formState.limit) params.set("limit", formState.limit.toString());
+
+    setSearchParams(params);
+
+    dispatch(getListProduct({
+      ...formState,
+      category: category.id
+    }));
+  }, [formState, category?.id]);
 
 
   if (!category && !categoryLoading.getCategory) {
@@ -91,19 +80,19 @@ const CategoryPage: React.FC = () => {
     return
   }
 
-  const toggleSub = (sub: string) => {
-    setSelectedSubs((prev) =>
-      prev.includes(sub.toLowerCase()) ? prev.filter((s) => s !== sub.toLowerCase()) : [...prev, sub.toLowerCase()]
-    );
-  };
+  // const toggleSub = (sub: string) => {
+  //   setSelectedSubs((prev) =>
+  //     prev.includes(sub.toLowerCase()) ? prev.filter((s) => s !== sub.toLowerCase()) : [...prev, sub.toLowerCase()]
+  //   );
+  // };
 
-  const toggleSize = (size: string) => {
-    setSelectedSizes((prev) => (prev.includes(size) ? prev.filter((s) => s !== size) : [...prev, size]));
-  };
+  // const toggleSize = (size: string) => {
+  //   setSelectedSizes((prev) => (prev.includes(size) ? prev.filter((s) => s !== size) : [...prev, size]));
+  // };
 
-  const toggleColor = (color: string) => {
-    setSelectedColors((prev) => (prev.includes(color) ? prev.filter((c) => c !== color) : [...prev, color]));
-  };
+  // const toggleColor = (color: string) => {
+  //   setSelectedColors((prev) => (prev.includes(color) ? prev.filter((c) => c !== color) : [...prev, color]));
+  // };
 
   const updateFormState = (field: keyof SearchFormState, value: string | number) => {
     setFormState(prev => ({ ...prev, [field]: value }));
@@ -116,21 +105,20 @@ const CategoryPage: React.FC = () => {
   const totalPages = Math.ceil(totalCount / formState.limit);
 
   return (
-    <div className="my-5">
+    <div className="px-4 md:px-8 lg:px-16 xl:px-32 2xl:px-64">
       {/* Mobile Filter Button */}
-      <div className="md:hidden mb-4">
+      {/* <div className="md:hidden">
         <Button
           onClick={() => setShowMobileFilter(!showMobileFilter)}
-          className="text-sm flex justify-between bg-gray-100 hover:bg-gray-200 p-4 min-w-40 rounded-4xl "
+          className="text-sm"
         >
-          <span> Filter Product</span>
-          <i className="ri-equalizer-2-line"></i>
+          <span>Filter Product</span>
         </Button>
-      </div>
+      </div> */}
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mx-5">
+      <div className="flex flex-col md:flex-row">
         {/* Sidebar Filter as Dropdown Accordion */}
-        <aside className={cn("space-y-6 md:block", showMobileFilter ? "block" : "hidden", "md:col-span-1 ")}>
+        {/* <aside className={cn("space-y-6 md:block", showMobileFilter ? "block" : "hidden", "md:col-span-1 ")}>
           <Accordion
             type="multiple"
             className="w-full space-y-4 divide-y divide-gray-200"
@@ -195,66 +183,72 @@ const CategoryPage: React.FC = () => {
               </AccordionContent>
             </AccordionItem>
           </Accordion>
-        </aside>
+        </aside> */}
 
-        {/* Main Product Grid */}
-        <section className="md:col-span-3 lg:mr-5">
-          <div className="space-x-2">
-            <span className="link opacity-70">
-              <Link to="/">Home</Link>
-              <i className="ri-arrow-right-s-line"></i>
-            </span>
+        {/* Main Product */}
+        <div className="w-full space-y-4">
+          <Breadcrumb className="p-0 m-0">
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink href="/">Home</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbLink href={`/category/${category?.slug}`}>{category?.name}</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbPage>{totalCount} {category?.name}</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
 
-            <span className="link">
-              <Link to={`/category/${category?.slug}`} className="text-gray-900">
-                {category ? category.name : <Skeleton className="h-4 w-[250px]" />}
-              </Link>
-            </span>
-          </div>
-          <h1 className="uppercase lg:text-4xl md:text-3xl text-2xl font-bold text-gray-700 border-b border-gray-100 py-10">
-            {category ? category.name : <Skeleton className="h-4 w-[250px]" />}
+          <h1 className="uppercase text-2xl font-bold border-b">
+            {category?.name}
           </h1>
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-xl font-bold flex gap-2">
-              {productLoading.getListProduct || categoryLoading.getCategory ?
-                <Skeleton className="h-8 w-8" /> : list.length} result
-            </h2>
-            {/* Top sort bar */}
-            <div className="flex justify-start mb-4 mt-5">
-              <div className="flex items-center gap-2 ">
-                <span className="text-sm font-medium border-gray-100">Sort By</span>
-                <Select value={sortBy} onValueChange={setSortBy}>
-                  <SelectTrigger className="w-[180px] ">
-                    <SelectValue placeholder="Sắp xếp theo" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white border-gray-100">
-                    <SelectItem value="newest">Mới nhất</SelectItem>
-                    <SelectItem value="best-selling">Bán chạy</SelectItem>
-                    <SelectItem value="price-asc">Giá thấp đến cao</SelectItem>
-                    <SelectItem value="price-desc">Giá cao đến thấp</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
+
+          <div className="flex justify-between items-center ">
+            <p className="text-sm font-bold">
+              {list.length} result
+            </p>
+
+            <div className="flex items-center gap-2 ">
+              <div className="text-sm">Sort By</div>
+              <Select value={sortBy} onValueChange={setSortBy}>
+                <SelectTrigger className="w-[150px]">
+                  <SelectValue placeholder="Sắp xếp theo" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="newest">Newest</SelectItem>
+                  <SelectItem value="oldest">Oldest</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
+
           </div>
 
-          {productLoading.getListProduct || categoryLoading.getCategory ?
-            <Skeleton className="h-4 w-[250px]" /> :
+          {productLoading.getListProduct || categoryLoading.getCategory ? (
+            <LoadingCenter />
+          ) : (
             <>
-              {list.length ? <>
-                <ProductCards productsData={list} />
-                <Pagination
-                  currentPage={formState.page}
-                  totalPages={totalPages}
-                  totalCount={totalCount}
-                  limit={formState.limit}
-                  onPageChange={handlePageChange}
-                /></>
-                : <EmptyProducts />
+              {list.length &&
+                <>
+                  <ProductCards productsData={list} />
+
+                  <Pagination
+                    currentPage={formState.page}
+                    totalPages={totalPages}
+                    totalCount={totalCount}
+                    limit={formState.limit}
+                    onPageChange={handlePageChange}
+                  />
+                </>
               }
             </>
-          }
-        </section>
+          )}
+
+        </div>
+
       </div>
     </div>
   );

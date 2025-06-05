@@ -18,12 +18,12 @@ export interface NewAddress {
 
 
 export interface Province {
-  ProvinceID: number;
+  ProvinceID: string;
   ProvinceName: string;
 }
 
 export interface District {
-  DistrictID: number;
+  DistrictID: string;
   DistrictName: string;
 }
 
