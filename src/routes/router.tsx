@@ -16,6 +16,7 @@ import { LoginPage } from "@/pages/auth/loginPage";
 import OrderDetailPage from "@/pages/orders/OrderDetailPage";
 import CartPage from "@/pages/cart/CartPage";
 import CheckOutPage from "@/pages/checkout/CheckoutPage";
+import { AuthGuard } from "@/guards/AuthGuard";
 
 const router = createBrowserRouter([
   {
@@ -39,24 +40,29 @@ const router = createBrowserRouter([
         element: <DetailProduct />,
       },
       {
-        path: "/get-order/:id",
-        element: <OrderDetailPage />,
-      },
-      {
-        path: "/account",
-        element: <AccountPage />,
-        children: [],
-      },
-      {
-        path: "/cart",
-        element: <CartPage />,
-      },
-      {
-        path: "/checkout",
-        element: <CheckOutPage />,
-      },
+        element: <AuthGuard />,
+        children: [
+          {
+            path: "/get-order/:id",
+            element: <OrderDetailPage />,
+          },
+          {
+            path: "/account/:id",
+            element: <AccountPage />,
+          },
+          {
+            path: "/cart",
+            element: <CartPage />
+          },
+          {
+            path: "/checkout",
+            element: <CheckOutPage />,
+          },
+        ],
+      }
     ],
   },
+
   {
     path: "/auth",
     element: <AuthLayout />,

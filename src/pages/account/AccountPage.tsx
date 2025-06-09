@@ -1,21 +1,31 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import UserInfo from "@/pages/account/UserInfoPage";
-import UserAddress from "@/pages/address/UserAddress";
+import ProfilePage from "@/pages/account/ProfilePage";
+import AddressPage from "@/pages/address/AddressPage";
 import HistoryOrderPage from "../orders/HistoryOrdersPage";
 import { HistoryIcon, MapPinIcon, UserIcon } from "lucide-react";
+import { useNavigate, useParams } from "react-router-dom";
 
 const tabsList = [
-  { name: "Information User", value: "account", icon: <UserIcon />, card: <UserInfo /> },
+  { name: "Profile", value: "profile", icon: <UserIcon />, card: <ProfilePage /> },
   { name: "Order History", value: "order-history", icon: <HistoryIcon />, card: <HistoryOrderPage /> },
-  { name: "Address", value: "address", icon: <MapPinIcon />, card: <UserAddress /> },
+  { name: "Address", value: "address", icon: <MapPinIcon />, card: <AddressPage /> },
 ];
 
-const AccountTabs = () => {
+const AccountPage = () => {
+  const navigate = useNavigate();
+
+  const { id } = useParams<{ id: string }>();
+  const { value } = tabsList.find((tab) => tab.value === id) || tabsList[0];
+
+  const handleValueChange = (value: string) => {
+    navigate(`/account/${value}`);
+  };
 
   return (
     <div className="px-4 md:px-8 lg:px-16 xl:px-32 2xl:px-64">
       <Tabs
-        defaultValue={tabsList[0].value}
+        defaultValue={value}
+        onValueChange={handleValueChange}
         className="flex flex-col md:flex-row gap-4"
       >
         {/* LEFT MENU */}
@@ -37,7 +47,7 @@ const AccountTabs = () => {
         {/* RIGHT CONTENT */}
         {tabsList.map((tab) => (
           <TabsContent
-            className="flex-1"
+            className="flex-1 min-h-96"
             key={tab.value}
             value={tab.value}>
             {tab.card}
@@ -49,4 +59,4 @@ const AccountTabs = () => {
   );
 };
 
-export default AccountTabs;
+export default AccountPage;

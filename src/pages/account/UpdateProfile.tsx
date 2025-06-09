@@ -17,7 +17,7 @@ interface UpdateUserInfoProps {
   userInfo: User;
 }
 
-const UpdateInfoUser: FC<UpdateUserInfoProps> = ({ userInfo }) => {
+const UpdateProfile: FC<UpdateUserInfoProps> = ({ userInfo }) => {
   const dispatch = useAppDispatch();
   const { loading } = useAppSelector((state) => state.account);
   const closeRef = useRef<HTMLButtonElement>(null);
@@ -103,4 +103,4 @@ const UpdateInfoUser: FC<UpdateUserInfoProps> = ({ userInfo }) => {
   );
 };
 
-export default UpdateInfoUser;
+export default UpdateProfile;

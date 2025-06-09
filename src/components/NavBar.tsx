@@ -167,7 +167,7 @@ const NavBar: React.FC = () => {
           </li>
 
           <li className="uppercase">
-            <Link to="/care&share">Care&Share</Link>
+            <Link to="/care_share">Care&Share</Link>
           </li>
         </ul>
 
@@ -177,19 +177,14 @@ const NavBar: React.FC = () => {
             <SearchIcon />
           </Link>
 
-          {loading.getProfile ?
-            <LoadingCenter />
-            : user ?
-              <Link to={'/cart'} className="relative">
-                <ShoppingBagIcon />
-                <span className="text-xs absolute -right-2 top-3 px-1 text-white rounded-full bg-red-500">
-                  {cart.length}
-                </span>
-              </Link>
-              : null
-          }
+          <Link to={'/cart'} className="relative">
+            <ShoppingBagIcon />
+            <span className="text-xs absolute -right-2 top-3 px-1 text-white rounded-full bg-red-500">
+              {cart.length > 0 && cart.length}
+            </span>
+          </Link>
 
-          <Link to="/account">
+          <Link to="/account/profile">
             <UserIcon />
           </Link>
 
@@ -256,19 +251,21 @@ const NavBar: React.FC = () => {
                     Care & Share
                   </Link>
 
+                  <Link to="/cart" className="flex items-center gap-2">
+                    <div className="relative">
+                      <ShoppingBagIcon className="w-5 h-5" />
+                      <span className="absolute -right-2 top-2 text-white text-xs px-1 rounded-full bg-red-500">
+                        {cart.length > 0 && cart.length}
+                      </span>
+                    </div>
+                    Cart
+                  </Link>
+
                   {loading.getProfile ? (
                     <LoadingCenter />
                   ) : user ? (
                     <>
-                      <Link to="/cart" className="flex items-center gap-2">
-                        <div className="relative">
-                          <ShoppingBagIcon className="w-5 h-5" />
-                          <span className="absolute -right-2 top-2 text-white text-xs px-1 rounded-full bg-red-500">{cart.length}</span>
-                        </div>
-                        Cart
-                      </Link>
-
-                      <Link to="/account" className="flex items-center gap-2">
+                      <Link to="/account/profile" className="flex items-center gap-2">
                         <UserIcon className="w-5 h-5" />
                         Account
                       </Link>

@@ -1,13 +1,12 @@
 import { User } from "@/types/user";
-import React from "react";
-import UpdateUserInfo from "@/pages/account/UpdateInfoUser";
-import UpdateAccountUser from "@/pages/account/UpdateAccountUser";
+import UpdateProfile from "@/pages/account/UpdateProfile";
+import UpdatePassword from "@/pages/account/UpdatePassword";
 import { useAppSelector } from "@/redux/store";
 
-const UserInfo: React.FC = () => {
+const ProfilePage = () => {
   const { user } = useAppSelector((state) => state.account);
 
-  const userInformation: User = {
+  const userInfo: User = {
     id: user?.id ?? "",
     name: user?.name ?? "",
     phone: user?.phone ?? "",
@@ -22,22 +21,22 @@ const UserInfo: React.FC = () => {
 
         <div className="grid grid-cols-2 gap-4 md:px-8">
           <div className="text-gray-600 font-medium md:text-right">Name</div>
-          <div className="text-black">{userInformation.name}</div>
+          <div className="text-black">{userInfo.name}</div>
 
           <div className="text-gray-600 font-medium md:text-right">Phone</div>
-          <div className="text-black">{userInformation.phone}</div>
+          <div className="text-black">{userInfo.phone}</div>
 
           <div className="text-gray-600 font-medium md:text-right">Email</div>
-          <div className="text-black">{userInformation.email}</div>
+          <div className="text-black">{userInfo.email}</div>
 
           <div className="text-gray-600 font-medium md:text-right">Gender</div>
-          <div className="text-black capitalize">{userInformation.gender}</div>
+          <div className="text-black capitalize">{userInfo.gender}</div>
         </div>
 
         <div className="flex flex-col items-end gap-2">
-          <UpdateUserInfo userInfo={userInformation} />
+          <UpdateProfile userInfo={userInfo} />
 
-          <UpdateAccountUser />
+          <UpdatePassword />
         </div>
 
       </div>
@@ -46,4 +45,4 @@ const UserInfo: React.FC = () => {
   );
 };
 
-export default UserInfo;
+export default ProfilePage;
