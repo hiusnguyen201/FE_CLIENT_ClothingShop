@@ -1,21 +1,31 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import UserInfo from "@/pages/account/UserInfoPage";
+import ProfilePage from "@/pages/account/ProfilePage";
 import UserAddress from "@/pages/address/UserAddress";
 import HistoryOrderPage from "../orders/HistoryOrdersPage";
 import { HistoryIcon, MapPinIcon, UserIcon } from "lucide-react";
+import { useSearchParams } from "react-router-dom";
 
 const tabsList = [
-  { name: "Information User", value: "account", icon: <UserIcon />, card: <UserInfo /> },
-  { name: "Order History", value: "order-history", icon: <HistoryIcon />, card: <HistoryOrderPage /> },
+  { name: "Profile", value: "profile", icon: <UserIcon />, card: <ProfilePage /> },
+  { name: "Order History", value: "orders", icon: <HistoryIcon />, card: <HistoryOrderPage /> },
   { name: "Address", value: "address", icon: <MapPinIcon />, card: <UserAddress /> },
 ];
 
 const AccountTabs = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const tabValue = searchParams.get("tab");
+  const tab = tabsList.find((t) => t.value === tabValue)?.value || tabsList[0].value;
+
+  const handleChangeTab = (value: string) => {
+    setSearchParams({ tab: value });
+  };
 
   return (
     <div className="px-4 md:px-8 lg:px-16 xl:px-32 2xl:px-64">
       <Tabs
-        defaultValue={tabsList[0].value}
+        defaultValue={tab}
+        onValueChange={handleChangeTab}
         className="flex flex-col md:flex-row gap-4"
       >
         {/* LEFT MENU */}

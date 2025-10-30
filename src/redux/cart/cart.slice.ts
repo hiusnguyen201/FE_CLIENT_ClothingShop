@@ -1,13 +1,13 @@
 import { ActionReducerMapBuilder, createSlice, Draft, PayloadAction } from "@reduxjs/toolkit";
-import { AddCartResponse, CartState, GetCartResponse } from "./cart.type";
-import { addCart, clearCart, getCart } from "./cart.thunk";
+import { AddCartResponse, CartState, GetCartResponse, RemoveItemResponse } from "./cart.type";
+import { addCart, clearCart, getCart, removeItem } from "./cart.thunk";
 
 const initialState: CartState = {
   loading: {
     getCart: false,
     addCart: false,
     clearCart: false,
-    // removeItem: false,
+    removeItem: false,
   },
   cart: [],
   error: null,
@@ -17,7 +17,9 @@ const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
-
+    emptyCart(state) {
+      state.cart = [];
+    },
   },
   extraReducers: (builder: ActionReducerMapBuilder<CartState>) => {
     builder
@@ -69,8 +71,25 @@ const cartSlice = createSlice({
       .addCase(clearCart.rejected, (state: Draft<CartState>, action: PayloadAction<any>) => {
         state.loading.clearCart = false;
         state.error = action.payload as string;
+      })
+
+      // Remove item Case
+      .addCase(removeItem.pending, (state: Draft<CartState>) => {
+        state.loading.removeItem = true;
+        state.error = null;
+      })
+      .addCase(removeItem.fulfilled, (state: Draft<CartState>, action: PayloadAction<RemoveItemResponse>) => {
+        state.loading.removeItem = false;
+        state.error = null;
+        const { productVariantId } = action.payload.data;
+        state.cart = state.cart.filter((cartItem) => cartItem.productVariant._id !== productVariantId);
+      })
+      .addCase(removeItem.rejected, (state: Draft<CartState>, action: PayloadAction<any>) => {
+        state.loading.removeItem = false;
+        state.error = action.payload as string;
       });
   },
 });
 
+export const { emptyCart } = cartSlice.actions;
 export default cartSlice.reducer;

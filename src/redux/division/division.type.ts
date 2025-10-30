@@ -31,7 +31,7 @@ export interface GetProvincesResponse extends GetListResponseData<Province> { }
  * Get districts payload
  */
 export type GetDistrictsPayload = {
-  provinceCode: string | number;
+  provinceId: string | number;
 };
 /**
  * Get districts 
@@ -42,7 +42,7 @@ export interface GetDistrictsResponse extends GetListResponseData<District> { }
  * Get wards payload
  */
 export type GetWardsPayload = {
-  districtCode: string | number;
+  districtId: string | number;
 };
 /**
  * Get wards 

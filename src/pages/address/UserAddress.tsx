@@ -1,13 +1,12 @@
 import React, { Fragment, useEffect } from "react";
 import AddressSheet from "@/pages/address/AddressSheet";
-import { Badge } from "@/components/ui/badge";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { deleteAddress, getAddressList, setDefaultAddress } from "@/redux/address/address.thunk";
 import { showToast } from "@/utils/toast";
 import { LoadingCenter } from "@/components/LoadingCenter";
 import { Separator } from "@/components/ui/separator";
-import { StarIcon } from "lucide-react";
 import { LoadingButton } from "@/components/LoadingButton";
+import DefaultAddressBadge from "@/components/DefaultAddressBadge";
 
 const UserAddress: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -43,14 +42,8 @@ const UserAddress: React.FC = () => {
       <div className="flex flex-col md:flex-row gap-2 justify-between items-center">
         <h2 className="text-2xl font-medium w-full">My Address</h2>
         {loading.getAddressList ? null : (
-          <div
-            className="w-full text-end"
-            onClick={() => isDisabled && showToast(false, "Address limit 5")}>
-            <AddressSheet
-              text="Add new address"
-              disabled={isDisabled}
-              type="add"
-            />
+          <div className="w-full text-end" onClick={() => isDisabled && showToast(false, "Address limit 5")}>
+            <AddressSheet text="Add new address" disabled={isDisabled} type="add" />
           </div>
         )}
       </div>
@@ -61,20 +54,15 @@ const UserAddress: React.FC = () => {
         <>
           {sortedAddresses.map((address) => (
             <Fragment key={address.id}>
-              <div
-                className="flex flex-col md:flex-row justify-between md:items-center gap-4"
-              >
+              <div className="flex flex-col md:flex-row justify-between md:items-center gap-4">
                 <div className="flex flex-col gap-2">
-                  {address.isDefault && (
-                    <Badge variant="outline" className="border-gray-400 rounded-4xl">
-                      <div className="flex items-center gap-1 text-gray-700 w-15 h-5 ">
-                        <StarIcon className="w-4 h-4" />
-                        <span>Default</span>
-                      </div>
-                    </Badge>
-                  )}
+                  {address.isDefault && <DefaultAddressBadge />}
                   <div>Address: {address.address}</div>
-                  <div>{address.wardName}, {address.districtName}, {address.provinceName}</div>
+                  <div>
+                    {[address.address, address.wardName, address.districtName, address.provinceName]
+                      .filter(Boolean)
+                      .join(", ")}
+                  </div>
                 </div>
 
                 <div className="flex flex-col md:flex-row gap-2">
@@ -89,12 +77,7 @@ const UserAddress: React.FC = () => {
                     </LoadingButton>
                   )}
 
-                  <AddressSheet
-                    disabled={false}
-                    text="Update"
-                    data={address}
-                    type="update"
-                  />
+                  <AddressSheet disabled={false} text="Update" data={address} type="update" />
 
                   {!address.isDefault && (
                     <LoadingButton

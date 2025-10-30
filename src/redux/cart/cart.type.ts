@@ -1,4 +1,4 @@
-import { AddCart, Cart } from "@/types/cart";
+import { AddCart, Cart, RemoveItem } from "@/types/cart";
 import { Nullable } from "@/types/common";
 import { BaseResponse } from "@/types/response";
 
@@ -7,10 +7,10 @@ import { BaseResponse } from "@/types/response";
  */
 export interface CartState {
   loading: {
-    getCart: boolean,
+    getCart: boolean;
     addCart: boolean;
     clearCart: boolean;
-    // removeItem: boolean;
+    removeItem: boolean;
   };
   cart: Cart[];
   error: Nullable<string>;
@@ -19,7 +19,7 @@ export interface CartState {
 /**
  * Get cart
  */
-export interface GetCartResponse extends BaseResponse<Cart[]> { }
+export interface GetCartResponse extends BaseResponse<Cart[]> {}
 
 /**
  * Add cart
@@ -29,7 +29,7 @@ export type AddCartPayload = {
   quantity: number;
 };
 
-export interface AddCartResponse extends BaseResponse<AddCart> { }
+export interface AddCartResponse extends BaseResponse<AddCart> {}
 
 /**
  * Remove item
@@ -38,9 +38,9 @@ export type RemoveItemPayload = {
   productVariantId: string;
 };
 
-export interface RemoveItemResponse extends BaseResponse<{ customerId: string, productVariantId: string }> { }
+export interface RemoveItemResponse extends BaseResponse<RemoveItem> {}
 
 /**
  * Clear cart
  */
-export interface ClearCartResponse extends BaseResponse<{ customerId: string }> { }
+export interface ClearCartResponse extends BaseResponse<{ customerId: string }> {}

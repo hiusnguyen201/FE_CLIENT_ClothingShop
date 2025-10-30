@@ -1,7 +1,6 @@
-import { LoaderCircle } from "lucide-react"
+import { LoaderCircle } from "lucide-react";
+import clsx from "clsx";
 
-export function LoadingCenter() {
-    return (
-        <LoaderCircle className="mx-auto animate-spin" />
-    )
+export function LoadingCenter({ className = "" }) {
+  return <LoaderCircle className={clsx("mx-auto animate-spin", className)} />;
 }

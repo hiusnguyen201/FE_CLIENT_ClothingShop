@@ -1,80 +1,94 @@
-import { addCart, getCart } from "@/redux/cart/cart.thunk";
+import { addCart } from "@/redux/cart/cart.thunk";
 import { useAppDispatch } from "@/redux/store";
 import { Cart } from "@/types/cart";
 import { Nullable } from "@/types/common";
-import { ProductVariant } from "@/types/product";
+import { ProductOption, ProductVariant } from "@/types/product";
 import { showToast } from "./toast";
+import { useAuth } from "@/hooks/use-auth";
+
+export const IMG_NOT_FOUND =
+  "https://nftcalendar.io/storage/uploads/2022/02/21/image-not-found_0221202211372462137974b6c1a.png";
 
 export const formatPrice = (price: number): string => {
-    return new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(price);
+  return new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(price);
 };
 
 export const calculateTotalPrice = (cartItems: Cart[]): number => {
-    return cartItems.reduce((total: number, item: Cart) => {
-        const itemPrice = item.productVariant.price * item.quantity;
-        return total + itemPrice;
-    }, 0);
-}
+  return cartItems.reduce((total: number, item: Cart) => {
+    const itemPrice = item.productVariant.price * item.quantity;
+    return total + itemPrice;
+  }, 0);
+};
 
 interface PriceRange {
-    minPrice: Nullable<number>;
-    maxPrice: Nullable<number>;
+  minPrice: Nullable<number>;
+  maxPrice: Nullable<number>;
 }
 
 export interface SelectedVariant {
-    sizeId: Nullable<string>;
-    colorId: Nullable<string>;
+  sizeId: Nullable<string>;
+  colorId: Nullable<string>;
 }
 
 export const getPriceRange = (variants: ProductVariant[]): PriceRange => {
-    if (variants.length === 0) {
-        return { minPrice: null, maxPrice: null };
-    }
-    const prices = variants.map(variant => variant.price);
-    return {
-        minPrice: Math.min(...prices),
-        maxPrice: Math.max(...prices),
-    };
+  if (variants.length === 0) {
+    return { minPrice: null, maxPrice: null };
+  }
+  const prices = variants.map((variant) => variant.price);
+  return {
+    minPrice: Math.min(...prices),
+    maxPrice: Math.max(...prices),
+  };
 };
 
 export const useAddToCart = () => {
-    const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
+  const { isAuthenticated, user } = useAuth();
 
-    const handleAddToCart = async (selectedVariantData: ProductVariant) => {
-        if (selectedVariantData && selectedVariantData.quantity > 0) {
-            try {
-                await dispatch(addCart({ productVariantId: selectedVariantData.id, quantity: 1 })).unwrap();
-                showToast(true, "Added to cart successfully");
-                dispatch(getCart());
-            } catch (error) {
-                console.error(error);
-                showToast(false, "Failed to add to cart");
-            }
-        } else {
-            showToast(false, "Product is out of stock");
-        }
-    };
+  const handleAddToCart = async (selectedVariantData: ProductVariant | null, quantity = 1) => {
+    if (!isAuthenticated || !user) {
+      showToast(false, "Please login first");
+      return;
+    }
 
-    return { handleAddToCart };
+    if (!selectedVariantData) return showToast(false, "Select variant first");
+
+    if (selectedVariantData.quantity <= 0) return showToast(false, "Product is out of stock");
+
+    try {
+      await dispatch(addCart({ productVariantId: selectedVariantData.id, quantity: quantity })).unwrap();
+      showToast(true, "Added to cart successfully");
+    } catch (error) {
+      console.error(error);
+      showToast(false, "Failed to add to cart");
+    }
+  };
+
+  return { handleAddToCart };
 };
 
-
 export const getValidSortBy = (value: string | null): "name" | "createdAt" | undefined => {
-    return value === "name" || value === "createdAt" ? value : "createdAt";
+  return value === "name" || value === "createdAt" ? value : "createdAt";
 };
 
 export const getValidSortOrder = (value: string | null): "asc" | "desc" | undefined => {
-    return value === "asc" || value === "desc" ? value : "desc";
+  return value === "asc" || value === "desc" ? value : "desc";
 };
 
 export const formatDateVN = (isoString: string | Date): string => {
-    const date = new Date(isoString);
-    const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const year = date.getFullYear();
-    const hours = String(date.getHours()).padStart(2, '0');
-    const minutes = String(date.getMinutes()).padStart(2, '0');
-    const seconds = String(date.getSeconds()).padStart(2, '0');
+  const date = new Date(isoString);
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const year = date.getFullYear();
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  const seconds = String(date.getSeconds()).padStart(2, "0");
 
-    return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+  return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
 };
+
+export const mapOptionsToState = (options: ProductOption[]) =>
+  options.reduce<Record<string, string>>((acc, cur) => {
+    acc[cur.option.name] = "";
+    return acc;
+  }, {});

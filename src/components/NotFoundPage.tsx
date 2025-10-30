@@ -1,12 +1,10 @@
 import { FC } from "react";
 import { Link } from "react-router-dom"; // Nếu bạn dùng react-router
-import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 
 const NotFoundPage: FC = () => {
   return (
     <>
-      <NavBar />
       <div className="h-130 flex flex-col items-center justify-center bg-white text-black px-4">
         <h1 className="text-[100px] sm:text-[120px] font-bold leading-none">404</h1>
         <p className="text-xl sm:text-2xl font-semibold mt-4 text-center">Sorry, Page not found!</p>

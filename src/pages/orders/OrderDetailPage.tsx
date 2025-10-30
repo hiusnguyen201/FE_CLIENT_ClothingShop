@@ -8,6 +8,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { formatDateVN } from "@/utils/product";
 import { ArrowLeftIcon, CircleIcon } from "lucide-react";
 import { LoadingCenter } from "@/components/LoadingCenter";
+import NotFoundPage from "@/components/NotFoundPage";
 
 const OrderDetailPage: React.FC = () => {
   const navigate = useNavigate();
@@ -19,22 +20,17 @@ const OrderDetailPage: React.FC = () => {
 
   useEffect(() => {
     if (!id) {
-      return
+      return;
     }
     dispatch(getOrder({ id }));
-
   }, [dispatch, id]);
 
   if (loading.getOrder) {
     return <LoadingCenter />;
   }
 
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
-
-  if (!order) {
-    return <div>Order not found</div>;
+  if (!order || error) {
+    return <NotFoundPage />;
   }
 
   const infoUserOrder = {
@@ -42,17 +38,13 @@ const OrderDetailPage: React.FC = () => {
     email: order.customerEmail,
     phone: order.customerPhone,
     paymentMethod: order.payment?.paymentMethod || "",
-    address: `${order.address}, ${order.wardName}, ${order.districtName}, ${order.provinceName}`,
+    address: [order.address, order.wardName, order.districtName, order.provinceName].filter(Boolean).join(", "),
   };
 
   return (
     <div className="px-4 md:px-8 lg:px-16 xl:px-32 2xl:px-64">
       <div className="flex flex-col gap-10">
-        <Button
-          className="flex items-center gap-2 max-w-max"
-          variant={"ghost"}
-          onClick={() => navigate(-1)}
-        >
+        <Button className="flex items-center gap-2 max-w-max" variant={"ghost"} onClick={() => navigate(-1)}>
           <ArrowLeftIcon />
           <span className="uppercase">Back</span>
         </Button>
@@ -65,39 +57,27 @@ const OrderDetailPage: React.FC = () => {
           <div className="md:w-2/3">
             <h3 className="text-xl font-semibold mb-2 text-center md:text-left">Order status</h3>
             {order.orderStatusHistory.map((step, i) => (
-              <div
-                key={step.id}
-                className="flex gap-2">
-
-                <CircleIcon
-                  fill={i === 0 ? 'black' : 'none'}
-                  className="stroke-none"
-                />
+              <div key={step.id} className="flex gap-2">
+                <CircleIcon fill={i === 0 ? "black" : "none"} className="stroke-none" />
 
                 <p>{formatDateVN(step.updatedAt)}</p>
                 <p className="font-semibold uppercase">{step.status}</p>
-
               </div>
             ))}
 
-            {order.trackingNumber &&
-              <div>
-                Tracking number: {order.trackingNumber}
-              </div>
-            }
+            {order.trackingNumber && <div>Tracking number: {order.trackingNumber}</div>}
 
-            {order.payment?.status === "pending" &&
+            {order.payment?.status === "pending" && (
               <div className="flex flex-col gap-4 my-4">
                 <p>Your order has not been paid yet</p>
-                {order.payment.paymentUrl &&
+                {order.payment.paymentUrl && (
                   <Button className="w-max">
                     <Link to={order.payment.paymentUrl}>Click here to pay {order.payment.paymentMethod}</Link>
                   </Button>
-                }
+                )}
               </div>
-            }
+            )}
           </div>
-
         </div>
 
         <div className="flex flex-col gap-4">
@@ -107,8 +87,7 @@ const OrderDetailPage: React.FC = () => {
 
         <InfoOrderCheckout order={order} />
       </div>
-
-    </div >
+    </div>
   );
 };
 

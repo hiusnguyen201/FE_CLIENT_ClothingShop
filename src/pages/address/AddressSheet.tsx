@@ -4,7 +4,7 @@ import SelectAddressDropdown from "@/components/SelectAddressDropdown";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useFormik } from "formik";
-import { AddNewAddressSchema } from "./schema/selectAddressSchema";
+import { AddressSchema } from "./schema/AddressSchema";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { addAddress, updateAddress } from "@/redux/address/address.thunk";
 import { showToast } from "@/utils/toast";
@@ -29,12 +29,12 @@ const AddressSheet: FC<AddressSheetProps> = ({ disabled, text, data, type }) => 
   const formik = useFormik({
     initialValues: {
       address: data?.address || "",
-      provinceCode: "",
-      districtCode: "",
+      provinceId: "",
+      districtId: "",
       wardCode: "",
       isDefault: data?.isDefault || false,
     },
-    validationSchema: AddNewAddressSchema,
+    validationSchema: AddressSchema,
     onSubmit: async (values) => {
       try {
         if (type === "add") {

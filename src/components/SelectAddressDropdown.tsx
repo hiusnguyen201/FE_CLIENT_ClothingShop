@@ -8,8 +8,8 @@ import { getDistricts, getProvinces, getWards } from "@/redux/division/division.
 
 interface FormValues {
   address: string;
-  provinceCode: string;
-  districtCode: string;
+  provinceId: string;
+  districtId: string;
   wardCode: string;
   isDefault: boolean;
 }
@@ -29,17 +29,17 @@ const SelectAddressDropdown: React.FC<SelectAddressDropdownProps> = ({ formik })
 
   // Fetch Districts when Province changes
   useEffect(() => {
-    const provinceCode = formik.values.provinceCode;
-    if (!provinceCode) return;
-    dispatch(getDistricts({ provinceCode }))
-  }, [dispatch, formik.values.provinceCode]);
+    const provinceId = formik.values.provinceId;
+    if (!provinceId) return;
+    dispatch(getDistricts({ provinceId }))
+  }, [dispatch, formik.values.provinceId]);
 
   // Fetch Wards when District changes
   useEffect(() => {
-    const districtCode = formik.values.districtCode;
-    if (!districtCode) return;
-    dispatch(getWards({ districtCode }))
-  }, [dispatch, formik.values.districtCode]);
+    const districtId = formik.values.districtId;
+    if (!districtId) return;
+    dispatch(getWards({ districtId }))
+  }, [dispatch, formik.values.districtId]);
 
   return (
     <div className="flex flex-col gap-2">
@@ -62,9 +62,9 @@ const SelectAddressDropdown: React.FC<SelectAddressDropdownProps> = ({ formik })
       {/* Province */}
       <Label className="text-md">Provinces</Label>
       <Select
-        value={formik.values.provinceCode}
+        value={formik.values.provinceId}
         onValueChange={(value) => {
-          formik.setFieldValue("provinceCode", value)
+          formik.setFieldValue("provinceId", value)
         }}
       >
         <SelectTrigger className="w-full">
@@ -81,16 +81,16 @@ const SelectAddressDropdown: React.FC<SelectAddressDropdownProps> = ({ formik })
           ))}
         </SelectContent>
       </Select>
-      {formik.touched.provinceCode && formik.errors.provinceCode && (
-        <span className="text-red-500 text-sm">{formik.errors.provinceCode}</span>
+      {formik.touched.provinceId && formik.errors.provinceId && (
+        <span className="text-red-500 text-sm">{formik.errors.provinceId}</span>
       )}
 
       {/* District */}
       <Label>Districts</Label>
       <Select
-        value={formik.values.districtCode}
+        value={formik.values.districtId}
         onValueChange={(value) => {
-          formik.setFieldValue("districtCode", value)
+          formik.setFieldValue("districtId", value)
         }}
       >
         <SelectTrigger className="w-full">
@@ -104,8 +104,8 @@ const SelectAddressDropdown: React.FC<SelectAddressDropdownProps> = ({ formik })
           ))}
         </SelectContent>
       </Select>
-      {formik.touched.districtCode && formik.errors.districtCode && (
-        <span className="text-red-500 text-sm">{formik.errors.districtCode}</span>
+      {formik.touched.districtId && formik.errors.districtId && (
+        <span className="text-red-500 text-sm">{formik.errors.districtId}</span>
       )}
 
       {/* Ward */}

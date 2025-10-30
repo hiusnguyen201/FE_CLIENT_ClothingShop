@@ -10,12 +10,11 @@ export interface Address {
 
 export interface NewAddress {
   address: string;
-  provinceCode: string;
-  districtCode: string;
+  provinceId: string;
+  districtId: string;
   wardCode: string;
   isDefault: boolean;
 }
-
 
 export interface Province {
   ProvinceID: string;

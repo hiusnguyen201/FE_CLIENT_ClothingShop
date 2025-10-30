@@ -6,6 +6,10 @@ import { Link } from "react-router-dom";
 export function LoginPage() {
   return (
     <div className="flex flex-col gap-6">
+      <div className="text-center lg:hidden">
+        <a href="/">Clothes men</a>
+      </div>
+
       <div className="flex flex-col items-center gap-2 text-center">
         <h1 className="text-2xl font-bold">Login to your account</h1>
         <p className="text-balance text-sm text-muted-foreground">Enter your email below to login to your account</p>
@@ -29,9 +33,7 @@ export function LoginPage() {
 
         <p className="flex items-center text-sm">
           <span className="text-muted-foreground">Forgot password? Click&nbsp;</span>
-          <Link to="/auth/forgot-password">
-            here
-          </Link>
+          <Link to="/auth/forgot-password">here</Link>
         </p>
       </div>
     </div>

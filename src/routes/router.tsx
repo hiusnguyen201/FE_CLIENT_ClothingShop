@@ -6,7 +6,7 @@ import SearchPage from "@/pages/search/SearchPage";
 import { createBrowserRouter } from "react-router-dom";
 import { VerifyOTPPage } from "@/pages/auth/VerifyOTPPage";
 import CategoryPage from "@/pages/category/CategoryPage";
-import DetailProduct from "@/pages/shop/ProductDetails/DetailProduct";
+import ProductDetail from "@/pages/shop/ProductDetails/ProductDetail";
 import NotFoundPage from "@/components/NotFoundPage";
 import ForgotPasswordPage from "@/pages/auth/ForgotPasswordPage";
 import ResetPasswordPage from "@/pages/auth/ResetPassword";
@@ -15,7 +15,9 @@ import { RegisterPage } from "@/pages/auth/RegisterPage";
 import { LoginPage } from "@/pages/auth/loginPage";
 import OrderDetailPage from "@/pages/orders/OrderDetailPage";
 import CartPage from "@/pages/cart/CartPage";
-import CheckOutPage from "@/pages/checkout/CheckoutPage";
+import CheckoutPage from "@/pages/checkout/CheckoutPage";
+import CheckoutPageResult from "@/pages/checkout/CheckoutPageResult";
+import { ProtectedRoute } from "@/layouts/auth/ProtectedRoute";
 
 const router = createBrowserRouter([
   {
@@ -36,24 +38,37 @@ const router = createBrowserRouter([
       },
       {
         path: "/product/:id",
-        element: <DetailProduct />,
+        element: <ProductDetail />,
+      },
+
+      {
+        element: <ProtectedRoute />,
+        children: [
+          {
+            path: "/account",
+            element: <AccountPage />,
+          },
+          {
+            path: "/cart",
+            element: <CartPage />,
+          },
+          {
+            path: "/checkout/success",
+            element: <CheckoutPage />,
+          },
+          {
+            path: "/get-order/:id",
+            element: <OrderDetailPage />,
+          },
+        ],
       },
       {
-        path: "/get-order/:id",
-        element: <OrderDetailPage />,
+        path: "/checkout/result",
+        element: <CheckoutPageResult />,
       },
       {
-        path: "/account",
-        element: <AccountPage />,
-        children: [],
-      },
-      {
-        path: "/cart",
-        element: <CartPage />,
-      },
-      {
-        path: "/checkout",
-        element: <CheckOutPage />,
+        path: "*",
+        element: <NotFoundPage />,
       },
     ],
   },
@@ -86,10 +101,6 @@ const router = createBrowserRouter([
         element: <VerifyOtp />,
       },
     ],
-  },
-  {
-    path: "*",
-    element: <NotFoundPage />,
   },
 ]);
 

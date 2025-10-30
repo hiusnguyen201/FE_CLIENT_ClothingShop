@@ -24,6 +24,7 @@ const AddressInfo: React.FC<AddressInfoProps> = ({ formikProps, addressList }) =
           <Button
             type="button"
             key={a.id}
+            title={[a.address, a.wardName, a.districtName, a.provinceName].join(', ')}
             onClick={() => {
               formikProps.setFieldValue("address", a);
             }}
@@ -37,7 +38,7 @@ const AddressInfo: React.FC<AddressInfoProps> = ({ formikProps, addressList }) =
               <CircleDotIcon className="w-4 h-4" color="black" />
               : <CircleIcon className="w-4 h-4" color="black" />
             }
-            <div className="font-medium text-gray-800">
+            <div className="font-medium text-gray-800 line-clamp-1">
               {[a.address, a.wardName, a.districtName, a.provinceName].filter(Boolean).join(', ')}
             </div>
           </Button>

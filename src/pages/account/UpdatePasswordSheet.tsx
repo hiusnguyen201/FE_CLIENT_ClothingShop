@@ -10,7 +10,7 @@ import { LoadingButton } from "@/components/LoadingButton";
 import { InputFormikField } from "@/components/formik-fields";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 
-const UpdateAccountUser = () => {
+const UpdatePasswordSheet = () => {
   const dispatch = useAppDispatch();
   const { loading } = useAppSelector((state) => state.account);
 
@@ -148,4 +148,4 @@ const UpdateAccountUser = () => {
   );
 };
 
-export default UpdateAccountUser;
+export default UpdatePasswordSheet;

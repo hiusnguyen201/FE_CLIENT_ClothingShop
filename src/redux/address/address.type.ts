@@ -1,4 +1,4 @@
-import { Address } from "@/types/address";
+import { Address } from "@/types/division";
 import { Nullable } from "@/types/common";
 import {
   BaseResponse,
@@ -28,8 +28,8 @@ export interface AddressState {
 
 export interface CreateAddressPayload {
   address: string;
-  provinceCode: string;
-  districtCode: string;
+  provinceId: string;
+  districtId: string;
   wardCode: string;
   isDefault: boolean;
 }
@@ -42,8 +42,8 @@ export interface CreateAddressResponse extends BaseResponse<Address> { }
 export interface UpdateAddressPayload {
   addressId: string;
   address: string;
-  provinceCode: string;
-  districtCode: string;
+  provinceId: string;
+  districtId: string;
   wardCode: string;
   isDefault: boolean;
 }

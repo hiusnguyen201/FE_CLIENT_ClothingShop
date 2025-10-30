@@ -6,6 +6,25 @@ export enum PRODUCT_STATUS {
   INACTIVE = "inactive",
 }
 
+export interface Product {
+  id: string;
+  thumbnail: string;
+  name: string;
+  slug: string;
+  description: string;
+  status: PRODUCT_STATUS;
+  category: Category;
+  subCategory: Nullable<Category>;
+  productOptions: Array<ProductOption>;
+  productVariants: Array<ProductVariant>;
+}
+
+export interface ProductOption {
+  id: string;
+  option: Option;
+  optionValues: Array<OptionValue>;
+}
+
 export interface Option {
   id: string;
   name: string;
@@ -18,30 +37,15 @@ export interface OptionValue {
 
 export interface ProductVariant {
   id: string;
-  quantity: number;
   price: number;
-  sku: string;
   product: string;
-  variantValues: {
-    option: Option;
-    optionValue: OptionValue;
-    id: string;
-  }[];
+  quantity: number;
+  sku: string;
+  variantValues: Array<VariantValue>;
 }
 
-export interface Product {
+export interface VariantValue {
   id: string;
-  thumbnail: string;
-  name: string;
-  slug: string;
-  description: string;
-  status: PRODUCT_STATUS;
-  category: Category;
-  subCategory: Nullable<Category>;
-  productVariants: ProductVariant[];
-  productOptions: {
-    option: Option;
-    optionValues: OptionValue[];
-    id: string;
-  }[];
+  option: Option;
+  optionValue: OptionValue;
 }

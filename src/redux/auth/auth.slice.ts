@@ -1,5 +1,11 @@
 import { ActionReducerMapBuilder, createSlice, Draft, PayloadAction } from "@reduxjs/toolkit";
-import { AuthState, LoginResponse, RegisterResponse, SendOtpViaEmailResponse, VerifyOtpResponse } from "@/redux/auth/auth.type";
+import {
+  AuthState,
+  LoginResponse,
+  RegisterResponse,
+  SendOtpViaEmailResponse,
+  VerifyOtpResponse,
+} from "@/redux/auth/auth.type";
 import { login, register, logout, sendOtpViaEmail, verifyOtp, forgotPassword } from "@/redux/auth/auth.thunk";
 
 const initialState: AuthState = {
@@ -47,7 +53,6 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(login.fulfilled, (state: Draft<AuthState>, action: PayloadAction<LoginResponse>) => {
-        console.log(action.payload);
         const { data } = action.payload;
         state.loading.login = false;
         state.isAuthenticated = true;

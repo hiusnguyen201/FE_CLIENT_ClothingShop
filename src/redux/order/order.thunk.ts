@@ -18,7 +18,7 @@ export const createOrder = createAsyncThunk<CreateOrderResponse, NewOrderPayload
 );
 
 export const getListOrder = createAsyncThunk<GetListOrderResponse, GetListOrderPayload, ThunkApiConfig>(
-  "orders/get-orders-by-customer",
+  "account/get-orders-by-customer",
   async (filters, { rejectWithValue }) => {
     try {
       const response: GetListOrderResponse = await getListOrderService(filters);
