@@ -157,7 +157,7 @@ const NavBar: React.FC = () => {
           </li>
 
           <li className="uppercase">
-            <Link to="/care_share">Care&Share</Link>
+            <Link to="/care&share">Care&Share</Link>
           </li>
         </ul>
 
@@ -174,7 +174,7 @@ const NavBar: React.FC = () => {
             </span>
           </Link>
 
-          <Link to="/account/profile">
+          <Link to="/account">
             <UserIcon />
           </Link>
         </div>

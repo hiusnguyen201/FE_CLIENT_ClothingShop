@@ -1,6 +1,6 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ProfilePage from "@/pages/account/ProfilePage";
-import UserAddress from "@/pages/address/UserAddress";
+import AddressPage from "@/pages/address/AddressPage";
 import HistoryOrderPage from "../orders/HistoryOrdersPage";
 import { HistoryIcon, MapPinIcon, UserIcon } from "lucide-react";
 import { useSearchParams } from "react-router-dom";
@@ -8,7 +8,7 @@ import { useSearchParams } from "react-router-dom";
 const tabsList = [
   { name: "Profile", value: "profile", icon: <UserIcon />, card: <ProfilePage /> },
   { name: "Order History", value: "orders", icon: <HistoryIcon />, card: <HistoryOrderPage /> },
-  { name: "Address", value: "address", icon: <MapPinIcon />, card: <UserAddress /> },
+  { name: "Address", value: "address", icon: <MapPinIcon />, card: <AddressPage /> },
 ];
 
 const AccountTabs = () => {

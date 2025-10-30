@@ -1,5 +1,14 @@
 import { FC, useRef } from "react";
-import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { useFormik } from "formik";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -17,11 +26,7 @@ interface UpdateUserInfoProps {
   userInfo: User;
 }
 
-<<<<<<<< HEAD:src/pages/account/UpdateInfoUserSheet.tsx
 const UpdateInfoUserSheet: FC<UpdateUserInfoProps> = ({ userInfo }) => {
-========
-const UpdateProfile: FC<UpdateUserInfoProps> = ({ userInfo }) => {
->>>>>>>> ab9da4a439c40803ae995f025f72dcb827b7a1b1:src/pages/account/UpdateProfile.tsx
   const dispatch = useAppDispatch();
   const { loading } = useAppSelector((state) => state.account);
   const closeRef = useRef<HTMLButtonElement>(null);
@@ -35,38 +40,35 @@ const UpdateProfile: FC<UpdateUserInfoProps> = ({ userInfo }) => {
     validationSchema: UpdateInfoUserSchema,
     onSubmit: async (values) => {
       try {
-        await dispatch(updateProfile({
-          name: values.fullName,
-          gender: values.gender as Gender,
-          phone: values.phone
-        })).unwrap();
+        await dispatch(
+          updateProfile({
+            name: values.fullName,
+            gender: values.gender as Gender,
+            phone: values.phone,
+          })
+        ).unwrap();
         closeRef.current?.click();
         showToast(true, "Updated");
       } catch (error: any) {
         showToast(false, error || "Something went wrong");
       }
-    }
+    },
   });
 
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button
-          className="min-w-36"
-          variant="outline">Update info</Button>
+        <Button className="min-w-36" variant="outline">
+          Update info
+        </Button>
       </SheetTrigger>
       <SheetContent className="h-screen w-screen md:h-auto md:max-w-md">
         <SheetHeader>
           <SheetTitle>Update info</SheetTitle>
-          <SheetDescription>
-            Click save when you're done.
-          </SheetDescription>
+          <SheetDescription>Click save when you're done.</SheetDescription>
         </SheetHeader>
 
-        <form
-          className="flex flex-col gap-4 mt-4"
-          onSubmit={formik.handleSubmit}
-        >
+        <form className="flex flex-col gap-4 mt-4" onSubmit={formik.handleSubmit}>
           <InputFormikField label="Name" name="fullName" type="text" formikProps={formik} required />
           <InputFormikField label="Phone" name="phone" type="tel" formikProps={formik} required />
 
@@ -90,9 +92,7 @@ const UpdateProfile: FC<UpdateUserInfoProps> = ({ userInfo }) => {
           </div>
 
           <SheetFooter>
-            <LoadingButton
-              type="submit"
-              loading={loading.updateProfile} disabled={loading.updateProfile}>
+            <LoadingButton type="submit" loading={loading.updateProfile} disabled={loading.updateProfile}>
               Save
             </LoadingButton>
           </SheetFooter>
@@ -101,14 +101,9 @@ const UpdateProfile: FC<UpdateUserInfoProps> = ({ userInfo }) => {
         <SheetClose asChild>
           <button ref={closeRef} className="hidden" />
         </SheetClose>
-
       </SheetContent>
     </Sheet>
   );
 };
 
-<<<<<<<< HEAD:src/pages/account/UpdateInfoUserSheet.tsx
 export default UpdateInfoUserSheet;
-========
-export default UpdateProfile;
->>>>>>>> ab9da4a439c40803ae995f025f72dcb827b7a1b1:src/pages/account/UpdateProfile.tsx

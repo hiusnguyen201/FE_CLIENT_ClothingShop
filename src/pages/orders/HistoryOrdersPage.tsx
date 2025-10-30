@@ -61,8 +61,6 @@ const HistoryOrderPage: React.FC = () => {
 
   const totalPages = Math.ceil(totalCount / formState.limit);
 
-  console.log(list);
-
   return (
     <>
       <h2 className="text-2xl font-medium text-center md:text-left mb-2">History Order</h2>
