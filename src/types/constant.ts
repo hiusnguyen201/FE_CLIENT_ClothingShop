@@ -39,3 +39,5 @@ export type PaymentMethod = {
   img: string;
   method: string;
 };
+
+export const MAX_ADDRESS_PER_USER = 5;

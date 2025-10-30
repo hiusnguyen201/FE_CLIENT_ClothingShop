@@ -5,21 +5,16 @@ import { UpdateAccountUserSchema } from "@/pages/account/schema/updateAccount.sc
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { changePassword } from "@/redux/account/account.thunk";
 import { showToast } from "@/utils/toast";
-import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { LoadingButton } from "@/components/LoadingButton";
 import { InputFormikField } from "@/components/formik-fields";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
 
+<<<<<<<< HEAD:src/pages/account/UpdatePasswordSheet.tsx
 const UpdatePasswordSheet = () => {
+========
+const UpdatePassword = () => {
+>>>>>>>> ab9da4a439c40803ae995f025f72dcb827b7a1b1:src/pages/account/UpdatePassword.tsx
   const dispatch = useAppDispatch();
   const { loading } = useAppSelector((state) => state.account);
 
@@ -43,35 +38,42 @@ const UpdatePasswordSheet = () => {
     validationSchema: UpdateAccountUserSchema,
     onSubmit: async (values) => {
       try {
-        await dispatch(
-          changePassword({
-            password: values.currentPassword,
-            newPassword: values.newPassword,
-            confirmNewPassword: values.confirmPassword,
-          })
-        ).unwrap();
+        await dispatch(changePassword({
+          password: values.currentPassword,
+          newPassword: values.newPassword,
+          confirmNewPassword: values.confirmPassword
+        })).unwrap();
         closeRef.current?.click();
         showToast(true, "Password changed");
       } catch (error: any) {
         showToast(false, error || "Something went wrong");
       }
-    },
+    }
   });
 
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button className="min-w-36" variant="default" onClick={() => formik.resetForm()}>
+        <Button
+          className="min-w-36"
+          variant="default"
+          onClick={() => formik.resetForm()}
+        >
           Change password
         </Button>
       </SheetTrigger>
       <SheetContent className="h-screen w-screen md:h-auto md:max-w-md">
         <SheetHeader>
           <SheetTitle>Change password</SheetTitle>
-          <SheetDescription>Click save when you're done.</SheetDescription>
+          <SheetDescription>
+            Click save when you're done.
+          </SheetDescription>
         </SheetHeader>
 
-        <form className="flex flex-col gap-4 mt-4" onSubmit={formik.handleSubmit}>
+        <form
+          className="flex flex-col gap-4 mt-4"
+          onSubmit={formik.handleSubmit}
+        >
           {/* Current Password */}
           <div className="relative">
             <InputFormikField
@@ -83,11 +85,13 @@ const UpdatePasswordSheet = () => {
               required
             />
 
-            {(showPassword.current ? EyeOffIcon : EyeIcon) &&
-              React.createElement(showPassword.current ? EyeOffIcon : EyeIcon, {
+            {(showPassword.current ? EyeOffIcon : EyeIcon) && React.createElement(
+              showPassword.current ? EyeOffIcon : EyeIcon,
+              {
                 onClick: () => togglePassword("current"),
-                className: "absolute cursor-pointer top-7 right-4",
-              })}
+                className: "absolute cursor-pointer top-7 right-4"
+              }
+            )}
           </div>
 
           {/* New Password */}
@@ -101,11 +105,13 @@ const UpdatePasswordSheet = () => {
               required
             />
 
-            {(showPassword.new ? EyeOffIcon : EyeIcon) &&
-              React.createElement(showPassword.new ? EyeOffIcon : EyeIcon, {
+            {(showPassword.new ? EyeOffIcon : EyeIcon) && React.createElement(
+              showPassword.new ? EyeOffIcon : EyeIcon,
+              {
                 onClick: () => togglePassword("new"),
-                className: "absolute cursor-pointer top-7 right-4",
-              })}
+                className: "absolute cursor-pointer top-7 right-4"
+              }
+            )}
           </div>
 
           {/* Confirm Password */}
@@ -119,15 +125,19 @@ const UpdatePasswordSheet = () => {
               required
             />
 
-            {(showPassword.confirm ? EyeOffIcon : EyeIcon) &&
-              React.createElement(showPassword.confirm ? EyeOffIcon : EyeIcon, {
+            {(showPassword.confirm ? EyeOffIcon : EyeIcon) && React.createElement(
+              showPassword.confirm ? EyeOffIcon : EyeIcon,
+              {
                 onClick: () => togglePassword("confirm"),
-                className: "absolute cursor-pointer top-7 right-4",
-              })}
+                className: "absolute cursor-pointer top-7 right-4"
+              }
+            )}
           </div>
 
           <SheetFooter>
-            <LoadingButton type="submit" loading={loading.changePassword} disabled={loading.changePassword}>
+            <LoadingButton
+              type="submit"
+              loading={loading.changePassword} disabled={loading.changePassword}>
               Save
             </LoadingButton>
           </SheetFooter>
@@ -136,9 +146,14 @@ const UpdatePasswordSheet = () => {
         <SheetClose asChild>
           <button ref={closeRef} className="hidden" />
         </SheetClose>
+
       </SheetContent>
     </Sheet>
   );
 };
 
+<<<<<<<< HEAD:src/pages/account/UpdatePasswordSheet.tsx
 export default UpdatePasswordSheet;
+========
+export default UpdatePassword;
+>>>>>>>> ab9da4a439c40803ae995f025f72dcb827b7a1b1:src/pages/account/UpdatePassword.tsx

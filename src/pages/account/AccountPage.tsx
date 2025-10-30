@@ -23,19 +23,11 @@ const AccountTabs = () => {
 
   return (
     <div className="px-4 md:px-8 lg:px-16 xl:px-32 2xl:px-64">
-      <Tabs
-        defaultValue={tab}
-        onValueChange={handleChangeTab}
-        className="flex flex-col md:flex-row gap-4"
-      >
+      <Tabs defaultValue={tab} onValueChange={handleChangeTab} className="flex flex-col md:flex-row gap-4">
         {/* LEFT MENU */}
         <TabsList className="flex flex-col h-full">
           {tabsList.map((tab) => (
-            <TabsTrigger
-              key={tab.value}
-              value={tab.value}
-              className="w-full justify-start md:min-w-64"
-            >
+            <TabsTrigger key={tab.value} value={tab.value} className="w-full justify-start md:min-w-64">
               <div className="flex gap-2 items-center">
                 {tab.icon}
                 <span>{tab.name}</span>
@@ -46,14 +38,10 @@ const AccountTabs = () => {
 
         {/* RIGHT CONTENT */}
         {tabsList.map((tab) => (
-          <TabsContent
-            className="flex-1"
-            key={tab.value}
-            value={tab.value}>
+          <TabsContent className="flex-1 min-h-96" key={tab.value} value={tab.value}>
             {tab.card}
           </TabsContent>
         ))}
-
       </Tabs>
     </div>
   );

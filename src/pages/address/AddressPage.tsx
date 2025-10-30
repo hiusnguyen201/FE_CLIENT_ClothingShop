@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect } from "react";
+import { Fragment, useEffect } from "react";
 import AddressSheet from "@/pages/address/AddressSheet";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { deleteAddress, getAddressList, setDefaultAddress } from "@/redux/address/address.thunk";
@@ -7,8 +7,9 @@ import { LoadingCenter } from "@/components/LoadingCenter";
 import { Separator } from "@/components/ui/separator";
 import { LoadingButton } from "@/components/LoadingButton";
 import DefaultAddressBadge from "@/components/DefaultAddressBadge";
+import { MAX_ADDRESS_PER_USER } from "@/types/constant";
 
-const UserAddress: React.FC = () => {
+const AddressPage = () => {
   const dispatch = useAppDispatch();
   const { addressList, loading } = useAppSelector((state) => state.address);
 
@@ -35,17 +36,18 @@ const UserAddress: React.FC = () => {
   };
 
   const sortedAddresses = [...addressList].sort((a, b) => Number(b.isDefault) - Number(a.isDefault));
-  const isDisabled = addressList.length > 4 ? true : false;
+  const isDisabled = addressList.length + 1 > MAX_ADDRESS_PER_USER || loading.getAddressList;
 
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col md:flex-row gap-2 justify-between items-center">
         <h2 className="text-2xl font-medium w-full">My Address</h2>
-        {loading.getAddressList ? null : (
-          <div className="w-full text-end" onClick={() => isDisabled && showToast(false, "Address limit 5")}>
-            <AddressSheet text="Add new address" disabled={isDisabled} type="add" />
-          </div>
-        )}
+        <div
+          className="w-full text-end"
+          onClick={() => isDisabled && showToast(false, `Address limit ${MAX_ADDRESS_PER_USER}`)}
+        >
+          <AddressSheet text="Add new address" disabled={isDisabled} type="add" />
+        </div>
       </div>
 
       {loading.getAddressList ? (
@@ -102,4 +104,4 @@ const UserAddress: React.FC = () => {
   );
 };
 
-export default UserAddress;
+export default AddressPage;

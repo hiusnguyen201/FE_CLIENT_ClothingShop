@@ -1,14 +1,14 @@
-import { ReactNode, useEffect } from "react";
-import { Navigate, useLocation } from "react-router-dom";
+import { useEffect } from "react";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "@/hooks/use-auth";
 import { getHistory, setHistory } from "@/utils/history";
 
-export const AuthGuard = ({ children }: { children: ReactNode }) => {
+export const AuthGuard = () => {
   const { isAuthenticated } = useAuth();
   const location = useLocation();
 
   if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/auth/login" replace />;
   }
 
   useEffect(() => {
@@ -18,5 +18,5 @@ export const AuthGuard = ({ children }: { children: ReactNode }) => {
     }
   }, [location.pathname]);
 
-  return children;
+  return <Outlet />;
 };
