@@ -1,4 +1,4 @@
-import { addCart } from "@/redux/cart/cart.thunk";
+import { addCart, getCart } from "@/redux/cart/cart.thunk";
 import { useAppDispatch } from "@/redux/store";
 import { Cart } from "@/types/cart";
 import { Nullable } from "@/types/common";
@@ -56,8 +56,9 @@ export const useAddToCart = () => {
     if (selectedVariantData.quantity <= 0) return showToast(false, "Product is out of stock");
 
     try {
-      await dispatch(addCart({ productVariantId: selectedVariantData.id, quantity: quantity })).unwrap();
+      await dispatch(addCart({ productVariantId: selectedVariantData.id, quantity: quantity }));
       showToast(true, "Added to cart successfully");
+      dispatch(getCart());
     } catch (error) {
       console.error(error);
       showToast(false, "Failed to add to cart");
