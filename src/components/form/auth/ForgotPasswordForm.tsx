@@ -19,7 +19,7 @@ const forgotPasswordSchema = Yup.object().shape({
 });
 
 export function ForgotPasswordForm({ className }: { className?: string }) {
-  const { setEndTime, getRemainingSeconds } = useTimer();
+  const { setEndTime } = useTimer();
   const dispatch = useAppDispatch();
   const { loading } = useAppSelector<AuthState>((selector) => selector.auth);
   const handleSubmit = async (values: ForgotPasswordPayload) => {
