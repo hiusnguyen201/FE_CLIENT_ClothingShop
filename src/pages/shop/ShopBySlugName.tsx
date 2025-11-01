@@ -1,9 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import TrendingProducts from "./TrendingProduct";
-import SubCategories from "@/components/subCategories";
-
-import subCategoriesData from "@/data/subCategories.json";
 
 const ShopBySlugName: React.FC = () => {
   return (
@@ -40,7 +37,6 @@ const ShopBySlugName: React.FC = () => {
         {/* subcategory */}
         <div>
           <h2 className="section__header pt-5">DAILY PRODUCTS</h2>
-          <SubCategories subCategoriesData={subCategoriesData} />
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 p-4 ">
           <Link to={`/category/men-clothes`} className="hover:scale-105 cursor-pointer transition-transform">

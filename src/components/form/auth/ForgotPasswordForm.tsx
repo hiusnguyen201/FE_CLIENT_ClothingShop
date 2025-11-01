@@ -11,6 +11,7 @@ import { showToast } from "@/utils/toast";
 
 const initialValues: ForgotPasswordPayload = {
   email: "",
+  callbackUrl: "",
 };
 
 const forgotPasswordSchema = Yup.object().shape({
@@ -28,10 +29,12 @@ export function ForgotPasswordForm({ className }: { className?: string }) {
       //   return
       // }
 
-      dispatch(forgotPassword({
-        email: values.email,
-        callbackUrl: 'http://localhost:5173/auth/reset-password'
-      }));
+      dispatch(
+        forgotPassword({
+          email: values.email,
+          callbackUrl: "http://localhost:5173/auth/reset-password",
+        })
+      );
       setEndTime(60);
       formik.resetForm();
       showToast(true, "Check email to recovery account");
